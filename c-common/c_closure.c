@@ -27,6 +27,8 @@ status_t closure_init_basic(struct closure *self)
     self->flags = 0;
     memset(self->params,0,sizeof(self->params));
     memset(self->types,0,sizeof(self->types));
+    self->_user_data = NULL;
+    self->_is_on_heap = 0;
     return OK;
 }
 status_t closure_init(struct closure *self)
@@ -44,6 +46,7 @@ status_t closure_destroy(struct closure *self)
     closure_init_basic(self);
     return OK;
 }
+
 
 status_t closure_copy_params(struct closure *self,struct closure *closure)
 {
@@ -82,6 +85,20 @@ status_t closure_copy_params(struct closure *self,struct closure *closure)
     
     return OK;
 }
+
+int closure_comp(struct closure *self,struct closure *_p)
+{
+    ASSERT(0);
+    return 0;
+}
+
+status_t closure_copy(struct closure *self,struct closure *_p)
+{
+    self->func = _p->func;
+    closure_copy_params(self,_p);
+    return OK;
+}
+
 
 status_t closure_print(struct closure *self,struct log_buffer *buf)
 {

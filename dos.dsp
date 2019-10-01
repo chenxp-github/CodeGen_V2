@@ -130,6 +130,14 @@ SOURCE=".\c-common\c_closure.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_closure_list.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_closure_list.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_log_buffer.c"
 # End Source File
 # Begin Source File
@@ -138,11 +146,27 @@ SOURCE=".\c-common\c_log_buffer.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_mutex.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mutex.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_task.c"
 # End Source File
 # Begin Source File
 
 SOURCE=".\c-common\c_task.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_runner.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_runner.h"
 # End Source File
 # Begin Source File
 

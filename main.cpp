@@ -10,30 +10,37 @@
 extern "C"{
 #include "task_test.h"
 #include "c_closure.h"
+#include "c_task_runner.h"
 }
 
-static status_t test(struct closure *closure)
+C_BEGIN_CLOSURE_FUNC(test_func)
 {
-    C_CLOSURE_PARAM_INT(i,0);
-    C_CLOSURE_PARAM_STRING(str,1);
-    PD(i);
-    PS(str);
+    C_CLOSURE_PARAM_INT(e,0);
+    PD(e);
     return OK;
 }
+C_END_CLOSURE_FUNC(test_func)
+
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
+
+    struct task_runner runner;
+    taskrunner_init(&runner);
+        
+    C_NEW_CLOSURE(pc,test_func);
+    closure_set_param_int(pc,0,123);
     
-    struct closure c;
-    closure_init(&c);
-    closure_set_func(&c,test);
-    closure_set_param_int(&c,0,123);
-    closure_set_param_string(&c,1,"Hello",-1);
-    closure_run(&c);
+    taskrunner_add_closure(&runner,pc,0);
 
-    closure_destroy(&c);
+    while(!kbhit())
+    {
+        taskrunner_schedule(&runner);
+        crt_msleep(1);
+    }
 
+    taskrunner_destroy(&runner);
     return 0;
 }
 

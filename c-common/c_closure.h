@@ -68,6 +68,18 @@ ASSERT(var && var->__weak_ref_id != 0 && var->__weak_ref_id == __weak_ref_id_##v
 #define C_CLOSURE_PARAM_STRING(var,n)                __CCLOSURE_PARAM_STRING(closure,var,n)
 #define C_CLOSURE_PARAM_WEAKPTR(type,var,n)          __CCLOSURE_PARAM_WEAKPTR(closure,type,var,n)
 
+#define C_BEGIN_CLOSURE_FUNC(name)\
+    static status_t name(struct closure *closure)\
+    
+#define C_END_CLOSURE_FUNC(name)
+
+#define C_NEW_CLOSURE(name,func)\
+struct closure *name;\
+X_MALLOC(name,struct closure,1);\
+closure_init(name);\
+name->_is_on_heap = 1;\
+closure_set_func(name,func)\
+
 struct closure;
 typedef int (*C_CLOSURE_FUNC)(struct closure*);
 
@@ -76,6 +88,8 @@ struct closure{
     uint8_t types[CCLOSURE_MAX_PARAMS];
     C_CLOSURE_FUNC func;
     uint32_t flags;
+    void *_user_data;
+    bool_t _is_on_heap;
 };
 
 status_t closure_init_basic(struct closure *self);

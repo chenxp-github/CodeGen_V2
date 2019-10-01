@@ -1,0 +1,13 @@
+[Stack of Closure]
+class ClosureList{
+}
+
+
+class Mutex{
+}
+
+[CodeSwitch copy_comp_print=false]
+class TaskRunner{
+	[noget,noset] ClosureList ClosureList;
+	[noget,noset] Mutex mutex;
+}
