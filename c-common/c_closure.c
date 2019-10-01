@@ -15,6 +15,7 @@ CHECK_INDEX_RANGE(index); \
 ASSERT(self->types[index] == type)
 
 #define TO_POINTER(index) ((void*)self->params[index])
+#define CCLOSURE_FLAG_FUNC_C(func,bit) CFLAG_FUNC_C(closure,flags,func,bit)
 
 CCLOSURE_FLAG_FUNC_C(is_called,0x00000001);
 CCLOSURE_FLAG_FUNC_C(is_timeout,0x00000002);
@@ -51,7 +52,7 @@ status_t closure_copy_params(struct closure *self,struct closure *closure)
     for(i = 0; i < CCLOSURE_MAX_PARAMS; i++)
     {
         type = closure_get_param_type(closure,i);
-        if(type == CPARAM_TYPE_MALLOC)
+        if(type == C_PARAM_TYPE_MALLOC)
         {
             int size = closure_get_malloc_size(closure,i);
             closure_malloc(self,i,size);
@@ -61,18 +62,18 @@ status_t closure_copy_params(struct closure *self,struct closure *closure)
                 size
             );
         }
-        else if(type == CPARAM_TYPE_STRING)
+        else if(type == C_PARAM_TYPE_STRING)
         {
             const char *str = closure_get_param_string(closure,i);
             closure_set_param_string(self,i,str,-1);
         }
-        else if(type == CPARAM_TYPE_WEAKPTR)
+        else if(type == C_PARAM_TYPE_WEAKPTR)
         {
             int weak_ref_id;
             void *ptr = closure_get_param_weak_pointer(closure,i,&weak_ref_id);
             closure_set_param_weak_pointer(self,i,ptr,weak_ref_id);
         }
-        else if(type != CPARAM_TYPE_UNKNOWN)
+        else if(type != C_PARAM_TYPE_UNKNOWN)
         {
             self->types[i] = closure->types[i];
             self->params[i] = closure->params[i];
@@ -90,48 +91,48 @@ status_t closure_print(struct closure *self,struct log_buffer *buf)
     {
         type = closure_get_param_type(self,i);
         
-        if(type != CPARAM_TYPE_UNKNOWN)
+        if(type != C_PARAM_TYPE_UNKNOWN)
         {
             log_buffer_log(buf,"[%d]=",i);
         }
         
-        if(type == CPARAM_TYPE_MALLOC)
+        if(type == C_PARAM_TYPE_MALLOC)
         {
             int size = closure_get_malloc_size(self,i);
             log_buffer_log(buf,"<malloc %d bytes>",size);
         }
-        else if(type == CPARAM_TYPE_STRING)
+        else if(type == C_PARAM_TYPE_STRING)
         {
             const char *str = closure_get_param_string(self,i);
             log_buffer_log(buf,"\"%s\"",str);
         }
-        else if(type == CPARAM_TYPE_WEAKPTR)
+        else if(type == C_PARAM_TYPE_WEAKPTR)
         {
             int weak_id;
             void *p = closure_get_param_weak_pointer(self,i,&weak_id);
             log_buffer_log(buf,"<%p>",p);
         }
-        else if(type == CPARAM_TYPE_POINTER)
+        else if(type == C_PARAM_TYPE_POINTER)
         {
             void *p = closure_get_param_pointer(self,i);
             log_buffer_log(buf,"<%p>",p);
         }
-        else if(type == CPARAM_TYPE_INT)
+        else if(type == C_PARAM_TYPE_INT)
         {
             int v = closure_get_param_int(self,i);
             log_buffer_log(buf,"%d\r\n",v);
         }
-        else if(type == CPARAM_TYPE_INT64)
+        else if(type == C_PARAM_TYPE_INT64)
         {
             int64_t v = closure_get_param_int64(self,i);
             log_buffer_log(buf,"%ld\r\n",v);
         }
-        else if(type == CPARAM_TYPE_FLOAT)
+        else if(type == C_PARAM_TYPE_FLOAT)
         {
             float f = closure_get_param_float(self,i);
             log_buffer_log(buf,"%f\r\n",f);
         }
-        else if(type == CPARAM_TYPE_DOUBLE)
+        else if(type == C_PARAM_TYPE_DOUBLE)
         {
             double v = closure_get_param_double(self,i);
             log_buffer_log(buf,"%lf\r\n",v);
@@ -140,7 +141,7 @@ status_t closure_print(struct closure *self,struct log_buffer *buf)
     return OK;
 }
 
-status_t closure_set_func(struct closure *self,CCLOSURE_FUNC func)
+status_t closure_set_func(struct closure *self,C_CLOSURE_FUNC func)
 {
     self->func = func;
     return OK;
@@ -149,33 +150,33 @@ status_t closure_set_func(struct closure *self,CCLOSURE_FUNC func)
 status_t closure_free_param(struct closure *self,int index)
 {
     CHECK_INDEX_RANGE(index); 
-    if(    self->types[index] == CPARAM_TYPE_STRING 
-        || self->types[index] == CPARAM_TYPE_MALLOC 
-        || self->types[index] == CPARAM_TYPE_WEAKPTR)
+    if(    self->types[index] == C_PARAM_TYPE_STRING 
+        || self->types[index] == C_PARAM_TYPE_MALLOC 
+        || self->types[index] == C_PARAM_TYPE_WEAKPTR)
     {
         void *p = TO_POINTER(index);
         X_FREE(p);
         self->params[index] = 0;
     }
-    self->types[index] = CPARAM_TYPE_UNKNOWN;
+    self->types[index] = C_PARAM_TYPE_UNKNOWN;
     self->params[index] = 0;
     return OK;
 }
 
 status_t closure_set_param_pointer(struct closure *self,int index, const void *p)
 {
-    SET_PARAM(CPARAM_TYPE_POINTER,p);
+    SET_PARAM(C_PARAM_TYPE_POINTER,p);
     return OK;
 }
 
 status_t closure_set_param_int(struct closure *self,int index, int i)
 {
-    SET_PARAM(CPARAM_TYPE_INT,i);
+    SET_PARAM(C_PARAM_TYPE_INT,i);
     return OK;
 }
 status_t closure_set_param_int64(struct closure *self,int index, int64_t i)
 {
-    SET_PARAM(CPARAM_TYPE_INT64,i);
+    SET_PARAM(C_PARAM_TYPE_INT64,i);
     return OK;
 }
 
@@ -183,14 +184,14 @@ status_t closure_set_param_float(struct closure *self,int index, float f)
 {
     int_ptr_t *t = (int_ptr_t*)&f;
     ASSERT(sizeof(f) == sizeof(int_ptr_t));
-    SET_PARAM(CPARAM_TYPE_FLOAT,*t);
+    SET_PARAM(C_PARAM_TYPE_FLOAT,*t);
     return OK;
 }
 status_t closure_set_param_double(struct closure *self,int index, double f)
 {
     int64_t *t = (int64_t*)&f;
     ASSERT(sizeof(f) == sizeof(int64_t));
-    SET_PARAM(CPARAM_TYPE_DOUBLE,*t);
+    SET_PARAM(C_PARAM_TYPE_DOUBLE,*t);
     return OK;
 }
 
@@ -202,7 +203,7 @@ status_t closure_set_param_string(struct closure *self,int index, const char *st
     if(len < 0)len = crt_strlen(str);
     X_MALLOC(tmp,char,len+1);
     crt_strcpy(tmp,str);    
-    SET_PARAM(CPARAM_TYPE_STRING,tmp);
+    SET_PARAM(C_PARAM_TYPE_STRING,tmp);
     return OK;
 }
 
@@ -213,7 +214,7 @@ status_t closure_set_param_weak_pointer(struct closure *self,int index,void *ptr
     X_MALLOC(tmp,int_ptr_t,2);
     tmp[0] = (int_ptr_t)ptr;
     tmp[1] = (int_ptr_t)weak_ref_id;
-    SET_PARAM(CPARAM_TYPE_WEAKPTR,tmp);
+    SET_PARAM(C_PARAM_TYPE_WEAKPTR,tmp);
     return OK;
 }
 
@@ -229,20 +230,20 @@ status_t closure_run(struct closure *self)
 
 int closure_get_param_int(struct closure *self,int index)
 {
-    CHECK_TYPE(index,CPARAM_TYPE_INT);
+    CHECK_TYPE(index,C_PARAM_TYPE_INT);
     return (int)((int_ptr_t)self->params[index]);
 }
 
 int64_t closure_get_param_int64(struct closure *self,int index)
 {
-    CHECK_TYPE(index,CPARAM_TYPE_INT64);
+    CHECK_TYPE(index,C_PARAM_TYPE_INT64);
     return self->params[index];
 }
 
 float closure_get_param_float(struct closure *self,int index)
 {
     float *t;
-    CHECK_TYPE(index,CPARAM_TYPE_FLOAT);
+    CHECK_TYPE(index,C_PARAM_TYPE_FLOAT);
     t = (float*)&self->params[index];
     return *t;
 }
@@ -250,7 +251,7 @@ float closure_get_param_float(struct closure *self,int index)
 double closure_get_param_double(struct closure *self,int index)
 {
     double *t;
-    CHECK_TYPE(index,CPARAM_TYPE_DOUBLE);
+    CHECK_TYPE(index,C_PARAM_TYPE_DOUBLE);
     t = (double*)&self->params[index];
     return *t;
 }
@@ -258,7 +259,7 @@ double closure_get_param_double(struct closure *self,int index)
 const char* closure_get_param_string(struct closure *self,int index)
 {
     CHECK_INDEX_RANGE(index); 
-    ASSERT(self->types[index] == CPARAM_TYPE_STRING);
+    ASSERT(self->types[index] == C_PARAM_TYPE_STRING);
     return (const char*)self->params[index];
 }
 
@@ -266,10 +267,10 @@ void* closure_get_param_pointer(struct closure *self,int index)
 {
     CHECK_INDEX_RANGE(index);
     
-    if(self->types[index] == CPARAM_TYPE_POINTER)
+    if(self->types[index] == C_PARAM_TYPE_POINTER)
         return TO_POINTER(index);
     
-    if(self->types[index] == CPARAM_TYPE_MALLOC)
+    if(self->types[index] == C_PARAM_TYPE_MALLOC)
     {
         int *p = (int*)TO_POINTER(index);
         return (void*)(p+1); //skip size
@@ -282,7 +283,7 @@ void* closure_get_param_pointer(struct closure *self,int index)
 void* closure_get_param_weak_pointer(struct closure *self,int index,int *weak_ref_id)
 {
     int_ptr_t *p;
-    CHECK_TYPE(index,CPARAM_TYPE_WEAKPTR);
+    CHECK_TYPE(index,C_PARAM_TYPE_WEAKPTR);
     p = (int_ptr_t*)TO_POINTER(index);
     *weak_ref_id = (int)p[1];
     return (void*)p[0];
@@ -297,7 +298,7 @@ void* closure_malloc(struct closure *self,int index, int size)
         return NULL;
     
     X_MALLOC(p,char,size+sizeof(int));
-    SET_PARAM(CPARAM_TYPE_MALLOC,p);
+    SET_PARAM(C_PARAM_TYPE_MALLOC,p);
     
     ip = (int*)p;
     *ip = size;
@@ -324,7 +325,7 @@ status_t closure_run_event(struct closure *self,int event)
 int closure_get_malloc_size(struct closure *self,int index)
 {
     int *p;
-    ASSERT(self->types[index] == CPARAM_TYPE_MALLOC);
+    ASSERT(self->types[index] == C_PARAM_TYPE_MALLOC);
     p = (int*)TO_POINTER(index);
     ASSERT(p);
     return p[0];

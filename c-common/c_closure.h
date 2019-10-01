@@ -11,73 +11,70 @@ extern "C" {
 #endif
 
 enum{
-    CPARAM_TYPE_UNKNOWN = 0,
-    CPARAM_TYPE_POINTER,
-    CPARAM_TYPE_INT,
-    CPARAM_TYPE_INT64,
-    CPARAM_TYPE_DOUBLE,
-    CPARAM_TYPE_FLOAT,
-    CPARAM_TYPE_STRING,
-    CPARAM_TYPE_MALLOC,
-    CPARAM_TYPE_WEAKPTR,
+    C_PARAM_TYPE_UNKNOWN = 0,
+    C_PARAM_TYPE_POINTER,
+    C_PARAM_TYPE_INT,
+    C_PARAM_TYPE_INT64,
+    C_PARAM_TYPE_DOUBLE,
+    C_PARAM_TYPE_FLOAT,
+    C_PARAM_TYPE_STRING,
+    C_PARAM_TYPE_MALLOC,
+    C_PARAM_TYPE_WEAKPTR,
 };
 
 #define __CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n) \
-ASSERT(closure_get_param_type(closure,n) == CPARAM_TYPE_POINTER \
-||closure_get_param_type(closure,n) == CPARAM_TYPE_MALLOC);\
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_POINTER \
+||closure_get_param_type(closure,n) == C_PARAM_TYPE_MALLOC);\
 type var = (type)closure_get_param_pointer(closure,n)
 
 #define __CCLOSURE_PARAM_PTR(closure,type,var,n) \
-__CCLOSURE_CPARAM_PTR_CAN_BE_NULL(closure,type,var,n);\
+__CCLOSURE_C_PARAM_PTR_CAN_BE_NULL(closure,type,var,n);\
 ASSERT(var) \
     
 #define __CCLOSURE_PARAM_INT(closure,var,n) \
-ASSERT(closure_get_param_type(closure,n) == CPARAM_TYPE_INT);\
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_INT);\
 int var = closure_get_param_int(closure,n)\
     
 #define __CCLOSURE_PARAM_INT64(closure,var,n) \
-    ASSERT(closure_get_param_Type(n) == CPARAM_TYPE_INT64);\
+    ASSERT(closure_get_param_Type(n) == C_PARAM_TYPE_INT64);\
     int64_t var = closure_get_param_Int64(n) \
     
 #define __CCLOSURE_PARAM_FLOAT(closure,var,n) \
-ASSERT(closure_get_param_type(closure,n) == CPARAM_TYPE_FLOAT);\
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_FLOAT);\
 float var = closure_get_param_float(closure,n)
 
 #define __CCLOSURE_PARAM_DOUBLE(closure,var,n) \
-ASSERT(closure_get_param_Type(n) == CPARAM_TYPE_DOUBLE);\
+ASSERT(closure_get_param_Type(n) == C_PARAM_TYPE_DOUBLE);\
 double var = closure_get_param_Double(n) \
     
 #define __CCLOSURE_PARAM_STRING(closure,var,n) \
-ASSERT(closure_get_param_type(closure,n) == CPARAM_TYPE_STRING);\
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_STRING);\
 const char* var = closure_get_param_string(closure,n) \
     
 #define __CCLOSURE_PARAM_WEAKPTR(closure,type,var,n) \
 int __weak_ref_id_##var; \
-ASSERT(closure_get_param_type(closure,n) == CPARAM_TYPE_WEAKPTR); \
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_WEAKPTR); \
 type var = (type)closure_get_param_weak_pointer(closure,n,&__weak_ref_id_##var);\
 ASSERT(var && var->__weak_ref_id != 0 && var->__weak_ref_id == __weak_ref_id_##var)
 
-#define CCLOSURE_PARAM_PTR_CAN_BE_NULL(type,var,n)  __CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n)
-#define CCLOSURE_PARAM_PTR(type,var,n)              __CCLOSURE_PARAM_PTR(closure,type,var,n)
-#define CCLOSURE_PARAM_OBJ_CAN_BE_NULL(type,var,n)  __CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n)
-#define CCLOSURE_PARAM_OBJ(type,var,n)              __CCLOSURE_PARAM_PTR(closure,type,var,n)
-#define CCLOSURE_PARAM_INT(var,n)                   __CCLOSURE_PARAM_INT(closure,var,n)
-#define CCLOSURE_PARAM_INT64(var,n)                 __CCLOSURE_PARAM_INT64(closure,var,n)
-#define CCLOSURE_PARAM_FLOAT(var,n)                 __CCLOSURE_PARAM_FLOAT(closure,var,n)
-#define CCLOSURE_PARAM_DOUBLE(var,n)                __CCLOSURE_PARAM_DOUBLE(closure,var,n)
-#define CCLOSURE_PARAM_STRING(var,n)                __CCLOSURE_PARAM_STRING(closure,var,n)
-#define CCLOSURE_PARAM_WEAKPTR(type,var,n)          __CCLOSURE_PARAM_WEAKPTR(closure,type,var,n)
-
-#define CCLOSURE_FLAG_FUNC_C(func,bit) CFLAG_FUNC_C(closure,flags,func,bit)
-#define CCLOSURE_FLAG_FUNC_H(func,bit) CFLAG_FUNC_H(closure,flags,func,bit)
+#define C_CLOSURE_PARAM_PTR_CAN_BE_NULL(type,var,n)  __CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n)
+#define C_CLOSURE_PARAM_PTR(type,var,n)              __CCLOSURE_PARAM_PTR(closure,type,var,n)
+#define C_CLOSURE_PARAM_OBJ_CAN_BE_NULL(type,var,n)  __CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n)
+#define C_CLOSURE_PARAM_OBJ(type,var,n)              __CCLOSURE_PARAM_PTR(closure,type,var,n)
+#define C_CLOSURE_PARAM_INT(var,n)                   __CCLOSURE_PARAM_INT(closure,var,n)
+#define C_CLOSURE_PARAM_INT64(var,n)                 __CCLOSURE_PARAM_INT64(closure,var,n)
+#define C_CLOSURE_PARAM_FLOAT(var,n)                 __CCLOSURE_PARAM_FLOAT(closure,var,n)
+#define C_CLOSURE_PARAM_DOUBLE(var,n)                __CCLOSURE_PARAM_DOUBLE(closure,var,n)
+#define C_CLOSURE_PARAM_STRING(var,n)                __CCLOSURE_PARAM_STRING(closure,var,n)
+#define C_CLOSURE_PARAM_WEAKPTR(type,var,n)          __CCLOSURE_PARAM_WEAKPTR(closure,type,var,n)
 
 struct closure;
-typedef int (*CCLOSURE_FUNC)(struct closure*);
+typedef int (*C_CLOSURE_FUNC)(struct closure*);
 
 struct closure{
     int64_t params[CCLOSURE_MAX_PARAMS];
     uint8_t types[CCLOSURE_MAX_PARAMS];
-    CCLOSURE_FUNC func;
+    C_CLOSURE_FUNC func;
     uint32_t flags;
 };
 
@@ -87,7 +84,7 @@ status_t closure_destroy(struct closure *self);
 int closure_comp(struct closure *self,struct closure *_p);
 status_t closure_copy(struct closure *self,struct closure *_p);
 status_t closure_print(struct closure *self,struct log_buffer *buf);
-status_t closure_set_func(struct closure *self,CCLOSURE_FUNC func);
+status_t closure_set_func(struct closure *self,C_CLOSURE_FUNC func);
 status_t closure_free_param(struct closure *self,int index);
 status_t closure_set_param_pointer(struct closure *self,int index, const void *p);
 status_t closure_set_param_int(struct closure *self,int index, int i);
