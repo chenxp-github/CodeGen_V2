@@ -6,6 +6,8 @@ status_t filebase_init_basic(struct file_base *self)
 {
     self->user_data = NULL;
     self->split_chars = NULL;
+    self->read = NULL;
+    self->destroy = NULL;
     return OK;
 }
 
@@ -15,9 +17,18 @@ status_t filebase_init(struct file_base *self)
     return OK;
 }
 
-status_t filebase_destroy(struct file_base *self)
+status_t filebase_base_destroy(struct file_base *self)
 {
     filebase_init_basic(self);
+}
+
+status_t filebase_destroy(struct file_base *self)
+{
+    if(self->destroy)
+    {
+        self->destroy(self);
+    }
+    filebase_base_destroy(self);
     return OK;
 }
 

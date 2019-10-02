@@ -2,6 +2,18 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
+static int_ptr_t mem_virtual_read(struct filebase *base,void *buf,int_ptr_t n)
+{
+    CONTAINER_OF(struct mem, self, base, base_file_base);
+    return mem_read(self,buf,n);
+}
+
+static status_t mem_virtual_destroy(struct filebase *base)
+{
+    CONTAINER_OF(struct mem, self, base, base_file_base);
+    return mem_destroy(self);
+}
+/************************************************************************/
 status_t mem_init_basic(struct mem *self)
 {
     filebase_init_basic(&self->base_file_base);
@@ -18,13 +30,16 @@ status_t mem_init(struct mem *self)
 {
     mem_init_basic(self);
     filebase_init(&self->base_file_base);
+
+    self->base_file_base.read = mem_virtual_read;
+    self->base_file_base.destroy = mem_virtual_destroy;
     return OK;
 }
 
 status_t mem_destroy(struct mem *self)
 {
     mem_free(self);
-    filebase_destroy(&self->base_file_base);
+    filebase_base_destroy(&self->base_file_base);
     mem_init_basic(self);
     return OK;
 }

@@ -7,11 +7,15 @@
 struct file_base{
     void *user_data;
     char *split_chars;
+
+    status_t (*destroy)(struct filebase *self);
+    int_ptr_t (*read)(struct filebase *self,void *buf,int_ptr_t n);
 };
 
 status_t filebase_init_basic(struct file_base *self);
 status_t filebase_init(struct file_base *self);
 status_t filebase_destroy(struct file_base *self);
+status_t filebase_base_destroy(struct file_base *self);
 status_t filebase_copy(struct file_base *self,struct file_base *_p);
 status_t filebase_comp(struct file_base *self,struct file_base *_p);
 status_t filebase_print(struct file_base *self,struct log_buffer *_buf);
