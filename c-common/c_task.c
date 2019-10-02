@@ -7,8 +7,6 @@
 #define TASK_IS_DELETED     0x00000002
 #define TASK_IS_SLEEPING    0x00000004
 
-status_t task_run_destroy_func(struct task *self);
-
 status_t task_init_basic(struct task *self)
 {
     self->run = NULL;  
@@ -39,10 +37,20 @@ status_t task_init(struct task *self,struct taskmgr *mgr)
 
     return OK;
 }
+
+status_t task_base_destroy(struct task *self)
+{
+    task_init_basic(self);
+    return OK;
+}
+
 status_t task_destroy(struct task *self)
 {
-    task_run_destroy_func(self);
-    task_init_basic(self);
+    if(self->destroy)
+    {
+        return self->destroy(self);
+    }
+    task_base_destroy(self);
     return OK;
 }
 status_t task_quit(struct task *self)
@@ -123,13 +131,4 @@ status_t task_run(struct task *self,int interval)
 {
     ASSERT(self->run);
     return self->run(self,interval);
-}
-
-status_t task_run_destroy_func(struct task *self)
-{
-    if(self->destroy)
-    {
-        return self->destroy(self);
-    }
-    return ERROR;
 }

@@ -7,16 +7,18 @@
 
 #define C_MEM(name) \
 struct mem name;\
+struct file_base *name##_file = NULL;\
 mem_init(&name);\
-struct file_base *name##_file=&name.base_file_base\
+name##_file=&name.base_file_base\
 
 #define C_LOCAL_MEM_WITH_SIZE(name,size) \
 char __##name[size];\
+struct file_base *name##_file = NULL;\
 struct mem name;\
 mem_init(&name);\
-mem_set_raw_buffer(&name,__##name,size,false);\
+mem_set_raw_buffer(&name,__##name,size,FALSE);\
 mem_set_size(&name,0);\
-struct file_base *name##_file=&name.base_file_base\
+name##_file=&name.base_file_base\
     
 #define C_AUTO_LOCAL_MEM(mem,size) \
 C_LOCAL_MEM_WITH_SIZE(mem,16*1024);\

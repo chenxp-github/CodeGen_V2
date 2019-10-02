@@ -75,7 +75,9 @@ status_t filebase_start_with_file(struct file_base *self,struct file_base *file_
 status_t filebase_start_with(struct file_base *self,const char *str, status_t case_sensive, status_t skip_empty);
 status_t filebase_trim(struct file_base *self);
 fsize_t filebase_read_word(struct file_base *self,struct file_base *file);
-
+status_t filebase_dump(struct file_base *self);
+fsize_t filebase_printf(struct file_base *self,const char *sz_format, ...);
+fsize_t filebase_log(struct file_base *self,const char *sz_format, ...);
 
 #endif
 

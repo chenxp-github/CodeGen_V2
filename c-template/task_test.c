@@ -2,15 +2,18 @@
 #include "mem_tool.h"
 #include "syslog.h"
 
-static status_t tasktest_how_to_destroy(struct task *base)
+#define EXTRACT_SELF_POINTER(base,self)\
+	CONTAINER_OF(struct task_test, self, base, base_task)\
+
+static status_t tasktest_virtual_destroy(struct task *base)
 {
-	CONTAINER_OF(struct task_test, self, base, base_task);
+    EXTRACT_SELF_POINTER(base,self);
     return tasktest_destroy(self);
 }
 
-static status_t tasktest_how_to_run(struct task *base, uint32_t interval)
+static status_t tasktest_virtual_run(struct task *base, uint32_t interval)
 {	
-    CONTAINER_OF(struct task_test, self, base, base_task);
+    EXTRACT_SELF_POINTER(base,self);
     return tasktest_run(self,interval);
 }
 /*********************************************/
@@ -24,12 +27,14 @@ status_t tasktest_init(struct task_test *self,struct taskmgr *mgr)
 {
 	tasktest_init_basic(self);
 	task_init(&self->base_task,mgr);
-    self->base_task.run = tasktest_how_to_run;
-    self->base_task.destroy = tasktest_how_to_destroy;
+    self->base_task.run = tasktest_virtual_run;
+    self->base_task.destroy = tasktest_virtual_destroy;
 	return OK;
 }
+
 status_t tasktest_destroy(struct task_test *self)
 {
+    task_base_destroy(&self->base_task);
 	tasktest_init_basic(self);
 	return OK;
 }

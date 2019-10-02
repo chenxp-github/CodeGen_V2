@@ -30,6 +30,7 @@ struct task{
 
 status_t task_init_basic(struct task *self);
 status_t task_init(struct task *self,struct taskmgr *mgr);
+status_t task_base_destroy(struct task *self);
 status_t task_destroy(struct task *self);
 status_t task_quit(struct task *self);
 status_t task_suspend(struct task *self);

@@ -19,16 +19,12 @@ int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
     
-    C_MEM(mem);
-    C_LOCAL_MEM(buf);
-      
-    filebase_load_file(mem_file,"z:\\tmp\\1.cpp");
+    C_LOCAL_MEM(mem);
 
-    while(filebase_read_line(mem_file,buf_file))
-    {
-        filebase_trim(buf_file);
-        PS(mem_cstr(&buf));
-    }
+    filebase_printf(mem_file,"Hello %d",123);
+
+
+    filebase_save_file(mem_file,"z:\\tmp\\123.txt");
 
     mem_destroy(&mem);
 

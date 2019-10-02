@@ -883,3 +883,35 @@ fsize_t filebase_read_word(struct file_base *self,struct file_base *file)
     filebase_skip_empty_chars(self);
     return filebase_read_word_with_empty_char(self,file);
 }
+
+status_t filebase_dump(struct file_base *self)
+{
+    fsize_t save_off;
+    C_LOCAL_MEM(mem);
+               
+    save_off = filebase_get_offset(self);
+    filebase_seek(self,0);
+    
+    while(filebase_read_line(self,mem_file))
+    {
+        syslog_printf("%s",mem_cstr(&mem));
+    }
+    
+    filebase_seek(self,save_off);
+    return OK;
+}
+
+fsize_t filebase_printf(struct file_base *self,const char *sz_format, ...)
+{
+    MAKE_VARGS_BUFFER(sz_format);
+    return filebase_puts(self,szBuffer);
+}
+
+fsize_t filebase_log(struct file_base *self,const char *sz_format, ...)
+{   
+    MAKE_VARGS_BUFFER(sz_format);    
+    filebase_puts(self,szBuffer);
+    filebase_puts(self,"\r\n");
+    return OK;
+}
+
