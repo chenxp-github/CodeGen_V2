@@ -11,6 +11,7 @@ extern "C"{
 #include "task_test.h"
 #include "c_closure.h"
 #include "c_task_runner.h"
+#include "c_mem.h"
 }
 
 C_BEGIN_CLOSURE_FUNC(test_func)
@@ -25,22 +26,21 @@ C_END_CLOSURE_FUNC(test_func)
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
-
-    struct task_runner runner;
-    taskrunner_init(&runner);
-        
-    C_NEW_CLOSURE(pc,test_func);
-    closure_set_param_int(pc,0,123);
     
-    taskrunner_add_closure(&runner,pc,0);
+    C_LOCAL_MEM(mem);
+    
+    filebase_write(mem_file,"Hello",5);
+    
+    C_PRINT_OBJ(mem,mem_print);
 
-    while(!kbhit())
-    {
-        taskrunner_schedule(&runner);
-        crt_msleep(1);
-    }
+    PS(mem_cstr(&mem));
+    
+    
+    mem_realloc(&mem,8000);
+    PS(mem_cstr(&mem));
+    C_PRINT_OBJ(mem,mem_print);
 
-    taskrunner_destroy(&runner);
+    mem_destroy(&mem);
     return 0;
 }
 

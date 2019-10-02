@@ -5,6 +5,25 @@
 #include "c_log_buffer.h"
 #include "c_file_base.h"
 
+#define C_LOCAL_MEM_WITH_SIZE(name,size) \
+char __##name[size];\
+struct mem name;\
+mem_init(&name);\
+mem_set_raw_buffer(&name,__##name,size,false);\
+mem_set_size(&name,0);\
+struct file_base *name##_file=&name.base_file_base\
+    
+#define C_AUTO_LOCAL_MEM(mem,size) \
+C_LOCAL_MEM_WITH_SIZE(mem,16*1024);\
+do{if((fsize_t)(size)> mem_get_max_size(&mem))\
+{\
+    mem_free(&mem);\
+    mem_malloc(&mem,(int_ptr_t)(size));\
+}}while(0)\
+
+#define C_LOCAL_MEM(name)\
+C_LOCAL_MEM_WITH_SIZE(name,LBUF_SIZE)\
+
 struct mem{
     struct file_base base_file_base;
 	char *buffer;
@@ -22,7 +41,6 @@ status_t mem_copy(struct mem *self,struct mem *_p);
 status_t mem_comp(struct mem *self,struct mem *_p);
 status_t mem_print(struct mem *self,struct log_buffer *_buf);
 
-
 status_t mem_free(struct mem *self);
 status_t mem_malloc(struct mem *self,int_ptr_t asize);
 status_t mem_free(struct mem *self);
@@ -34,7 +52,7 @@ status_t mem_set_raw_buffer(struct mem *self,void *p,int_ptr_t s,bool_t is_const
 fsize_t mem_seek(struct mem*self,fsize_t off);
 int_ptr_t mem_get_offset(struct mem *self);
 int_ptr_t mem_get_size(struct mem *self);
-status_t mem_set_size(struct mem *self,int_ptr_t _size);
+status_t mem_set_size(struct mem *self,fsize_t _size);
 status_t mem_add_block(struct mem *self,fsize_t bsize);
 fsize_t mem_get_max_size(struct mem *self);
 status_t mem_set_str(struct mem *self,const char *p);
