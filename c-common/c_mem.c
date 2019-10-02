@@ -311,7 +311,7 @@ status_t mem_set_str(struct mem *self,const char *p)
     return mem_set_raw_buffer(self,(void*)p,crt_strlen(p),TRUE);
 }
 
-const char *mem_cstr(struct mem *self)
+const char* mem_cstr(struct mem *self)
 {
     ASSERT(self->buffer);
     if(!self->is_const)
@@ -324,7 +324,7 @@ const char *mem_cstr(struct mem *self)
     return self->buffer;
 }
 
-char * mem_get_raw_buffer(struct mem *self)
+char* mem_get_raw_buffer(struct mem *self)
 {
     return self->buffer;
 }

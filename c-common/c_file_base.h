@@ -21,12 +21,15 @@ struct file_base{
 
 status_t filebase_init_basic(struct file_base *self);
 status_t filebase_init(struct file_base *self);
-status_t filebase_destroy(struct file_base *self);
 status_t filebase_base_destroy(struct file_base *self);
+status_t filebase_destroy(struct file_base *self);
 status_t filebase_copy(struct file_base *self,struct file_base *_p);
 status_t filebase_comp(struct file_base *self,struct file_base *_p);
 status_t filebase_print(struct file_base *self,struct log_buffer *_buf);
-
+char* filebase_get_split_chars(struct file_base *self);
+status_t filebase_set_split_chars(struct file_base *self,char *_split_chars);
+status_t filebase_set_default_sp_chars(struct file_base *self);
+status_t filebase_is_split_char(struct file_base *self,char ch);
 int_ptr_t filebase_read(struct file_base *self,void *buf,int_ptr_t n);
 int_ptr_t filebase_write(struct file_base *self,const void *buf,int_ptr_t n);
 fsize_t filebase_seek(struct file_base *self,fsize_t off);
@@ -35,9 +38,44 @@ fsize_t filebase_get_size(struct file_base *self);
 status_t filebase_set_size(struct file_base *self,fsize_t size);
 status_t filebase_add_block(struct file_base *self,fsize_t bsize);
 fsize_t filebase_get_max_size(struct file_base *self);
+char filebase_getc(struct file_base *self);
+fsize_t filebase_putc(struct file_base *self,char ch);
+char filebase_un_getc(struct file_base *self);
+bool_t filebase_is_end(struct file_base *self);
+fsize_t filebase_search_bin(struct file_base *self,struct file_base *file_bin);
+fsize_t filebase_write_file_with_buffer(struct file_base *self,struct file_base *file, fsize_t start, fsize_t ws, void *buf, int_ptr_t buf_size);
+fsize_t filebase_write_file_from(struct file_base *self,struct file_base *file, fsize_t start, fsize_t ws);
+fsize_t filebase_write_file(struct file_base *self,struct file_base *file);
+fsize_t filebase_write_to_file_with_buffer(struct file_base *self,struct file_base *file, fsize_t start, fsize_t wsize, void *buf, int_ptr_t buf_size);
+fsize_t filebase_write_to_file_from(struct file_base *self,struct file_base *file,fsize_t start,fsize_t wsize);
+fsize_t filebase_write_to_file(struct file_base *self,struct file_base *file);
+fsize_t filebase_save_file_fp(struct file_base *self,FILE_HANDLE fp,fsize_t start,fsize_t wsize);
+fsize_t filebase_save_file_from(struct file_base *self,const char *fn,fsize_t start,fsize_t wsize);
+fsize_t filebase_save_file(struct file_base *self,const char *fn);
+status_t filebase_load_file_from_fp(struct file_base *self,FILE_HANDLE fp);
+status_t filebase_load_file(struct file_base *self,const char *fn);
+int filebase_get_utf8(struct file_base *self,char *utf8);
+int filebase_get_gb(struct file_base *self,char *letter);
+char filebase_char_at(struct file_base *self,fsize_t index);
+status_t filebase_set_char(struct file_base *self,fsize_t index,char ch);
+fsize_t filebase_read_word_with_empty_char(struct file_base *self,struct file_base *file);
+fsize_t filebase_puts(struct file_base *self,const char *str);
+status_t filebase_read_line(struct file_base *self,struct file_base *file);
+status_t filebase_read_line_with_eol(struct file_base *self,struct file_base *file,struct file_base *eol);
+status_t filebase_is_empty_char(char ch);
+char filebase_get_last_char(struct file_base *self,bool_t empty_included);
+fsize_t filebase_search_str(struct file_base *self,const char *str, status_t case_sensive,status_t word_only);
+status_t filebase_replace_str(struct file_base *self,const char *src_str, const char *des_str, status_t case_sensive, status_t word_only,struct file_base *new_file);
+status_t filebase_read_quote_str(struct file_base *self,char escape_char,char end_char,struct file_base *file);
+status_t filebase_read_cstr(struct file_base *self,struct file_base *file);
+status_t filebase_end_with_file(struct file_base *self,struct file_base *file_str, status_t case_sensive, status_t skip_empty);
+status_t filebase_end_with(struct file_base *self,const char *str, status_t case_sensive, status_t skip_empty);
+status_t filebase_skip_empty_chars(struct file_base *self);
+status_t filebase_start_with_file(struct file_base *self,struct file_base *file_str, status_t case_sensive, status_t skip_empty);
+status_t filebase_start_with(struct file_base *self,const char *str, status_t case_sensive, status_t skip_empty);
+status_t filebase_trim(struct file_base *self);
+fsize_t filebase_read_word(struct file_base *self,struct file_base *file);
 
-char* filebase_get_split_chars(struct file_base *self);
-status_t filebase_set_split_chars(struct file_base *self,char *_split_chars);
 
 #endif
 

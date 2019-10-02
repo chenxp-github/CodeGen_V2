@@ -12,35 +12,26 @@ extern "C"{
 #include "c_closure.h"
 #include "c_task_runner.h"
 #include "c_mem.h"
+#include "c_file_base.h"
 }
-
-C_BEGIN_CLOSURE_FUNC(test_func)
-{
-    C_CLOSURE_PARAM_INT(e,0);
-    PD(e);
-    return OK;
-}
-C_END_CLOSURE_FUNC(test_func)
-
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
     
-    C_LOCAL_MEM(mem);
-    
-    filebase_write(mem_file,"Hello",5);
-    
-    C_PRINT_OBJ(mem,mem_print);
+    C_MEM(mem);
+    C_LOCAL_MEM(buf);
+      
+    filebase_load_file(mem_file,"z:\\tmp\\1.cpp");
 
-    PS(mem_cstr(&mem));
-    
-    
-    mem_realloc(&mem,8000);
-    PS(mem_cstr(&mem));
-    C_PRINT_OBJ(mem,mem_print);
+    while(filebase_read_line(mem_file,buf_file))
+    {
+        filebase_trim(buf_file);
+        PS(mem_cstr(&buf));
+    }
 
     mem_destroy(&mem);
+
     return 0;
 }
 

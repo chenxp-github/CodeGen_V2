@@ -5,6 +5,11 @@
 #include "c_log_buffer.h"
 #include "c_file_base.h"
 
+#define C_MEM(name) \
+struct mem name;\
+mem_init(&name);\
+struct file_base *name##_file=&name.base_file_base\
+
 #define C_LOCAL_MEM_WITH_SIZE(name,size) \
 char __##name[size];\
 struct mem name;\
