@@ -4,6 +4,7 @@ split_chars=" \t\r\n!@#$%^=&*()|+-\\*/{}[];.\":\',?/<>~";
 --选项 1:不包括符合，2:包括符合, 3:包括符合和空字符
 option = 3;
 
+prefix = "filebase_";
 
 function is_camel_case_string(mem)
 	local lower_case = 0;
@@ -60,7 +61,7 @@ for_each(mem_text, option, function(mem)
 		if bracket == "(" then			
 			hit = true;
 			
-			printf("filebase_%s(%s%s", 
+			printf("%s%s(%s%s", prefix,
 				to_lower_underline_case(func_name),		
 				cur_str,comma);
 		end

@@ -25,3 +25,14 @@ class Mem:FileBase{
 	[noget,noset]bool_t is_self_alloc;
 }
 
+class MemFile:FileBase{
+    [noget,noset] int_ptr_t size;
+    [noget,noset] int_ptr_t pages;
+    [noget,noset] int_ptr_t offset;
+    [noget,noset] int_ptr_t max_pages;  
+    [noget,noset] char *base;
+    [noget,noset] int_ptr_t page_size;
+    [noget,noset] uint32_t mod_n,shift_n;
+}
+
+

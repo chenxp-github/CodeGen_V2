@@ -13,20 +13,21 @@ extern "C"{
 #include "c_task_runner.h"
 #include "c_mem.h"
 #include "c_file_base.h"
+#include "c_mem_file.h"
 }
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
     
-    C_LOCAL_MEM(mem);
+    C_MEM_FILE(mem);
 
     filebase_printf(mem_file,"Hello %d",123);
-
+    filebase_printf(mem_file,"World %d",456);
 
     filebase_save_file(mem_file,"z:\\tmp\\123.txt");
 
-    mem_destroy(&mem);
+    memfile_destroy(&mem);
 
     return 0;
 }
