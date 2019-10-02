@@ -72,7 +72,7 @@ int taskrunner_schedule(struct task_runner *self)
         struct closure_extra_info *info = (struct closure_extra_info *)closure->_user_data;
         ASSERT(info);
         
-        if(info->cur_delay == 0)
+        if(info->total_delay == 0)
             has_zero_delay_tasks++;
         
         info->cur_delay += interval;

@@ -138,11 +138,27 @@ SOURCE=".\c-common\c_closure_list.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_file_base.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_file_base.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_log_buffer.c"
 # End Source File
 # Begin Source File
 
 SOURCE=".\c-common\c_log_buffer.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mem.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mem.h"
 # End Source File
 # Begin Source File
 
