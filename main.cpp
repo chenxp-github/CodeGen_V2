@@ -14,19 +14,33 @@ extern "C"{
 #include "c_mem.h"
 #include "c_file_base.h"
 #include "c_mem_file.h"
+#include "c_comb_file.h"
+#include "c_file.h"
 }
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("/tmp/leak.txt");
     
-    C_MEM_FILE(mem);
+    C_MEM_FILE(mf);
+    filebase_printf(mf_file,"Hello");
 
-    filebase_load_file(mem_file,"z:\\tmp\\1.cpp");
+    C_LOCAL_MEM(mem);
+    filebase_printf(mem_file,"World");
 
-    filebase_dump(mem_file);
+    C_COMB_FILE(comb,10);
 
-    memfile_destroy(&mem);
+    combfile_add_file(&comb,mf_file);
+    combfile_add_file(&comb,mem_file);
+
+    C_FILE(f);
+    file_open_file(&f,"z:\\tmp\\123.txt","wb+");
+
+    filebase_write_file(f_file,comb_file);
+
+    file_destroy(&f);
+
+    combfile_destroy(&comb);
 
     return 0;
 }

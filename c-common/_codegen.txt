@@ -43,5 +43,11 @@ class File:public FileBase{
     [noget,noset] fsize_t offset,size,buf_start;
 }
 
+class CombFile:public FileBase{
+    [noget,noset] fsize_t Offset;
+    [noget,noset] FileBase *AllFiles;
+    [noget,noset] int FileNum;
+    [noget,noset] int MaxFileNum;
+}
 
 

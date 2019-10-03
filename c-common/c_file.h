@@ -5,6 +5,12 @@
 #include "c_log_buffer.h"
 #include "c_file_base.h"
 
+#define C_FILE(name) \
+struct file name;\
+struct file_base *name##_file = NULL;\
+file_init(&name);\
+name##_file=&name.base_file_base\
+
 struct file{
     struct file_base base_file_base;
 

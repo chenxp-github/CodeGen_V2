@@ -138,6 +138,14 @@ SOURCE=".\c-common\c_closure_list.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_comb_file.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_comb_file.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_file.c"
 # End Source File
 # Begin Source File
