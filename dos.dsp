@@ -162,6 +162,14 @@ SOURCE=".\c-common\c_file_base.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_file_manager.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_file_manager.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_log_buffer.c"
 # End Source File
 # Begin Source File

@@ -915,3 +915,26 @@ fsize_t filebase_log(struct file_base *self,const char *sz_format, ...)
     return OK;
 }
 
+status_t filebase_read_string(struct file_base *self, struct file_base *file)
+{
+    fsize_t k;
+    k = filebase_read_word(self,file);
+    while(k)
+    {
+        filebase_seek(file,0);
+        if(!filebase_is_split_char(self,filebase_getc(file)))   
+        {
+            return OK;
+        }
+        k = filebase_read_word(self,file);
+    }
+    return ERROR;
+}
+
+status_t filebase_strcpy(struct file_base *self, const char *str)
+{
+    ASSERT(str);
+    filebase_set_size(self,0);
+    filebase_puts(self,str);
+    return OK;
+}

@@ -5,21 +5,42 @@
 #include "c_log_buffer.h"
 #include "c_file_base.h"
 
-#define C_MEM(name) \
+#define _C_MEM_HEADER(name)\
 struct mem name;\
-struct file_base *name##_file = NULL;\
+struct file_base *name##_file = NULL\
+
+#define _C_MEM_BODY(name)\
 mem_init(&name);\
 name##_file=&name.base_file_base\
 
-#define C_LOCAL_MEM_WITH_SIZE(name,size) \
+#define C_MEM(name) \
+_C_MEM_HEADER(name);\
+_C_MEM_BODY(name)\
+///////////////
+#define _C_LOCAL_MEM_WITH_SIZE_HEADER(name,size) \
 char __##name[size];\
 struct file_base *name##_file = NULL;\
-struct mem name;\
+struct mem name\
+
+#define _C_LOCAL_MEM_WITH_SIZE_BODY(name,size)\
 mem_init(&name);\
 mem_set_raw_buffer(&name,__##name,size,FALSE);\
 mem_set_size(&name,0);\
 name##_file=&name.base_file_base\
-    
+
+#define C_LOCAL_MEM_WITH_SIZE(name,size) \
+_C_LOCAL_MEM_WITH_SIZE_HEADER(name,size);\
+_C_LOCAL_MEM_WITH_SIZE_BODY(name,size)\
+//////////////////
+#define _C_LOCAL_MEM_HEADER(name)\
+_C_LOCAL_MEM_WITH_SIZE_HEADER(name,LBUF_SIZE)\
+
+#define _C_LOCAL_MEM_BODY(name)\
+_C_LOCAL_MEM_WITH_SIZE_BODY(name,LBUF_SIZE)\
+
+#define C_LOCAL_MEM(name)\
+C_LOCAL_MEM_WITH_SIZE(name,LBUF_SIZE)\
+//////////////////
 #define C_AUTO_LOCAL_MEM(mem,size) \
 C_LOCAL_MEM_WITH_SIZE(mem,16*1024);\
 do{if((fsize_t)(size)> mem_get_max_size(&mem))\
@@ -27,9 +48,6 @@ do{if((fsize_t)(size)> mem_get_max_size(&mem))\
     mem_free(&mem);\
     mem_malloc(&mem,(int_ptr_t)(size));\
 }}while(0)\
-
-#define C_LOCAL_MEM(name)\
-C_LOCAL_MEM_WITH_SIZE(name,LBUF_SIZE)\
 
 struct mem{
     struct file_base base_file_base;

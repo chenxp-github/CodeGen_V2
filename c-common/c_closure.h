@@ -28,7 +28,7 @@ ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_POINTER \
 type var = (type)closure_get_param_pointer(closure,n)
 
 #define __CCLOSURE_PARAM_PTR(closure,type,var,n) \
-__CCLOSURE_C_PARAM_PTR_CAN_BE_NULL(closure,type,var,n);\
+__CCLOSURE_PARAM_PTR_CAN_BE_NULL(closure,type,var,n);\
 ASSERT(var) \
     
 #define __CCLOSURE_PARAM_INT(closure,var,n) \
@@ -36,16 +36,16 @@ ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_INT);\
 int var = closure_get_param_int(closure,n)\
     
 #define __CCLOSURE_PARAM_INT64(closure,var,n) \
-    ASSERT(closure_get_param_Type(n) == C_PARAM_TYPE_INT64);\
-    int64_t var = closure_get_param_Int64(n) \
-    
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_INT64);\
+int64_t var = closure_get_param_int64(closure,n) \
+
 #define __CCLOSURE_PARAM_FLOAT(closure,var,n) \
 ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_FLOAT);\
 float var = closure_get_param_float(closure,n)
 
 #define __CCLOSURE_PARAM_DOUBLE(closure,var,n) \
-ASSERT(closure_get_param_Type(n) == C_PARAM_TYPE_DOUBLE);\
-double var = closure_get_param_Double(n) \
+ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_DOUBLE);\
+double var = closure_get_param_double(closure,n) \
     
 #define __CCLOSURE_PARAM_STRING(closure,var,n) \
 ASSERT(closure_get_param_type(closure,n) == C_PARAM_TYPE_STRING);\

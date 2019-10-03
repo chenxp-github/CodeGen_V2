@@ -57,6 +57,9 @@ class PartFile:public FileBase{
      [noget,noset] fsize_t max_size;
 }
 
+class FileManager{
+}
+
 
 
 

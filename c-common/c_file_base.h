@@ -138,6 +138,8 @@ fsize_t filebase_read_word(struct file_base *self,struct file_base *file);
 status_t filebase_dump(struct file_base *self);
 fsize_t filebase_printf(struct file_base *self,const char *sz_format, ...);
 fsize_t filebase_log(struct file_base *self,const char *sz_format, ...);
+status_t filebase_read_string(struct file_base *self, struct file_base *file);
+status_t filebase_strcpy(struct file_base *self, const char *str);
 
 #endif
 
