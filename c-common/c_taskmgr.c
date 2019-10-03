@@ -10,6 +10,7 @@ status_t taskmgr_init_basic(struct taskmgr *self)
     self->top = 0;
     self->size = 0;
     self->unique_id = 0;
+    self->turbo_on = FALSE;
     return OK;
 }
 status_t taskmgr_init(struct taskmgr *self,int init_size)
@@ -257,24 +258,39 @@ status_t taskmgr_schedule_once(struct taskmgr *self)
 {
     uint32_t now,interval;  
     int i,len = taskmgr_get_len(self);
+    status_t is_turbo_on = self->turbo_on;
+
+    if(!self->index)
+        return FALSE;
+
     for(i = 0; i < len; i++)
     {
         struct task *pt = taskmgr_get_elem(self,i);
-        if(pt == NULL)continue;
-        if(!task_is_running(pt))continue;
-        
+        if(pt == NULL)continue;                
         now = crt_get_sys_timer();
+
+        if(!task_is_running(pt))
+        {
+            pt->last_run_time = now;
+            continue;
+        }
 
         interval = now - pt->last_sleep_time;
         pt->last_sleep_time = now;
-        if(task_is_sleeping(pt,interval))continue;
+
+        if(task_is_invalid_interval(pt,interval))
+            continue;
+        if(task_is_sleeping(pt,interval))
+            continue;
 
         interval = now - pt->last_run_time;
         pt->last_run_time = now;
 
         task_run(pt,interval);
     }
-    return OK;
+
+    self->turbo_on = FALSE;
+    return is_turbo_on;
 }
 
 status_t taskmgr_check_delete(struct taskmgr *self)
@@ -298,8 +314,7 @@ status_t taskmgr_check_delete(struct taskmgr *self)
 status_t taskmgr_schedule(struct taskmgr *self)
 {
     taskmgr_check_delete(self);
-    taskmgr_schedule_once(self);
-    return OK;
+    return taskmgr_schedule_once(self);
 }
 
 status_t taskmgr_suspend_task(struct taskmgr *self,int task_id)
@@ -355,3 +370,8 @@ status_t taskmgr_quit_task(struct taskmgr *self,int *task_id)
     return ERROR;
 }
 
+status_t taskmgr_turbo_on(struct taskmgr *self)
+{
+    self->turbo_on = TRUE;
+    return OK;
+}

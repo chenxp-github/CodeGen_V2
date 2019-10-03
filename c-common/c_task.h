@@ -46,5 +46,6 @@ struct taskmgr* task_get_taskmgr(struct task *self);
 status_t task_set_taskmgr(struct task *self,struct taskmgr* taskmgr);
 status_t task_run_callback(struct task *self,int event);
 status_t task_run(struct task *self,int interval);
+bool_t task_is_invalid_interval(struct task *self,uint32_t interval);
 
 #endif

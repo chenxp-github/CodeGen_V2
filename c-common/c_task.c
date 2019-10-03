@@ -132,3 +132,10 @@ status_t task_run(struct task *self,int interval)
     ASSERT(self->run);
     return self->run(self,interval);
 }
+
+bool_t task_is_invalid_interval(struct task *self,uint32_t interval)
+{
+    //system time maybe adjusted.
+    return self->total_sleep_time > 10 && interval > self->total_sleep_time*100;
+}
+

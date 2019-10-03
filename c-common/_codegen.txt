@@ -60,6 +60,9 @@ class PartFile:public FileBase{
 class FileManager{
 }
 
-
+class WeakPtr{
+	[noget,noset] void *raw_ptr;
+	[noget,noset] int weak_ref_id;
+}
 
 

@@ -234,6 +234,14 @@ SOURCE=".\c-common\c_taskmgr.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_weak_ptr.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_weak_ptr.h"
+# End Source File
+# Begin Source File
+
 SOURCE=.\common\closure.cpp
 # End Source File
 # Begin Source File

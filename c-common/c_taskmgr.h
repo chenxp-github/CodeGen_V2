@@ -7,6 +7,7 @@ struct taskmgr{
     int top,size;
     struct task **index;
     int unique_id;
+    bool_t turbo_on;
 };
 
 status_t taskmgr_init_basic(struct taskmgr *self);
@@ -43,6 +44,6 @@ bool_t taskmgr_is_task_running(struct taskmgr *self,int task_id);
 status_t taskmgr_del_task(struct taskmgr *self,int task_id);
 bool_t taskmgr_is_task(struct taskmgr *self,int tid);
 status_t taskmgr_quit_task(struct taskmgr *self,int *task_id);
-
+status_t taskmgr_turbo_on(struct taskmgr *self);
 
 #endif
