@@ -3,7 +3,7 @@
 
 
 #define _LINUX_     0
-#define _WIN32_     1
+#define _WIN32_     1 
 #define _WM6X_      0
 #define _WIN64_     0
 #define _MAC64_     0

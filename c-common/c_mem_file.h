@@ -25,7 +25,6 @@ struct mem_file{
 };
 
 status_t memfile_init_basic(struct mem_file *self);
-static status_t memfile_init_shift(struct mem_file *self);
 status_t memfile_init_ex(struct mem_file *self,int_ptr_t page_size,int_ptr_t max_pages);
 status_t memfile_init(struct mem_file *self);
 status_t memfile_destroy(struct mem_file *self);

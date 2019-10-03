@@ -50,4 +50,13 @@ class CombFile:public FileBase{
     [noget,noset] int MaxFileNum;
 }
 
+class PartFile:public FileBase{
+     [noget,noset] FileBase *i_host_file;
+     [noget,noset] fsize_t offset,size;
+     [noget,noset] fsize_t host_off;
+     [noget,noset] fsize_t max_size;
+}
+
+
+
 

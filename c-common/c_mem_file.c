@@ -2,65 +2,8 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
-#define EXTRACT_SELF_POINTER(base,self)\
-CONTAINER_OF(struct mem_file, self, base, base_file_base)
-
+FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct mem_file, memfile)
 /********************************************************/
-static int_ptr_t memfile_virtual_read(struct file_base *base,void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_read(self,buf,n);
-}
-
-static status_t memfile_virtual_destroy(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_destroy(self);
-}
-
-static int_ptr_t memfile_virtual_write(struct file_base *base,const void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_write(self,buf,n);
-}
-
-static fsize_t memfile_virtual_seek(struct file_base *base,fsize_t off)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_seek(self,off);
-}
-
-static fsize_t memfile_virtual_get_offset(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_get_offset(self);
-}
-
-static fsize_t memfile_virtual_get_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_get_size(self);
-}
-
-static status_t memfile_virtual_set_size(struct file_base *base,fsize_t size)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_set_size(self,size);
-}
-
-static status_t memfile_virtual_add_block(struct file_base *base,fsize_t bsize)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_add_block(self,bsize);
-}
-
-static fsize_t memfile_virtual_get_max_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return memfile_get_max_size(self);
-}
-/********************************************************/
-
 status_t memfile_init_basic(struct mem_file *self)
 {
     filebase_init_basic(&self->base_file_base);
@@ -74,7 +17,6 @@ status_t memfile_init_basic(struct mem_file *self)
     self->shift_n = 0;
     return OK;
 }
-
 
 static status_t memfile_init_shift(struct mem_file *self)
 {
@@ -105,17 +47,7 @@ status_t memfile_init_ex(struct mem_file *self,int_ptr_t page_size,int_ptr_t max
     self->offset = 0;
     self->pages = 0;
     self->page_size = page_size;
-
-    self->base_file_base.read = memfile_virtual_read;
-    self->base_file_base.destroy = memfile_virtual_destroy;
-    self->base_file_base.write = memfile_virtual_write;
-    self->base_file_base.seek = memfile_virtual_seek;
-    self->base_file_base.get_offset = memfile_virtual_get_offset;
-    self->base_file_base.get_size = memfile_virtual_get_size;
-    self->base_file_base.set_size = memfile_virtual_set_size;
-    self->base_file_base.add_block = memfile_virtual_add_block;
-    self->base_file_base.get_max_size = memfile_virtual_get_max_size;
-
+    FILE_BASE_INIT_VIRTUAL_FUNCTIONS(memfile);
     return memfile_init_shift(self);
 }
 

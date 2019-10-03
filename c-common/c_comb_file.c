@@ -2,63 +2,7 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
-#define EXTRACT_SELF_POINTER(base,self)\
-CONTAINER_OF(struct comb_file, self, base, base_file_base)
-
-static int_ptr_t combfile_virtual_read(struct file_base *base,void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_read(self,buf,n);
-}
-
-static status_t combfile_virtual_destroy(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_destroy(self);
-}
-
-static int_ptr_t combfile_virtual_write(struct file_base *base,const void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_write(self,buf,n);
-}
-
-static fsize_t combfile_virtual_seek(struct file_base *base,fsize_t off)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_seek(self,off);
-}
-
-static fsize_t combfile_virtual_get_offset(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_get_offset(self);
-}
-
-static fsize_t combfile_virtual_get_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_get_size(self);
-}
-
-static status_t combfile_virtual_set_size(struct file_base *base,fsize_t size)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_set_size(self,size);
-}
-
-static status_t combfile_virtual_add_block(struct file_base *base,fsize_t bsize)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_add_block(self,bsize);
-}
-
-static fsize_t combfile_virtual_get_max_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return combfile_get_max_size(self);
-}
-
+FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct comb_file, combfile)
 /**************************************************************/
 status_t combfile_init_basic(struct comb_file *self)
 {
@@ -73,20 +17,10 @@ status_t combfile_init_basic(struct comb_file *self)
 status_t combfile_init(struct comb_file *self,int max)
 {
     combfile_init_basic(self);
-    filebase_init(&self->base_file_base);
-  
-    self->base_file_base.read = combfile_virtual_read;
-    self->base_file_base.destroy = combfile_virtual_destroy;
-    self->base_file_base.write = combfile_virtual_write;
-    self->base_file_base.seek = combfile_virtual_seek;
-    self->base_file_base.get_offset = combfile_virtual_get_offset;
-    self->base_file_base.get_size = combfile_virtual_get_size;
-    self->base_file_base.set_size = combfile_virtual_set_size;
-    self->base_file_base.add_block = combfile_virtual_add_block;
-    self->base_file_base.get_max_size = combfile_virtual_get_max_size;
-  
+    filebase_init(&self->base_file_base);   
     X_MALLOC(self->all_files,struct file_base*,max);
     self->max_file_num = max;
+    FILE_BASE_INIT_VIRTUAL_FUNCTIONS(combfile);
     return OK;
 }
 

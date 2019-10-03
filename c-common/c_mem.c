@@ -2,63 +2,7 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
-#define EXTRACT_SELF_POINTER(base,self)\
-    CONTAINER_OF(struct mem, self, base, base_file_base)
-
-static int_ptr_t mem_virtual_read(struct file_base *base,void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_read(self,buf,n);
-}
-
-static status_t mem_virtual_destroy(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_destroy(self);
-}
-
-static int_ptr_t mem_virtual_write(struct file_base *base,const void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_write(self,buf,n);
-}
-
-static fsize_t mem_virtual_seek(struct file_base *base,fsize_t off)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_seek(self,off);
-}
-
-static fsize_t mem_virtual_get_offset(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_get_offset(self);
-}
-
-static fsize_t mem_virtual_get_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_get_size(self);
-}
-
-static status_t mem_virtual_set_size(struct file_base *base,fsize_t size)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_set_size(self,size);
-}
-
-static status_t mem_virtual_add_block(struct file_base *base,fsize_t bsize)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_add_block(self,bsize);
-}
-
-static fsize_t mem_virtual_get_max_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return mem_get_max_size(self);
-}
-
+FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct mem,mem)
 /************************************************************************/
 status_t mem_init_basic(struct mem *self)
 {
@@ -76,16 +20,7 @@ status_t mem_init(struct mem *self)
 {
     mem_init_basic(self);
     filebase_init(&self->base_file_base);
-
-    self->base_file_base.read = mem_virtual_read;
-    self->base_file_base.destroy = mem_virtual_destroy;
-    self->base_file_base.write = mem_virtual_write;
-    self->base_file_base.seek = mem_virtual_seek;
-    self->base_file_base.get_offset = mem_virtual_get_offset;
-    self->base_file_base.get_size = mem_virtual_get_size;
-    self->base_file_base.set_size = mem_virtual_set_size;
-    self->base_file_base.add_block = mem_virtual_add_block;
-    self->base_file_base.get_max_size = mem_virtual_get_max_size;
+    FILE_BASE_INIT_VIRTUAL_FUNCTIONS(mem);
     return OK;
 }
 

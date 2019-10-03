@@ -2,62 +2,7 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
-#define EXTRACT_SELF_POINTER(base,self)\
-CONTAINER_OF(struct file, self, base, base_file_base)
-
-static int_ptr_t file_virtual_read(struct file_base *base,void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_read(self,buf,n);
-}
-
-static status_t file_virtual_destroy(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_destroy(self);
-}
-
-static int_ptr_t file_virtual_write(struct file_base *base,const void *buf,int_ptr_t n)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_write(self,buf,n);
-}
-
-static fsize_t file_virtual_seek(struct file_base *base,fsize_t off)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_seek(self,off);
-}
-
-static fsize_t file_virtual_get_offset(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_get_offset(self);
-}
-
-static fsize_t file_virtual_get_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_get_size(self);
-}
-
-static status_t file_virtual_set_size(struct file_base *base,fsize_t size)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_set_size(self,size);
-}
-
-static status_t file_virtual_add_block(struct file_base *base,fsize_t bsize)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_add_block(self,bsize);
-}
-
-static fsize_t file_virtual_get_max_size(struct file_base *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return file_get_max_size(self);
-}
+FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct file, file)
 /************************************************************************/
 status_t file_init_basic(struct file *self)
 {
@@ -76,15 +21,7 @@ status_t file_init(struct file *self)
 {
     file_init_basic(self);
     filebase_init(&self->base_file_base);
-    self->base_file_base.read = file_virtual_read;
-    self->base_file_base.destroy = file_virtual_destroy;
-    self->base_file_base.write = file_virtual_write;
-    self->base_file_base.seek = file_virtual_seek;
-    self->base_file_base.get_offset = file_virtual_get_offset;
-    self->base_file_base.get_size = file_virtual_get_size;
-    self->base_file_base.set_size = file_virtual_set_size;
-    self->base_file_base.add_block = file_virtual_add_block;
-    self->base_file_base.get_max_size = file_virtual_get_max_size;
+    FILE_BASE_INIT_VIRTUAL_FUNCTIONS(file);
     return OK;
 }
 

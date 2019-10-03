@@ -194,6 +194,14 @@ SOURCE=".\c-common\c_mutex.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_part_file.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_part_file.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_task.c"
 # End Source File
 # Begin Source File

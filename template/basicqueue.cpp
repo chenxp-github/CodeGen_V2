@@ -77,7 +77,7 @@ int CBasicQueue::GetLen()
 status_t CBasicQueue::GetHead(double *node)
 {
     ASSERT(node);
-    if(this->IsEmpty())return NULL;   
+    if(this->IsEmpty())return ERROR;   
     *node = this->m_Data[this->m_Head];
     return OK;
 }
@@ -94,7 +94,7 @@ status_t CBasicQueue::GetElem(int index,double *node)
 status_t CBasicQueue::GetTail(double *node)
 {
     ASSERT(node);
-    if(this->IsEmpty())return NULL;   
+    if(this->IsEmpty())return ERROR;   
     return this->GetElem(GetLen()-1,node);
 }
 /////////////////////////////////////////////////////
