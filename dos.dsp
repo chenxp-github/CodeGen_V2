@@ -138,6 +138,14 @@ SOURCE=".\c-common\c_closure_list.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_file.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_file.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_file_base.c"
 # End Source File
 # Begin Source File
@@ -159,6 +167,14 @@ SOURCE=".\c-common\c_mem.c"
 # Begin Source File
 
 SOURCE=".\c-common\c_mem.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mem_file.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mem_file.h"
 # End Source File
 # Begin Source File
 

@@ -36,3 +36,12 @@ class MemFile:FileBase{
 }
 
 
+class File:public FileBase{
+    [noget,noset] int* fp;
+    [noget,noset] char *file_buf;
+    [noget,noset] int_ptr_t buf_size,init_buf_size;
+    [noget,noset] fsize_t offset,size,buf_start;
+}
+
+
+

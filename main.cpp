@@ -22,10 +22,9 @@ int main(int argc, char **argv)
     
     C_MEM_FILE(mem);
 
-    filebase_printf(mem_file,"Hello %d",123);
-    filebase_printf(mem_file,"World %d",456);
+    filebase_load_file(mem_file,"z:\\tmp\\1.cpp");
 
-    filebase_save_file(mem_file,"z:\\tmp\\123.txt");
+    filebase_dump(mem_file);
 
     memfile_destroy(&mem);
 
