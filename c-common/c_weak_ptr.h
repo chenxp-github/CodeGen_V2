@@ -5,7 +5,8 @@
 #include "c_log_buffer.h"
 
 #define WEAK_PTR_REF(wptr,ptr) do{\
-if(ptr)weakptr_ref(&wptr,ptr,(ptr)->__weak_ref_id);\
+void *_p = (void*)(ptr);\
+if(_p)weakptr_ref(&wptr,ptr,(ptr)->__weak_ref_id);\
 }while(0)\
     
 #define WEAK_PTR_GET(wptr,type,ptr)\
