@@ -146,6 +146,14 @@ SOURCE=".\c-common\c_comb_file.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_epoll.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_epoll.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_file.c"
 # End Source File
 # Begin Source File

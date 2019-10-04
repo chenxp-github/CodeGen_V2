@@ -65,4 +65,7 @@ class WeakPtr{
 	[noget,noset] int weak_ref_id;
 }
 
+class Epoll{
+}
+
 
