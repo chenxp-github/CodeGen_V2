@@ -35,15 +35,16 @@ status_t mem_destroy(struct mem *self)
 status_t mem_copy(struct mem *self,struct mem *_p)
 {
     ASSERT(_p);
-    if(self == _p)return OK;
-
-    filebase_copy(&self->base_file_base,&_p->base_file_base);
-    self->offset = _p->offset;
-    self->size = _p->size;
-    self->max_size = _p->max_size;
-    self->is_const = _p->is_const;
-    self->is_self_alloc = _p->is_self_alloc;
-    return OK;
+    if(self == _p)return OK;	
+	filebase_copy(&self->base_file_base,&_p->base_file_base);
+    mem_free(self);
+	if(_p->size > 0)
+	{
+		mem_malloc(self,_p->size);
+		memcpy(self->buffer,_p->buffer,_p->size);
+		mem_set_size(self,_p->size);
+	}
+	return OK;
 }
 
 status_t mem_comp(struct mem *self,struct mem *_p)
@@ -262,5 +263,27 @@ const char* mem_cstr(struct mem *self)
 char* mem_get_raw_buffer(struct mem *self)
 {
     return self->buffer;
+}
+
+status_t mem_copy_file(struct mem *self,struct file_base *file)
+{
+    ASSERT(file);
+
+    if(&self->base_file_base == file) 
+		return OK;
+	
+    mem_free(self);
+
+    if(filebase_get_size(file) > 0)
+    {
+        mem_malloc(self,(int_ptr_t)filebase_get_size(file));
+        filebase_write_file(&self->base_file_base,file);
+    }
+    return OK;
+}
+
+char mem_c(struct mem *self, int index)
+{
+    return self->buffer[index];
 }
 

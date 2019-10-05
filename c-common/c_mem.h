@@ -83,5 +83,7 @@ fsize_t mem_get_max_size(struct mem *self);
 status_t mem_set_str(struct mem *self,const char *p);
 const char *mem_cstr(struct mem *self);
 char * mem_get_raw_buffer(struct mem *self);
+status_t mem_copy_file(struct mem *self,struct file_base *file);
+char mem_c(struct mem *self, int index);
 
 #endif

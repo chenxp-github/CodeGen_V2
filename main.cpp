@@ -18,78 +18,30 @@ extern "C"{
 #include "c_file.h"
 #include "c_file_manager.h"
 #include "c_weak_ptr.h"
-}
-
-#define C_WEAK_REF_ID_DEFINE() int __weak_ref_id
-#define C_WEAK_REF_ID_INIT(self)  self->__weak_ref_id = crt_get_unique_id()
-#define C_WEAK_REF_ID_CLEAR(self) self->__weak_ref_id = 0
-
-struct test{
-    C_WEAK_REF_ID_DEFINE();
-    int a;
-};
-
-status_t test_init_basic(struct test *self)
-{
-    C_WEAK_REF_ID_CLEAR(self);
-    self->a = 0;
-    return OK;
-}
-
-status_t test_init(struct test *self)
-{
-    test_init_basic(self);
-    C_WEAK_REF_ID_INIT(self);
-    return OK;
-}
-
-status_t test_destroy(struct test *self)
-{
-    test_init_basic(self);
-    return OK;
-}
-
-status_t test_copy(struct test *self,struct test *_p)
-{
-    ASSERT(_p);
-    if(self == _p)return OK;
-    
-    return OK;
-}
-
-status_t test_comp(struct test *self,struct test *_p)
-{
-    ASSERT(_p);
-    if(self == _p)return 0;
-    ASSERT(0);
-    return 0;
-}
-
-status_t test_print(struct test *self)
-{
-    PD(self->a);
-    return OK;
+#include "c_mem_stk.h"
 }
 
 int main(int argc, char **argv)
 {
-    Mem_Tool_Init("/tmp/leak.txt");
+    Mem_Tool_Init("z:\\leak.txt");
+	
+	struct mem_stk stk;
 
-    struct test t;
-    test_init(&t);
-    t.a = 123;
-    test_print(&t);
+	memstk_init(&stk,1024);
 
-    struct weak_ptr wptr;
-    weakptr_init(&wptr);
-    WEAK_PTR_REF(wptr,&t);
 
-    test_destroy(&t);
-    WEAK_PTR_GET(wptr,struct test,p);
+	memstk_push_str(&stk,"Hello 1");
+	memstk_push_str(&stk,"Hello 2");
+	memstk_push_str(&stk,"Hello 3");
 
-    PP(p);
+	C_LOCAL_MEM(mem);
+	memstk_save_path(&stk,mem_file);
 
-    
+	PS(mem_cstr(&mem));
+
+
+	memstk_destroy(&stk);
+
     return 0;
 }
 

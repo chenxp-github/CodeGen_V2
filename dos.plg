@@ -6,22 +6,81 @@
 --------------------Configuration: dos - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP35D.tmp" with contents
+Creating temporary file "Z:\Temp\RSPE387.tmp" with contents
 [
 /nologo /MT /W3 /Gm /GX /ZI /Od /I "." /I "common" /I "platform" /I "template" /I "c-common" /I "c-template" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"debug/" /Fo"debug/" /Fd"debug/" /FD /GZ /c 
-"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_epoll.c"
+"D:\mydisk\Program\VC6\Projects\CodeGen_V2\main.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP35D.tmp" 
+Creating command line "cl.exe @Z:\Temp\RSPE387.tmp" 
+Creating temporary file "Z:\Temp\RSPE388.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"debug/dos.pdb" /debug /machine:I386 /out:"debug/dos.exe" /pdbtype:sept 
+.\debug\basic_queue.obj
+.\debug\basic_stack.obj
+.\debug\basicqueue.obj
+.\debug\basicstack.obj
+.\debug\c_closure.obj
+.\debug\c_closure_list.obj
+.\debug\c_comb_file.obj
+.\debug\c_epoll.obj
+.\debug\c_file.obj
+.\debug\c_file_base.obj
+.\debug\c_file_manager.obj
+.\debug\c_log_buffer.obj
+.\debug\c_mem.obj
+.\debug\c_mem_file.obj
+.\debug\c_mutex.obj
+.\debug\c_part_file.obj
+.\debug\c_task.obj
+.\debug\c_task_runner.obj
+.\debug\c_taskmgr.obj
+.\debug\c_weak_ptr.obj
+.\debug\closure.obj
+.\debug\closurelist.obj
+.\debug\cruntime.obj
+.\debug\dirmgr.obj
+.\debug\encoder.obj
+.\debug\file.obj
+.\debug\filebase.obj
+.\debug\fileinfo.obj
+.\debug\fileinfolist.obj
+.\debug\hash_table.obj
+.\debug\hashtable.obj
+.\debug\linked_list.obj
+.\debug\linkedlist.obj
+.\debug\main.obj
+.\debug\mem.obj
+.\debug\mem_tool.obj
+.\debug\memfile.obj
+.\debug\memstk.obj
+.\debug\minibson.obj
+.\debug\misc.obj
+.\debug\normal_queue.obj
+.\debug\normal_stack.obj
+.\debug\normalqueue.obj
+.\debug\normalstack.obj
+.\debug\syslog.obj
+.\debug\task_test.obj
+.\debug\taskmgr.obj
+.\debug\tasktest.obj
+.\debug\tcp.obj
+.\debug\test_node.obj
+.\debug\testnode.obj
+.\debug\testtree.obj
+.\debug\userfunc.obj
+.\debug\c_mem_stk.obj
+]
+Creating command line "link.exe @Z:\Temp\RSPE388.tmp"
 <h3>Output Window</h3>
 Compiling...
-c_epoll.c
-z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(73) : warning C4018: '==' : signed/unsigned mismatch
-z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(87) : warning C4018: '==' : signed/unsigned mismatch
+Skipping... (no relevant changes detected)
+main.cpp
+Linking...
 
 
 
 <h3>Results</h3>
-c_epoll.obj - 0 error(s), 2 warning(s)
+dos.exe - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

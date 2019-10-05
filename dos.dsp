@@ -202,6 +202,14 @@ SOURCE=".\c-common\c_mem_file.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_mem_stk.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_mem_stk.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_mutex.c"
 # End Source File
 # Begin Source File
