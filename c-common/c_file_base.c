@@ -931,10 +931,3 @@ status_t filebase_read_string(struct file_base *self, struct file_base *file)
     return ERROR;
 }
 
-status_t filebase_strcpy(struct file_base *self, const char *str)
-{
-    ASSERT(str);
-    filebase_set_size(self,0);
-    filebase_puts(self,str);
-    return OK;
-}

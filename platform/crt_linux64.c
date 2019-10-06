@@ -284,7 +284,9 @@ status_t crt_read_dir(void **p)
     int is_dir;
 
     if(entry == NULL)
+    {
         return ERROR;
+    }    
 
 	memset(&statbuf,0,sizeof(statbuf));
     lstat(entry->d_name,&statbuf);

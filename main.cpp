@@ -23,24 +23,21 @@ extern "C"{
 
 int main(int argc, char **argv)
 {
-    Mem_Tool_Init("z:\\leak.txt");
-	
-	struct mem_stk stk;
-
-	memstk_init(&stk,1024);
-
-
-	memstk_push_str(&stk,"Hello 1");
-	memstk_push_str(&stk,"Hello 2");
-	memstk_push_str(&stk,"Hello 3");
+    Mem_Tool_Init("z:\\tmp\\leak.txt");
 
 	C_LOCAL_MEM(mem);
-	memstk_save_path(&stk,mem_file);
+
+	mem_strcpy(&mem,"/home/chenxp/temp/../../123.txt");	
+	
+	filemanager_to_abs_path(&mem);
+
+
+
+
 
 	PS(mem_cstr(&mem));
+	
 
-
-	memstk_destroy(&stk);
 
     return 0;
 }

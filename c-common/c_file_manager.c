@@ -1,4 +1,5 @@
 #include "c_file_manager.h"
+#include "c_mem_stk.h"
 #include "syslog.h"
 #include "mem_tool.h"
 
@@ -193,7 +194,7 @@ status_t filemanager_search_dir(const char *dir, bool_t recursive, struct closur
         
         is_dir = (p[2] != 0);
         
-        filebase_strcpy(fullname_file,dir);
+        mem_strcpy(&fullname,dir);
         if(!separator_ended)
             filebase_putc(fullname_file,crt_get_path_splitor());
         filebase_puts(fullname_file,filename);
@@ -238,4 +239,56 @@ status_t filemanager_search_dir(const char *dir, bool_t recursive, struct closur
         crt_chdir(old_path);
     
     return OK;
+}
+
+status_t filemanager_to_abs_path_with_prefix(const char *prefix,struct file_base *file)
+{
+	_C_LOCAL_MEM_HEADER(buf);
+	struct mem_stk stk;    
+	struct mem *pmem;
+	int i;
+
+	ASSERT(file);
+
+	_C_LOCAL_MEM_BODY(buf);
+    
+    filebase_puts(buf_file,prefix);
+    filebase_putc(buf_file,crt_get_path_splitor());
+    filebase_write_file(buf_file,file);
+    
+    memstk_init(&stk,256);
+    memstk_load_path(&stk,buf_file);
+    
+    filebase_set_size(file,0);
+    for(i = 0; i < memstk_get_len(&stk); i++)
+    {
+        pmem = memstk_get_elem(&stk,i);
+        ASSERT(pmem);
+        if(filebase_char_at(&pmem->base_file_base,1) != ':')
+            filebase_putc(file,crt_get_path_splitor());
+        filebase_write_file(file,&pmem->base_file_base);
+    }
+
+	memstk_destroy(&stk);
+    return OK;
+}
+
+status_t filemanager_to_abs_path(struct mem *path)
+{
+	_C_LOCAL_MEM_WITH_SIZE_HEADER(mem,_MAX_PATH_);
+
+    ASSERT(path);		
+	_C_LOCAL_MEM_WITH_SIZE_BODY(mem,_MAX_PATH_);
+
+    if(filemanager_is_abs_path(mem_cstr(path)))
+    {
+        mem_strcpy(&mem,"");
+    }
+    else
+    {
+        filemanager_get_cur_dir(&mem);
+    }
+	
+    return filemanager_to_abs_path_with_prefix(
+		mem_cstr(&mem),&path->base_file_base);
 }

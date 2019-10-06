@@ -27,6 +27,8 @@ status_t filemanager_create_dir_super(const char *_dir);
 status_t filemanager_is_path_splitor(char ch);
 fsize_t filemanager_get_file_size(const char *filename);
 status_t filemanager_search_dir(const char *dir, bool_t recursive, struct closure *closure, int *running);
+status_t filemanager_to_abs_path_with_prefix(const char *prefix,struct file_base *file);
+status_t filemanager_to_abs_path(struct mem *path);
 
 #endif
 

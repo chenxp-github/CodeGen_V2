@@ -287,3 +287,10 @@ char mem_c(struct mem *self, int index)
     return self->buffer[index];
 }
 
+status_t mem_strcpy(struct mem *self, const char *str)
+{
+    ASSERT(str);
+    mem_set_size(self,0);
+    mem_write(self,str,strlen(str));
+    return OK;
+}
