@@ -105,8 +105,6 @@ static status_t copy_fd_set(fd_set *to, fd_set *from)
 }
 #endif
 
-
-
 status_t epoll_auto_remove_hungup_fds(struct epoll *self,uint32_t opt)
 {
 #if HAVE_WINDOWS_H

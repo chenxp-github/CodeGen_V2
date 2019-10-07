@@ -128,8 +128,11 @@ status_t log_buffer_write(struct log_buffer *self, const char *str, int size)
     {
         char *tmp;
         X_MALLOC(tmp,char,new_len*2);
-        memcpy(tmp,self->m_buf,self->m_buf_len);
-        X_FREE(self->m_buf); //free old buffer
+        if(self->m_buf)
+        {
+            memcpy(tmp,self->m_buf,self->m_buf_len);
+            X_FREE(self->m_buf); //free old buffer
+        }
         self->m_buf = tmp;
         self->m_buf_size = new_len*2;
     }
