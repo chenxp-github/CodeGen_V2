@@ -23,6 +23,7 @@ struct file_base *name##_file = NULL;\
 struct mem name\
 
 #define _C_LOCAL_MEM_WITH_SIZE_BODY(name,size)\
+UNUSED(name##_file);\
 mem_init(&name);\
 mem_set_raw_buffer(&name,__##name,size,FALSE);\
 mem_set_size(&name,0);\
