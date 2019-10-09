@@ -2,20 +2,7 @@
 #include "mem_tool.h"
 #include "syslog.h"
 
-#define EXTRACT_SELF_POINTER(base,self)\
-	CONTAINER_OF(struct task_test, self, base, base_task)\
-
-static status_t tasktest_virtual_destroy(struct task *base)
-{
-    EXTRACT_SELF_POINTER(base,self);
-    return tasktest_destroy(self);
-}
-
-static status_t tasktest_virtual_run(struct task *base, uint32_t interval)
-{	
-    EXTRACT_SELF_POINTER(base,self);
-    return tasktest_run(self,interval);
-}
+TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_test,tasktest)
 /*********************************************/
 status_t tasktest_init_basic(struct task_test *self)
 {
@@ -27,8 +14,7 @@ status_t tasktest_init(struct task_test *self,struct taskmgr *mgr)
 {
 	tasktest_init_basic(self);
 	task_init(&self->base_task,mgr);
-    self->base_task.run = tasktest_virtual_run;
-    self->base_task.destroy = tasktest_virtual_destroy;
+    TASK_INIT_VIRTUAL_FUNCTIONS(tasktest);
 	return OK;
 }
 
