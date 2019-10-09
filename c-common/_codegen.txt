@@ -68,4 +68,12 @@ class WeakPtr{
 class Epoll{
 }
 
+class TaskTimer:Task{
+    uint32_t timeout;
+    bool one_shot;
+    [noget,noset] int step;
+    [noset] Closure callback;
+}
+
+
 

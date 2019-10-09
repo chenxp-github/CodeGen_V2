@@ -242,6 +242,14 @@ SOURCE=".\c-common\c_task_runner.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_task_timer.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_timer.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_taskmgr.c"
 # End Source File
 # Begin Source File

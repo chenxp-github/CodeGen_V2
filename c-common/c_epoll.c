@@ -2,6 +2,10 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
+#ifndef EPOLLRDHUP
+#define EPOLLRDHUP EPOLLHUP
+#endif
+
 status_t epoll_init_basic(struct epoll *self)
 {
 #if HAVE_WINDOWS_H
@@ -110,7 +114,9 @@ status_t epoll_auto_remove_hungup_fds(struct epoll *self,uint32_t opt)
 #if HAVE_WINDOWS_H
     
 #else
-    for(int i = 0; i < self->m_CurEventsLen; i++)
+	int i;
+
+    for(i = 0; i < self->m_CurEventsLen; i++)
     {
         if(self->m_Events[i].events&EPOLLRDHUP)
         {

@@ -8,13 +8,13 @@
 CHECK_INDEX_RANGE(index); \
 closure_free_param(self,index);\
 self->types[index] = type;\
-self->params[index] = (int64_t)(var)
+self->params[index] = (int64_t)(int_ptr_t)(var)
 
 #define CHECK_TYPE(index,type) \
 CHECK_INDEX_RANGE(index); \
 ASSERT(self->types[index] == type)
 
-#define TO_POINTER(index) ((void*)self->params[index])
+#define TO_POINTER(index) ((void*)(int_ptr_t)self->params[index])
 #define CCLOSURE_FLAG_FUNC_C(func,bit) CFLAG_FUNC_C(closure,flags,func,bit)
 
 CCLOSURE_FLAG_FUNC_C(is_called,0x00000001);
@@ -277,7 +277,7 @@ const char* closure_get_param_string(struct closure *self,int index)
 {
     CHECK_INDEX_RANGE(index); 
     ASSERT(self->types[index] == C_PARAM_TYPE_STRING);
-    return (const char*)self->params[index];
+    return (const char*)(int_ptr_t)self->params[index];
 }
 
 void* closure_get_param_pointer(struct closure *self,int index)

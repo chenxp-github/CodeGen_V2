@@ -19,25 +19,34 @@ extern "C"{
 #include "c_file_manager.h"
 #include "c_weak_ptr.h"
 #include "c_mem_stk.h"
+#include "c_taskmgr.h"
+#include "c_task_timer.h"
 }
+
+C_BEGIN_CLOSURE_FUNC(on_timer)
+{
+    LOG("here");
+    return OK;
+}
+C_END_CLOSURE_FUNC(on_timer);
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("z:\\tmp\\leak.txt");
+    
+    struct taskmgr mgr;
+    taskmgr_init(&mgr,1024);
 
-	C_LOCAL_MEM(mem);
+    struct task_timer *pt = tasktimer_new(&mgr,1000,0);
+    closure_set_func(&pt->callback,on_timer);
 
-	mem_strcpy(&mem,"/home/chenxp/temp/../../123.txt");	
-	
-	filemanager_to_abs_path(&mem);
+    while(!kbhit())
+    {
+        taskmgr_schedule(&mgr);
+        crt_msleep(1);
+    }
 
-
-
-
-
-	PS(mem_cstr(&mem));
-	
-
+    taskmgr_destroy(&mgr);
 
     return 0;
 }
