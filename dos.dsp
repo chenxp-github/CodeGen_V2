@@ -282,6 +282,14 @@ SOURCE=".\c-common\c_tcp_server.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_thread.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_thread.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_weak_ptr.c"
 # End Source File
 # Begin Source File
@@ -531,6 +539,14 @@ SOURCE=".\c-template\test_node.c"
 # Begin Source File
 
 SOURCE=".\c-template\test_node.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-template\test_thread.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-template\test_thread.h"
 # End Source File
 # Begin Source File
 

@@ -21,32 +21,20 @@ extern "C"{
 #include "c_mem_stk.h"
 #include "c_taskmgr.h"
 #include "c_task_timer.h"
+#include "test_thread.h"
 }
 
-C_BEGIN_CLOSURE_FUNC(on_timer)
-{
-    LOG("here");
-    return OK;
-}
-C_END_CLOSURE_FUNC(on_timer);
 
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("z:\\tmp\\leak.txt");
     
-    struct taskmgr mgr;
-    taskmgr_init(&mgr,1024);
+    struct test_thread t;
 
-    struct task_timer *pt = tasktimer_new(&mgr,1000,0);
-    closure_set_func(&pt->callback,on_timer);
-
-    while(!kbhit())
-    {
-        taskmgr_schedule(&mgr);
-        crt_msleep(1);
-    }
-
-    taskmgr_destroy(&mgr);
+    testthread_init(&t);
+    thread_start(&t.base_thread);
+    thread_wait_complete(&t.base_thread,20000);
+    testthread_destroy(&t);
 
     return 0;
 }

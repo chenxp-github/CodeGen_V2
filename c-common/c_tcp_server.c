@@ -7,7 +7,6 @@ status_t tcpserver_init_basic(struct tcp_server *self)
     socket_init_basic(&self->base_socket);
     crt_memset((void*)&self->sad,0,sizeof(struct  sockaddr_in));
     crt_memset((void*)&self->cad,0,sizeof(struct  sockaddr_in));
-    self->ptrh = NULL;
     self->max_connect = 100;
     return OK;
 }

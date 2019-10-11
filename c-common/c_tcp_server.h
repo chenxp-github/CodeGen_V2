@@ -8,7 +8,6 @@
 
 struct tcp_server{
     struct socket base_socket;
-    struct  hostent *ptrh;       /* pointer to a host table entry          */     
     struct  sockaddr_in sad;      /* structure to hold server's address     */   
     struct  sockaddr_in cad;      /* structure to hold client's address     */    
     int32_t max_connect;          /* max connection */
