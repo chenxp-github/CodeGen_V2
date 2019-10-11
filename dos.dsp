@@ -226,6 +226,14 @@ SOURCE=".\c-common\c_part_file.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_socket.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_socket.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_task.c"
 # End Source File
 # Begin Source File
@@ -255,6 +263,22 @@ SOURCE=".\c-common\c_taskmgr.c"
 # Begin Source File
 
 SOURCE=".\c-common\c_taskmgr.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_tcp_client.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_tcp_client.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_tcp_server.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_tcp_server.h"
 # End Source File
 # Begin Source File
 

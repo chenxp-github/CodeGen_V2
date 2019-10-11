@@ -1,9 +1,15 @@
-[Stack of Closure]
-class ClosureList{
+class Socket{
+	int socket_num;
 }
 
+class TcpServer:Socket{
+}
 
-class Mutex{
+class TcpClient:Socket{
+}
+
+[Stack of Closure]
+class ClosureList{
 }
 
 [CodeSwitch copy_comp_print=false]
@@ -63,9 +69,6 @@ class FileManager{
 class WeakPtr{
 	[noget,noset] void *raw_ptr;
 	[noget,noset] int weak_ref_id;
-}
-
-class Epoll{
 }
 
 class TaskTimer:Task{
