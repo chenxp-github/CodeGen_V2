@@ -3,6 +3,7 @@
 
 #include "cruntime.h"
 #include "c_log_buffer.h"
+#include "c_mem.h"
 
 struct socket{
     int socket_num;

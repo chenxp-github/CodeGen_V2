@@ -10,6 +10,7 @@ struct mem name;\
 struct file_base *name##_file = NULL\
 
 #define _C_MEM_BODY(name)\
+UNUSED(name##_file);\
 mem_init(&name);\
 name##_file=&name.base_file_base\
 

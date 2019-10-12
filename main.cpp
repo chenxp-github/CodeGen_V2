@@ -29,12 +29,10 @@ int main(int argc, char **argv)
 {
     Mem_Tool_Init("z:\\tmp\\leak.txt");
     
-    struct test_thread t;
+    size_t sendbuflen = 0;
+    int len = sizeof(sendbuflen);
 
-    testthread_init(&t);
-    thread_start(&t.base_thread);
-    thread_wait_complete(&t.base_thread,20000);
-    testthread_destroy(&t);
+    getsockopt(0, SOL_SOCKET, SO_SNDBUF, (char*)&sendbuflen, &len);
 
     return 0;
 }

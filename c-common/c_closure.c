@@ -15,11 +15,11 @@ CHECK_INDEX_RANGE(index); \
 ASSERT(self->types[index] == type)
 
 #define TO_POINTER(index) ((void*)(int_ptr_t)self->params[index])
-#define CCLOSURE_FLAG_FUNC_C(func,bit) CFLAG_FUNC_C(closure,flags,func,bit)
+#define C_CLOSURE_FLAG_FUNC_C(func,bit) C_FLAG_FUNC_C(closure,flags,func,bit)
 
-CCLOSURE_FLAG_FUNC_C(is_called,0x00000001);
-CCLOSURE_FLAG_FUNC_C(is_timeout,0x00000002);
-CCLOSURE_FLAG_FUNC_C(in_on_heap,0x00000004);
+C_CLOSURE_FLAG_FUNC_C(is_called,0x00000001);
+C_CLOSURE_FLAG_FUNC_C(is_timeout,0x00000002);
+C_CLOSURE_FLAG_FUNC_C(in_on_heap,0x00000004);
 
 status_t closure_init_basic(struct closure *self)
 {

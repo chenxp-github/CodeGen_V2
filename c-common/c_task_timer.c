@@ -26,7 +26,7 @@ status_t tasktimer_init(struct task_timer *self,struct taskmgr *mgr)
 
 status_t tasktimer_destroy(struct task_timer *self)
 {
-    task_destroy(&self->base_task);
+    task_base_destroy(&self->base_task);
     closure_destroy(&self->callback);
     tasktimer_init_basic(self);
     return OK;
