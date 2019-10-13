@@ -1,3 +1,6 @@
+class TaskTcpAcceptor{
+}
+
 class Thread{
     [noget,noset] THREAD_HANDLE *handle;
     int running;

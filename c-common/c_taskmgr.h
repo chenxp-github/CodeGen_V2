@@ -2,12 +2,19 @@
 #define __C_TASKMGR_H
 
 #include "c_task.h"
+#include "c_closure.h"
+
+enum{
+    C_TASKMGR_EVENT_SOCKET_CONNECTED = 1,
+    C_TASKMGR_EVENT_BEFORE_DEL_TASK,
+};
 
 struct taskmgr{
     int top,size;
     struct task **index;
     int unique_id;
     bool_t turbo_on;
+    struct closure callback;
 };
 
 status_t taskmgr_init_basic(struct taskmgr *self);
@@ -45,5 +52,7 @@ status_t taskmgr_del_task(struct taskmgr *self,int task_id);
 bool_t taskmgr_is_task(struct taskmgr *self,int tid);
 status_t taskmgr_quit_task(struct taskmgr *self,int *task_id);
 status_t taskmgr_turbo_on(struct taskmgr *self);
+struct closure* taskmgr_get_callback(struct taskmgr *self);
+status_t taskmgr_on_socket_connected(struct taskmgr *self,int sock);
 
 #endif

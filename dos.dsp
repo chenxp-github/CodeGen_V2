@@ -250,6 +250,14 @@ SOURCE=".\c-common\c_task_runner.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_task_tcp_acceptor.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_tcp_acceptor.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_task_timer.c"
 # End Source File
 # Begin Source File

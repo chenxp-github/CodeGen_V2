@@ -33,6 +33,7 @@ status_t task_init(struct task *self,struct taskmgr *mgr)
     {
         self->id = taskmgr_alloc_id(mgr);
         taskmgr_add_task(mgr,self);
+        self->taskmgr = mgr;
     }
 
     return OK;

@@ -28,12 +28,6 @@ extern "C"{
 int main(int argc, char **argv)
 {
     Mem_Tool_Init("z:\\tmp\\leak.txt");
-    
-    size_t sendbuflen = 0;
-    int len = sizeof(sendbuflen);
-
-    getsockopt(0, SOL_SOCKET, SO_SNDBUF, (char*)&sendbuflen, &len);
-
     return 0;
 }
 

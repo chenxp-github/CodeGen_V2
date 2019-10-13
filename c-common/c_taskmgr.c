@@ -11,12 +11,14 @@ status_t taskmgr_init_basic(struct taskmgr *self)
     self->size = 0;
     self->unique_id = 0;
     self->turbo_on = FALSE;
+    closure_init_basic(&self->callback);
     return OK;
 }
 status_t taskmgr_init(struct taskmgr *self,int init_size)
 {
     int i;
     taskmgr_init_basic(self);  
+    closure_init(&self->callback);
     self->size = init_size;
     X_MALLOC(self->index,struct task * ,self->size);
     for(i = 0; i < self->size; i++)
@@ -34,6 +36,7 @@ status_t taskmgr_destroy(struct taskmgr *self)
         taskmgr_del_node(self,self->index[i]);
     }
     X_FREE(self->index);
+    closure_destroy(&self->callback);
     taskmgr_init_basic(self);   
     return OK;
 }
@@ -375,3 +378,17 @@ status_t taskmgr_turbo_on(struct taskmgr *self)
     self->turbo_on = TRUE;
     return OK;
 }
+
+struct closure* taskmgr_get_callback(struct taskmgr *self)
+{
+    return &self->callback;
+}
+
+status_t taskmgr_on_socket_connected(struct taskmgr *self,int sock)
+{
+    closure_set_param_int(&self->callback,1,sock);
+    closure_set_param_pointer(&self->callback,2,self);
+    closure_run_event(&self->callback,C_TASKMGR_EVENT_SOCKET_CONNECTED);
+    return OK;
+}
+
