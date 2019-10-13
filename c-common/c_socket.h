@@ -20,6 +20,6 @@ int_ptr_t socket_read(struct socket *self,void *buf, int_ptr_t n);
 status_t socket_set_blocking(struct socket *self,bool_t enable);
 bool_t socket_is_connected(struct socket *self);
 status_t socket_transfer_socket_fd(struct socket *self, struct socket *from);
-bool_t socket_is_ip_address(struct mem *str);
+bool_t socket_is_ip_address(const char *str);
 
 #endif

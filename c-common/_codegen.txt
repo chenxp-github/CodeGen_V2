@@ -1,3 +1,14 @@
+class TaskTcpConnector:Task{    
+    int step;
+    TcpClient tcp_client;	
+    string server_name;
+    int port;	
+    int timeout;	
+    int connect_time;	
+    int_ptr_t *hostoip_context;		
+    Closure callback;
+}
+
 class TaskTcpAcceptor{
 }
 

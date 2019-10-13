@@ -104,23 +104,28 @@ status_t socket_transfer_socket_fd(struct socket *self, struct socket *from)
     return OK;
 }
 
-bool_t socket_is_ip_address(struct mem *str)
+bool_t socket_is_ip_address(const char *str)
 {
-    _C_LOCAL_MEM_HEADER(mem);
-    struct file_base *str_file = &str->base_file_base;
+    _C_LOCAL_MEM_HEADER(mem);    
     int c = 0;
-
+	_C_MEM_HEADER(mem_str);
+	
     ASSERT(str);
     _C_LOCAL_MEM_BODY(mem);
-           
-    filebase_set_split_chars(str_file,".");
-    filebase_seek(str_file,0);
+	_C_MEM_BODY(mem_str);
+	
+	mem_set_str(&mem_str,str);
+
+    filebase_set_split_chars(mem_str_file,".");
+    filebase_seek(mem_str_file,0);
     
-    while(filebase_read_string(str_file,mem_file))
+    while(filebase_read_string(mem_str_file,mem_file))
     {
         if(!is_dec(mem_cstr(&mem)))
             break;
         c++;
     }
+
+	mem_destroy(&mem_str);
     return c == 4;
 }

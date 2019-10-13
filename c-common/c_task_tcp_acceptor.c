@@ -60,7 +60,7 @@ status_t tasktcpacceptor_report_error(struct task_tcp_acceptor *self,int err)
 status_t tasktcpacceptor_start(struct task_tcp_acceptor *self)
 {
     task_resume(&self->base_task);
-    self->step = 1;
+    self->step = STEP_INIT_TCP_SERVER;
     return OK;
 }
 
@@ -70,6 +70,7 @@ status_t tasktcpacceptor_stop(struct task_tcp_acceptor *self,int err)
         return ERROR;
     task_quit(&self->base_task);
     tasktcpacceptor_report_error(self,err);
+	closure_run_event(&self->callback,C_TASK_TCP_ACCEPTOR_EVENT_STOP);
     return OK;
 }
 
@@ -108,5 +109,11 @@ status_t tasktcpacceptor_run(struct task_tcp_acceptor *self, uint32_t interval)
         }
     }    
     return OK;
+}
+
+status_t tasktcpacceptor_set_listen_port(struct task_tcp_acceptor *self,int port)
+{	
+    self->port = port;
+	return OK;	
 }
 

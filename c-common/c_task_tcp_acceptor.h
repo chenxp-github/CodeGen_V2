@@ -31,5 +31,6 @@ status_t tasktcpacceptor_report_error(struct task_tcp_acceptor *self,int err);
 status_t tasktcpacceptor_start(struct task_tcp_acceptor *self);
 status_t tasktcpacceptor_stop(struct task_tcp_acceptor *self,int err);
 status_t tasktcpacceptor_run(struct task_tcp_acceptor *self, uint32_t interval);
+status_t tasktcpacceptor_set_listen_port(struct task_tcp_acceptor *self,int port);
 
 #endif
