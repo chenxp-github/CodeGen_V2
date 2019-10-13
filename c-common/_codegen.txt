@@ -1,3 +1,23 @@
+[CodeSwitch copy_comp_print=false]
+class SocketReaderWriter{
+	TaskMgr *i_task_mgr;
+	Socket *i_socket;
+	FileBase *i_read_dest_file;
+	FileBase *i_write_src_file;
+	fsize_t total_read_length;
+	fsize_t write_end_offset;
+	fsize_t write_offset;
+	fsize_t read_length;
+	fsize_t read_size_this_time;
+	fsize_t write_size_this_time;
+	uint32_t write_timer;
+	uint32_t read_timer;
+	uint32_t timeout;
+	Closure callback;
+}
+
+
+
 class TaskTcpConnector:Task{    
     int step;
     TcpClient tcp_client;	
