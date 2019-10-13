@@ -80,11 +80,11 @@ bool func() \
 } \
 
 ///used in pure C///
-#define CFLAG_FUNC_H(_class,func) \
+#define C_FLAG_FUNC_H(_class,func) \
 status_t _class##_##set##_##func(struct _class *self,bool_t have); \
 bool_t _class##_##func(struct _class *self); \
 
-#define CFLAG_FUNC_C(_class,var,func, bit) \
+#define C_FLAG_FUNC_C(_class,var,func, bit) \
 status_t _class##_##set##_##func(struct _class *self,bool_t have) \
 { \
     if(have) \

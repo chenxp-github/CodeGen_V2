@@ -12,8 +12,6 @@ enum{
 	C_SOCKET_READER_WRITER_EVENT_ERROR = 1,		
 };
 
-
-
 enum{
 	C_SOCKET_READER_WRITER_ERROR_NONE = 0,
 	C_SOCKET_READER_WRITER_ERROR_CONNECT_ERROR = 1000,
@@ -25,8 +23,6 @@ enum{
 	C_SOCKET_READER_WRITER_ERROR_REACH_END_OF_FILE,		
 	C_SOCKET_READER_WRITER_ERROR_LINE_IS_TOO_LONG,
 };
-
-
 
 struct socket_reader_writer{
     struct taskmgr *i_task_mgr;
@@ -68,14 +64,6 @@ status_t socketreaderwriter_set_task_mgr(struct socket_reader_writer *self,struc
 status_t socketreaderwriter_set_socket(struct socket_reader_writer *self,struct socket *_i_socket);
 status_t socketreaderwriter_set_read_dest_file(struct socket_reader_writer *self,struct file_base *_i_read_dest_file);
 status_t socketreaderwriter_set_write_src_file(struct socket_reader_writer *self,struct file_base *_i_write_src_file);
-status_t socketreaderwriter_set_total_read_length(struct socket_reader_writer *self,fsize_t _total_read_length);
-status_t socketreaderwriter_set_write_end_offset(struct socket_reader_writer *self,fsize_t _write_end_offset);
-status_t socketreaderwriter_set_write_offset(struct socket_reader_writer *self,fsize_t _write_offset);
-status_t socketreaderwriter_set_read_length(struct socket_reader_writer *self,fsize_t _read_length);
-status_t socketreaderwriter_set_read_size_this_time(struct socket_reader_writer *self,fsize_t _read_size_this_time);
-status_t socketreaderwriter_set_write_size_this_time(struct socket_reader_writer *self,fsize_t _write_size_this_time);
-status_t socketreaderwriter_set_write_timer(struct socket_reader_writer *self,uint32_t _write_timer);
-status_t socketreaderwriter_set_read_timer(struct socket_reader_writer *self,uint32_t _read_timer);
 status_t socketreaderwriter_set_timeout(struct socket_reader_writer *self,uint32_t _timeout);
 
 status_t socketreaderwriter_prepare_file_for_write(struct socket_reader_writer *self,struct file_base *ifile, fsize_t start, fsize_t size);
@@ -86,4 +74,5 @@ status_t socketreaderwriter_do_read(struct socket_reader_writer *self,uint32_t i
 status_t socketreaderwriter_do_read_until_eol(struct socket_reader_writer *self,uint32_t interval,bool_t only_lf);
 status_t socketreaderwriter_do_read_until_empty_line(struct socket_reader_writer *self,uint32_t interval);
 
+bool_t socketreaderwriter_is_connected(struct socket_reader_writer *self);
 #endif

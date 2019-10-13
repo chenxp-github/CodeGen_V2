@@ -11,7 +11,7 @@
 
 
 #define THREAD_VIRTUAL_FUNCTIONS_DEFINE(child_type, prefix)\
-static int_ptr_t prefix##_virtual_run(struct thread *base)\
+static status_t prefix##_virtual_run(struct thread *base)\
 {\
     CONTAINER_OF(child_type,self,base,base_thread);\
     return prefix##_run(self);\

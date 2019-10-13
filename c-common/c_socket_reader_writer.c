@@ -523,3 +523,11 @@ status_t socketreaderwriter_do_read_until_empty_line(struct socket_reader_writer
 
 }
 
+bool_t socketreaderwriter_is_connected(struct socket_reader_writer *self)
+{
+	if(self->i_socket == NULL)
+		return FALSE;
+	return socket_is_connected(self->i_socket);
+}
+
+

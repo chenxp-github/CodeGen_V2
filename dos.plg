@@ -6,20 +6,239 @@
 --------------------Configuration: dos - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11F.tmp" with contents
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP176.tmp" with contents
 [
 /nologo /MT /W3 /Gm /GX /ZI /Od /I "." /I "common" /I "platform" /I "template" /I "c-common" /I "c-template" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"debug/" /Fo"debug/" /Fd"debug/" /FD /GZ /c 
-"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_link_rpc_reader.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\basic_queue.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\basic_stack.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\basicqueue.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\basicstack.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_closure_list.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_comb_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_epoll.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file_base.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file_manager.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_log_buffer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem_stk.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mutex.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_part_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_socket.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_runner.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_tcp_acceptor.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_timer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_taskmgr.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_tcp_client.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_tcp_server.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_thread.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_weak_ptr.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\closure.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\closurelist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\dirmgr.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\encoder.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\file.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\filebase.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\fileinfo.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\fileinfolist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\hash_table.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\hashtable.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\linked_list.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\linkedlist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\main.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\mem.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\mem_tool.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\memfile.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\memstk.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\minibson.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\misc.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\normal_queue.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\normal_stack.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\normalqueue.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\normalstack.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\syslog.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\task_test.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\taskmgr.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\tasktest.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\tcp.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\test_node.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\test_thread.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\testnode.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\testtree.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\userfunc.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11F.tmp" 
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP176.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP177.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"debug/dos.pdb" /debug /machine:I386 /out:"debug/dos.exe" /pdbtype:sept 
+.\debug\basic_queue.obj
+.\debug\basic_stack.obj
+.\debug\basicqueue.obj
+.\debug\basicstack.obj
+.\debug\c_closure.obj
+.\debug\c_closure_list.obj
+.\debug\c_comb_file.obj
+.\debug\c_epoll.obj
+.\debug\c_file.obj
+.\debug\c_file_base.obj
+.\debug\c_file_manager.obj
+.\debug\c_log_buffer.obj
+.\debug\c_mem.obj
+.\debug\c_mem_file.obj
+.\debug\c_mem_stk.obj
+.\debug\c_mutex.obj
+.\debug\c_part_file.obj
+.\debug\c_socket.obj
+.\debug\c_task.obj
+.\debug\c_task_runner.obj
+.\debug\c_task_tcp_acceptor.obj
+.\debug\c_task_timer.obj
+.\debug\c_taskmgr.obj
+.\debug\c_tcp_client.obj
+.\debug\c_tcp_server.obj
+.\debug\c_thread.obj
+.\debug\c_weak_ptr.obj
+.\debug\closure.obj
+.\debug\closurelist.obj
+.\debug\cruntime.obj
+.\debug\dirmgr.obj
+.\debug\encoder.obj
+.\debug\file.obj
+.\debug\filebase.obj
+.\debug\fileinfo.obj
+.\debug\fileinfolist.obj
+.\debug\hash_table.obj
+.\debug\hashtable.obj
+.\debug\linked_list.obj
+.\debug\linkedlist.obj
+.\debug\main.obj
+.\debug\mem.obj
+.\debug\mem_tool.obj
+.\debug\memfile.obj
+.\debug\memstk.obj
+.\debug\minibson.obj
+.\debug\misc.obj
+.\debug\normal_queue.obj
+.\debug\normal_stack.obj
+.\debug\normalqueue.obj
+.\debug\normalstack.obj
+.\debug\syslog.obj
+.\debug\task_test.obj
+.\debug\taskmgr.obj
+.\debug\tasktest.obj
+.\debug\tcp.obj
+.\debug\test_node.obj
+.\debug\test_thread.obj
+.\debug\testnode.obj
+.\debug\testtree.obj
+.\debug\userfunc.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP177.tmp"
 <h3>Output Window</h3>
 Compiling...
-c_task_link_rpc_reader.c
+basic_queue.c
+basic_stack.c
+Generating Code...
+Compiling...
+basicqueue.cpp
+basicstack.cpp
+Generating Code...
+Compiling...
+c_closure_list.c
+c_comb_file.c
+c_epoll.c
+z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(77) : warning C4018: '==' : signed/unsigned mismatch
+z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(91) : warning C4018: '==' : signed/unsigned mismatch
+c_file.c
+c_file_base.c
+c_file_manager.c
+c_log_buffer.c
+c_mem.c
+c_mem_file.c
+c_mem_stk.c
+c_mutex.c
+c_part_file.c
+c_socket.c
+c_task.c
+c_task_runner.c
+c_task_tcp_acceptor.c
+c_task_timer.c
+c_taskmgr.c
+c_tcp_client.c
+c_tcp_server.c
+Generating Code...
+Compiling...
+c_thread.c
+c_weak_ptr.c
+Generating Code...
+Compiling...
+closure.cpp
+closurelist.cpp
+dirmgr.cpp
+encoder.cpp
+file.cpp
+filebase.cpp
+fileinfo.cpp
+fileinfolist.cpp
+Generating Code...
+Compiling...
+hash_table.c
+Generating Code...
+Compiling...
+hashtable.cpp
+Generating Code...
+Compiling...
+linked_list.c
+Generating Code...
+Compiling...
+linkedlist.cpp
+main.cpp
+mem.cpp
+Generating Code...
+Compiling...
+mem_tool.c
+Generating Code...
+Compiling...
+memfile.cpp
+memstk.cpp
+minibson.cpp
+Generating Code...
+Compiling...
+misc.c
+normal_queue.c
+normal_stack.c
+Generating Code...
+Compiling...
+normalqueue.cpp
+normalstack.cpp
+Generating Code...
+Compiling...
+syslog.c
+task_test.c
+Generating Code...
+Compiling...
+taskmgr.cpp
+tasktest.cpp
+tcp.cpp
+z:\mydisk\program\vc6\projects\codegen_v2\common\tcp.cpp(157) : warning C4018: '==' : signed/unsigned mismatch
+Generating Code...
+Compiling...
+test_node.c
+test_thread.c
+Generating Code...
+Compiling...
+testnode.cpp
+testtree.cpp
+userfunc.cpp
+Generating Code...
+Linking...
 
 
 
 <h3>Results</h3>
-c_task_link_rpc_reader.obj - 0 error(s), 0 warning(s)
+dos.exe - 0 error(s), 3 warning(s)
 </pre>
 </body>
 </html>
