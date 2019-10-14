@@ -42,6 +42,16 @@ status_t filebase_destroy(struct file_base *self)
     return OK;
 }
 
+status_t filebase_virtual_free(struct file_base *self)
+{
+    if(self->virtual_free)
+    {
+        return self->virtual_free(self);
+    }
+    return ERROR;
+}
+
+
 status_t filebase_copy(struct file_base *self,struct file_base *_p)
 {
     ASSERT(_p);

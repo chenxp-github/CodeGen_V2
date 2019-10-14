@@ -54,6 +54,16 @@ status_t task_destroy(struct task *self)
     task_base_destroy(self);
     return OK;
 }
+
+status_t task_virtual_free(struct task *self)
+{
+    if(self->virtual_free)
+    {
+        return self->virtual_free(self);
+    }
+    return ERROR;
+}
+
 status_t task_quit(struct task *self)
 {
     self->flags |= TASK_IS_DELETED;

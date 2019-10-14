@@ -200,7 +200,7 @@ int taskmgr_bsearch_pos(struct taskmgr *self,struct task *node, int order, int *
 status_t taskmgr_del_node(struct taskmgr *self,struct task *node)
 {
     task_destroy(node);
-    X_FREE(node);
+    task_virtual_free(node);
     return OK;
 }
 

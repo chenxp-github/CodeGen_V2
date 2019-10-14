@@ -58,7 +58,7 @@ struct mem{
     int_ptr_t size;
     int_ptr_t max_size;
     bool_t is_const;
-    bool_t is_self_alloc;
+    bool_t is_self_alloc;    
 };
 
 status_t mem_init_basic(struct mem *self);
@@ -70,6 +70,7 @@ status_t mem_print(struct mem *self,struct log_buffer *_buf);
 
 status_t mem_free(struct mem *self);
 status_t mem_malloc(struct mem *self,int_ptr_t asize);
+int_ptr_t mem_get_malloc_size(struct mem *self);
 status_t mem_free(struct mem *self);
 status_t mem_realloc(struct mem *self,int_ptr_t new_size);
 int_ptr_t mem_read(struct mem *self,void *buf,int_ptr_t n);

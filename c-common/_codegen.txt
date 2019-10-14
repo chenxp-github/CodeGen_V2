@@ -3,7 +3,15 @@ class SimpleLinkService{
 	TaskMgr *task_mgr;
 	[noget,noset] int task_link_rpc;
 	[noget,noset] Closure callback;
+	array<sls_message> *sls_sending_queue;
 }
+
+class sls_message{
+    file_base *header_data;
+    file_base *data;
+    int linkrpc_msg_type;
+}
+
 
 [CodeSwitch copy_comp_print=false]
 

@@ -12,6 +12,13 @@
 #define C_GOTO_STATE(delay,state) do{task_sleep(&self->base_task,delay);self->step = state;}while(0)
 #define C_CONTINUE(ms) do{task_sleep(&self->base_task,ms);return ERROR;}while(0)
 
+#define TASK_INIT_VIRTUAL_FUNCTIONS(prefix) do{\
+    self->base_task.destroy = prefix##_virtual_destroy;\
+    self->base_task.virtual_free = prefix##_virtual_free;\
+    self->base_task.run = prefix##_virtual_run;\
+}while(0)\
+
+
 #define TASK_VIRTUAL_FUNCTIONS_DEFINE(child_type, prefix)\
 static status_t prefix##_virtual_destroy(struct task *base)\
 {\
@@ -23,16 +30,18 @@ static status_t prefix##_virtual_run(struct task *base, uint32_t interval)\
     CONTAINER_OF(child_type, self, base, base_task);\
     return prefix##_run(self,interval);\
 }\
-
-#define TASK_INIT_VIRTUAL_FUNCTIONS(prefix) do{\
-    self->base_task.destroy = prefix##_virtual_destroy;\
-    self->base_task.run = prefix##_virtual_run;\
-}while(0)\
+static status_t prefix##_virtual_free(struct task *base)\
+{\
+    CONTAINER_OF(child_type, self, base, base_task);\
+    X_FREE(self);\
+    return OK;\
+}\
 
 struct taskmgr;
 struct task{
     status_t (*run)(struct task *self,uint32_t interval);
     status_t (*destroy)(struct task *self);
+    status_t (*virtual_free)(struct task *self);
     
     struct taskmgr *taskmgr;
     int id;
@@ -48,6 +57,7 @@ status_t task_init_basic(struct task *self);
 status_t task_init(struct task *self,struct taskmgr *mgr);
 status_t task_base_destroy(struct task *self);
 status_t task_destroy(struct task *self);
+status_t task_virtual_free(struct task *self);
 status_t task_quit(struct task *self);
 status_t task_suspend(struct task *self);
 status_t task_resume(struct task *self);

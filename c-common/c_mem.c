@@ -81,6 +81,11 @@ status_t mem_malloc(struct mem *self,int_ptr_t asize)
     return OK;
 }
 
+int_ptr_t mem_get_malloc_size(struct mem *self)
+{
+    return self->max_size - sizeof(int);
+}
+
 status_t mem_free(struct mem *self)
 {
     if(self->buffer == NULL)

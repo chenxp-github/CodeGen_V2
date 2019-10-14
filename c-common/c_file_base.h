@@ -14,8 +14,8 @@
     self->base_file_base.set_size = prefix##_virtual_set_size;\
     self->base_file_base.add_block = prefix##_virtual_add_block;\
     self->base_file_base.get_max_size = prefix##_virtual_get_max_size;\
+    self->base_file_base.virtual_free = prefix##_virtual_free;\
 }while(0)\
-
 
 #define FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(child_type, prefix)\
 static int_ptr_t prefix##_virtual_read(struct file_base *base,void *buf,int_ptr_t n)\
@@ -63,11 +63,18 @@ static fsize_t prefix##_virtual_get_max_size(struct file_base *base)\
     CONTAINER_OF(child_type,self,base,base_file_base);\
     return prefix##_get_max_size(self);\
 }\
+static fsize_t prefix##_virtual_free(struct file_base *base)\
+{\
+    CONTAINER_OF(child_type,self,base,base_file_base);\
+    X_FREE(self);\
+    return OK;\
+}\
 /************************************/
 struct file_base{
     void *user_data;
     char *split_chars;
-
+    
+    status_t (*virtual_free)(struct file_base *self);
     status_t (*destroy)(struct file_base *self);
     int_ptr_t (*read)(struct file_base *self,void *buf,int_ptr_t n);
     int_ptr_t (*write)(struct file_base *self,const void *buf,int_ptr_t n);
@@ -83,6 +90,7 @@ status_t filebase_init_basic(struct file_base *self);
 status_t filebase_init(struct file_base *self);
 status_t filebase_base_destroy(struct file_base *self);
 status_t filebase_destroy(struct file_base *self);
+status_t filebase_virtual_free(struct file_base *self);
 status_t filebase_copy(struct file_base *self,struct file_base *_p);
 status_t filebase_comp(struct file_base *self,struct file_base *_p);
 status_t filebase_print(struct file_base *self,struct log_buffer *_buf);
