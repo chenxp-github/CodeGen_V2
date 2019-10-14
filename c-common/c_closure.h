@@ -3,6 +3,7 @@
 
 #include "cruntime.h"
 #include "c_log_buffer.h"
+#include "c_closure_c89.h"
 
 #define CCLOSURE_MAX_PARAMS 16
 

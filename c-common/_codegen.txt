@@ -1,4 +1,12 @@
 [CodeSwitch copy_comp_print=false]
+class SimpleLinkService{
+	TaskMgr *task_mgr;
+	[noget,noset] int task_link_rpc;
+	[noget,noset] Closure callback;
+}
+
+[CodeSwitch copy_comp_print=false]
+
 class SocketReaderWriter{
 	TaskMgr *i_task_mgr;
 	Socket *i_socket;

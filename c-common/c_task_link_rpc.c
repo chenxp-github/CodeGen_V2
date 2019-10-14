@@ -434,8 +434,6 @@ status_t tasklinkrpc_set_retries(struct task_link_rpc *self,int retry)
 
 status_t tasklinkrpc_on_socket_error(struct task_link_rpc *self)
 {
-    self->reader = NULL;
-    self->writer = NULL;
     closure_set_param_pointer(&self->callback ,1 ,self);
     closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_SOCKET_ERROR);
     return OK;
@@ -451,8 +449,7 @@ status_t tasklinkrpc_on_get_socket(struct task_link_rpc *self)
 bool_t tasklinkrpc_can_read_next_package(struct task_link_rpc *self)
 {
     closure_set_param_pointer(&self->callback ,1 ,self);
-    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_CAN_READ_NEXT);
-    return TRUE;
+    return closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_CAN_READ_NEXT);
 }
 
 status_t tasklinkrpc_on_prepare_package_to_send(struct task_link_rpc *self)
@@ -464,7 +461,9 @@ status_t tasklinkrpc_on_prepare_package_to_send(struct task_link_rpc *self)
 
 status_t tasklinkrpc_on_got_package_header(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data)
 {
-    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_set_param_pointer(&self->callback,1,self);
+    closure_set_param_pointer(&self->callback,2,header);
+    closure_set_param_pointer(&self->callback,3,header_data);
     closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_GOT_PACKAGE_HEADER);
     return OK;
 }
@@ -472,6 +471,9 @@ status_t tasklinkrpc_on_got_package_header(struct task_link_rpc *self,LINKRPC_HE
 status_t tasklinkrpc_on_got_package_data(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data,struct file_base *data)
 {
     closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_set_param_pointer(&self->callback,2,header);
+    closure_set_param_pointer(&self->callback,3,header_data);
+    closure_set_param_pointer(&self->callback,4,data);
     closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_GOT_PACKAGE_DATA);
     return OK;
 }

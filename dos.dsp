@@ -130,6 +130,10 @@ SOURCE=".\c-common\c_closure.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_closure_c89.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_closure_list.c"
 # End Source File
 # Begin Source File
@@ -223,6 +227,14 @@ SOURCE=".\c-common\c_part_file.c"
 # Begin Source File
 
 SOURCE=".\c-common\c_part_file.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_simple_link_service.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_simple_link_service.h"
 # End Source File
 # Begin Source File
 
