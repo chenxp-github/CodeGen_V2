@@ -16,6 +16,11 @@ status_t tasklinkrpc_on_got_package_data(struct task_link_rpc *self,LINKRPC_HEAD
 status_t tasklinkrpc_on_prepare_package_to_send(struct task_link_rpc *self);
 status_t tasklinkrpc_on_package_send_ok(struct task_link_rpc *self);
 /*********************************************/
+void* tasklinkrpc_get_this_pointer(struct task_link_rpc *self)
+{
+    return (void*)self;
+}
+
 status_t tasklinkrpc_init_basic(struct task_link_rpc *self)
 {
     task_init_basic(&self->base_task);

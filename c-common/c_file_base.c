@@ -16,6 +16,7 @@ status_t filebase_init_basic(struct file_base *self)
     self->set_size = NULL;
     self->add_block = NULL;
     self->get_max_size = NULL;
+    self->get_this_pointer = NULL;
     return OK;
 }
 
@@ -41,16 +42,6 @@ status_t filebase_destroy(struct file_base *self)
     filebase_base_destroy(self);
     return OK;
 }
-
-status_t filebase_virtual_free(struct file_base *self)
-{
-    if(self->virtual_free)
-    {
-        return self->virtual_free(self);
-    }
-    return ERROR;
-}
-
 
 status_t filebase_copy(struct file_base *self,struct file_base *_p)
 {

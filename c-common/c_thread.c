@@ -8,6 +8,7 @@ status_t thread_init_basic(struct thread *self)
     self->running = 0;
     self->run = NULL;
     self->destroy = NULL;
+    self->get_this_pointer = NULL;
     return OK;
 }
 

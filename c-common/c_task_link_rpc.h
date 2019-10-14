@@ -45,6 +45,7 @@ struct task_link_rpc{
     struct closure callback;
 };
 
+void* tasklinkrpc_get_this_pointer(struct task_link_rpc *self);
 status_t tasklinkrpc_init_basic(struct task_link_rpc *self);
 status_t tasklinkrpc_init(struct task_link_rpc *self,struct taskmgr *mgr);
 status_t tasklinkrpc_destroy(struct task_link_rpc *self);

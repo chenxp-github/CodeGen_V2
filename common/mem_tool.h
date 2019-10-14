@@ -83,4 +83,17 @@ FREE(p);\
 #define X_REALLOC REALLOC
 #define X_ZALLOC ZALLOC
 
+#define X_VIRTUAL_FREE(ptr) do{\
+    if(ptr->get_this_pointer)\
+    {\
+        void * p = ptr->get_this_pointer(ptr);\
+        X_FREE(p);\
+        ptr = NULL;\
+    }\
+    else\
+    {\
+        X_FREE(ptr);\
+    }\
+}while(0)
+
 #endif

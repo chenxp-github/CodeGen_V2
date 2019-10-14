@@ -4,6 +4,10 @@
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_timer,tasktimer)
 /************************************************************/
+void* tasktimer_get_this_pointer(struct task_timer *self)
+{
+    return (void*)self;
+}
 status_t tasktimer_init_basic(struct task_timer *self)
 {
     task_init_basic(&self->base_task);

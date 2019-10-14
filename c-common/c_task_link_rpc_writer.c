@@ -9,7 +9,13 @@ enum{
 };
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_link_rpc_writer,tasklinkrpcwriter)
+
 /*****************************************************/
+void* tasklinkrpcwriter_get_this_pointer(struct task_link_rpc_writer *self)
+{
+    return (void*)self;
+}
+
 status_t tasklinkrpcwriter_init_basic(struct task_link_rpc_writer *self)
 {
     task_init_basic(&self->base_task);

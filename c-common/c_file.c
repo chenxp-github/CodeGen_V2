@@ -4,6 +4,11 @@
 
 FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct file, file)
 /************************************************************************/
+void* file_get_this_pointer(struct file *self)
+{
+    return (void*)self;
+}
+
 status_t file_init_basic(struct file *self)
 {
     filebase_init_basic(&self->base_file_base);

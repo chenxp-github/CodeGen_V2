@@ -4,6 +4,11 @@
 
 FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct part_file, partfile)
 /************************************************************************/
+void* partfile_get_this_pointer(struct part_file *self)
+{
+    return (void*)self;
+}
+
 status_t partfile_init_basic(struct part_file *self)
 {
     filebase_init_basic(&self->base_file_base);

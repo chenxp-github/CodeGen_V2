@@ -14,7 +14,7 @@
     self->base_file_base.set_size = prefix##_virtual_set_size;\
     self->base_file_base.add_block = prefix##_virtual_add_block;\
     self->base_file_base.get_max_size = prefix##_virtual_get_max_size;\
-    self->base_file_base.virtual_free = prefix##_virtual_free;\
+    self->base_file_base.get_this_pointer = prefix##_virtual_get_this_pointer;\
 }while(0)\
 
 #define FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(child_type, prefix)\
@@ -63,18 +63,16 @@ static fsize_t prefix##_virtual_get_max_size(struct file_base *base)\
     CONTAINER_OF(child_type,self,base,base_file_base);\
     return prefix##_get_max_size(self);\
 }\
-static fsize_t prefix##_virtual_free(struct file_base *base)\
+static void* prefix##_virtual_get_this_pointer(struct file_base *base)\
 {\
     CONTAINER_OF(child_type,self,base,base_file_base);\
-    X_FREE(self);\
-    return OK;\
+    return prefix##_get_this_pointer(self);\
 }\
 /************************************/
 struct file_base{
     void *user_data;
-    char *split_chars;
-    
-    status_t (*virtual_free)(struct file_base *self);
+    char *split_chars;    
+    void* (*get_this_pointer)(struct file_base *self);
     status_t (*destroy)(struct file_base *self);
     int_ptr_t (*read)(struct file_base *self,void *buf,int_ptr_t n);
     int_ptr_t (*write)(struct file_base *self,const void *buf,int_ptr_t n);

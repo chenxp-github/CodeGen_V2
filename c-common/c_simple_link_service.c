@@ -21,13 +21,13 @@ status_t sls_message_destroy(struct sls_message *self)
     if(self->data)
     {
         filebase_destroy(self->data);
-        filebase_virtual_free(self->data);
+        X_VIRTUAL_FREE(self->data);
     }
 
     if(self->header_data)
     {
         filebase_destroy(self->header_data);
-        filebase_virtual_free(self->data);
+        X_VIRTUAL_FREE(self->data);
     }
     sls_message_init_basic(self);
     return OK;

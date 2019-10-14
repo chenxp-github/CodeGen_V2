@@ -12,7 +12,13 @@
 #define STEP_CHECK_CONNECT_COMPLETE         5
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_tcp_connector,tasktcpconnector)
+
 /*********************************************/
+void* tasktcpconnector_get_this_pointer(struct task_tcp_connector *self)
+{
+    return (void*)self;
+}
+
 status_t tasktcpconnector_init_basic(struct task_tcp_connector *self)
 {    
 	task_init_basic(&self->base_task);

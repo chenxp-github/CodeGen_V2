@@ -29,6 +29,7 @@ struct file{
     fsize_t buf_start;
 };
 
+void* file_get_this_pointer(struct file *self);
 status_t file_init_basic(struct file *self);
 status_t file_init(struct file *self);
 status_t file_destroy(struct file *self);

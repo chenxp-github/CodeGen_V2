@@ -4,6 +4,11 @@
 
 THREAD_VIRTUAL_FUNCTIONS_DEFINE(struct test_thread,testthread)
 /******************************************************************/
+void* testthread_get_this_pointer(struct test_thread *self)
+{
+    return (void*)self;
+}
+
 status_t testthread_init_basic(struct test_thread *self)
 {
     thread_init_basic(&self->base_thread);

@@ -9,6 +9,7 @@ struct test_thread{
     struct thread base_thread;
 };
 
+void* testthread_get_this_pointer(struct test_thread *self);
 status_t testthread_init_basic(struct test_thread *self);
 status_t testthread_init(struct test_thread *self);
 status_t testthread_destroy(struct test_thread *self);

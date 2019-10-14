@@ -4,6 +4,11 @@
 
 FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct mem_file, memfile)
 /********************************************************/
+void* memfile_get_this_pointer(struct mem_file *self)
+{
+    return (void*)self;
+}
+
 status_t memfile_init_basic(struct mem_file *self)
 {
     filebase_init_basic(&self->base_file_base);

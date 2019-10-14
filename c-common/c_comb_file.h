@@ -20,6 +20,7 @@ struct comb_file{
     int max_file_num;
 };
 
+void* combfile_get_this_pointer(struct comb_file *self);
 status_t combfile_init_basic(struct comb_file *self);
 status_t combfile_init(struct comb_file *self,int max);
 status_t combfile_destroy(struct comb_file *self);

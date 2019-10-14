@@ -10,6 +10,7 @@ struct task_test{
 	int step;
 };
 
+void* tasktest_get_this_pointer(struct task_test *self);
 status_t tasktest_init_basic(struct task_test *self);
 status_t tasktest_init(struct task_test *self,struct taskmgr *mgr);
 status_t tasktest_destroy(struct task_test *self);

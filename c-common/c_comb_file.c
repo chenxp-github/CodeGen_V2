@@ -3,7 +3,13 @@
 #include "mem_tool.h"
 
 FILE_BASE_VIRTUAL_FUNCTIONS_DEFINE(struct comb_file, combfile)
+
 /**************************************************************/
+void* combfile_get_this_pointer(struct comb_file *self)
+{
+    return (void*)self;
+}
+
 status_t combfile_init_basic(struct comb_file *self)
 {
     filebase_init_basic(&self->base_file_base);

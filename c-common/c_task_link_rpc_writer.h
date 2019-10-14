@@ -37,6 +37,7 @@ struct task_link_rpc_writer{
     struct closure *callback;
 };
 
+void* tasklinkrpcwriter_get_this_pointer(struct task_link_rpc_writer *self);
 status_t tasklinkrpcwriter_init_basic(struct task_link_rpc_writer *self);
 status_t tasklinkrpcwriter_init(struct task_link_rpc_writer *self,struct taskmgr *mgr);
 status_t tasklinkrpcwriter_destroy(struct task_link_rpc_writer *self);

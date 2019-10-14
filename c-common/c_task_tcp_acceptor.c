@@ -9,6 +9,11 @@ enum{
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_tcp_acceptor,tasktcpacceptor)
 /*********************************************/
+void* tasktcpacceptor_get_this_pointer(struct task_tcp_acceptor *self)
+{
+    return (void*)self;
+}
+
 status_t tasktcpacceptor_init_basic(struct task_tcp_acceptor *self)
 {
     task_init_basic(&self->base_task);

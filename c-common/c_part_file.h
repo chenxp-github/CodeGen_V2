@@ -15,6 +15,7 @@ struct part_file{
     fsize_t max_size;
 };
 
+void* partfile_get_this_pointer(struct part_file *self);
 status_t partfile_init_basic(struct part_file *self);
 status_t partfile_init(struct part_file *self);
 status_t partfile_destroy(struct part_file *self);

@@ -4,6 +4,10 @@
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_test,tasktest)
 /*********************************************/
+void* tasktest_get_this_pointer(struct task_test *self)
+{
+    return (void*)self;
+}
 status_t tasktest_init_basic(struct task_test *self)
 {
 	task_init_basic(&self->base_task);

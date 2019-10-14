@@ -12,7 +12,12 @@ enum {
 };
 
 TASK_VIRTUAL_FUNCTIONS_DEFINE(struct task_link_rpc_reader,tasklinkrpcreader)
+
 /******************************************************************/
+void* tasklinkrpcreader_get_this_pointer(struct task_link_rpc_reader *self)
+{
+    return (void*)self;
+}
 status_t tasklinkrpcreader_init_basic(struct task_link_rpc_reader *self)
 {
     task_init_basic(&self->base_task);

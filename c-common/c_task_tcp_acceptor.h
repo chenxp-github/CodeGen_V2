@@ -24,6 +24,7 @@ struct task_tcp_acceptor{
     struct closure callback;
 };
 
+void* tasktcpacceptor_get_this_pointer(struct task_tcp_acceptor *self);
 status_t tasktcpacceptor_init_basic(struct task_tcp_acceptor *self);
 status_t tasktcpacceptor_init(struct task_tcp_acceptor *self,struct taskmgr *mgr);
 status_t tasktcpacceptor_destroy(struct task_tcp_acceptor *self);

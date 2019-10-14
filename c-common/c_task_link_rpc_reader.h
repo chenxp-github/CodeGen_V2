@@ -35,6 +35,7 @@ struct task_link_rpc_reader{
 	int step;
 };
 
+void* tasklinkrpcreader_get_this_pointer(struct task_link_rpc_reader *self);
 status_t tasklinkrpcreader_init_basic(struct task_link_rpc_reader *self);
 status_t tasklinkrpcreader_init(struct task_link_rpc_reader *self,struct taskmgr *mgr);
 status_t tasklinkrpcreader_destroy(struct task_link_rpc_reader *self);

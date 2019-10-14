@@ -16,6 +16,7 @@ struct task_timer{
     struct closure callback;
 };
 
+void* tasktimer_get_this_pointer(struct task_timer *self);
 status_t tasktimer_init_basic(struct task_timer *self);
 status_t tasktimer_init(struct task_timer *self,struct taskmgr *mgr);
 status_t tasktimer_destroy(struct task_timer *self);
