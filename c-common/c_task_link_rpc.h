@@ -7,6 +7,17 @@
 #include "c_task_link_rpc_reader.h"
 #include "c_task_link_rpc_writer.h"
 #include "c_mem.h"
+#include "c_closure.h"
+
+enum{
+    C_TASK_LINKRPC_EVENT_SOCKET_ERROR = 1,
+    C_TASK_LINKRPC_EVENT_GET_SOCKET,
+    C_TASK_LINKRPC_EVENT_CAN_READ_NEXT,
+    C_TASK_LINKRPC_EVENT_PREPARE_DATA_TO_SEND,
+    C_TASK_LINKRPC_EVENT_GOT_PACKAGE_HEADER,
+    C_TASK_LINKRPC_EVENT_GOT_PACKAGE_DATA,
+    C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK,
+};
 
 enum{
     C_TASK_LINKRPC_ERROR_NONE = 0,
@@ -31,6 +42,7 @@ struct task_link_rpc{
     int step;
     int retries;
     int max_retries;
+    struct closure callback;
 };
 
 status_t tasklinkrpc_init_basic(struct task_link_rpc *self);

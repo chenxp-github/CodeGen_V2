@@ -30,6 +30,7 @@ status_t tasklinkrpc_init_basic(struct task_link_rpc *self)
     self->retries = 0;
     self->max_retries = 1;
     self->socket_rw = NULL;
+    closure_init_basic(&self->callback);
     return OK;
 }
 
@@ -64,6 +65,8 @@ status_t tasklinkrpc_init(struct task_link_rpc *self,struct taskmgr *mgr)
     tasklinkrpc_init_basic(self);
     task_init(&self->base_task,mgr);
 
+    closure_init(&self->callback);
+
     X_MALLOC(self->socket,struct socket,1);
     socket_init(self->socket);
     
@@ -86,6 +89,8 @@ status_t tasklinkrpc_init(struct task_link_rpc *self,struct taskmgr *mgr)
 status_t tasklinkrpc_destroy(struct task_link_rpc *self)
 {
     struct taskmgr *task_mgr = task_get_taskmgr(&self->base_task);
+    
+    closure_destroy(&self->callback);
     taskmgr_quit_task(task_mgr,&self->task_reader);
     taskmgr_quit_task(task_mgr,&self->task_writer);
 
@@ -113,8 +118,6 @@ C_BEGIN_CLOSURE_FUNC(on_reader_event)
     struct task_link_rpc *self;
     LINKRPC_HEADER *header;
   
-   
-
     C89_CLOSURE_PARAM_INT(event,0);
     C89_CLOSURE_PARAM_PTR(struct task_link_rpc*,self,10);
 
@@ -185,9 +188,11 @@ status_t tasklinkrpc_create_reader(struct task_link_rpc *self)
 
 C_BEGIN_CLOSURE_FUNC(on_writer_event)
 {
-    /*
-    C_CLOSURE_PARAM_INT(event,0);
-    C_CLOSURE_PARAM_PTR(struct task_link_rpc*,self,10);
+    int event;
+    struct task_link_rpc *self;
+
+    C89_CLOSURE_PARAM_INT(event,0);
+    C89_CLOSURE_PARAM_PTR(struct task_link_rpc*,self,10);
 
     ASSERT(self && tasklinkrpc_is_alive(self));
 
@@ -204,7 +209,6 @@ C_BEGIN_CLOSURE_FUNC(on_writer_event)
         tasklinkrpc_retry(self,C_TASK_LINKRPC_ERROR_LINKRPC_WRITER_STOPPED);
         self->writer = NULL;
     }
-    */
     return OK;
 }
 C_END_CLOSURE_FUNC(on_writer_event)
@@ -430,31 +434,51 @@ status_t tasklinkrpc_set_retries(struct task_link_rpc *self,int retry)
 
 status_t tasklinkrpc_on_socket_error(struct task_link_rpc *self)
 {
+    self->reader = NULL;
+    self->writer = NULL;
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_SOCKET_ERROR);
     return OK;
 }
 
 status_t tasklinkrpc_on_get_socket(struct task_link_rpc *self)
 {
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_GET_SOCKET);
     return OK;
 }
 
 bool_t tasklinkrpc_can_read_next_package(struct task_link_rpc *self)
 {
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_CAN_READ_NEXT);
     return TRUE;
 }
-status_t tasklinkrpc_on_got_package_header(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data)
-{
-    return OK;
-}
-status_t tasklinkrpc_on_got_package_data(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data,struct file_base *data)
-{
-    return OK;
-}
+
 status_t tasklinkrpc_on_prepare_package_to_send(struct task_link_rpc *self)
 {
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_PREPARE_DATA_TO_SEND);
     return FALSE;
 }
+
+status_t tasklinkrpc_on_got_package_header(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data)
+{
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_GOT_PACKAGE_HEADER);
+    return OK;
+}
+
+status_t tasklinkrpc_on_got_package_data(struct task_link_rpc *self,LINKRPC_HEADER *header,struct mem *header_data,struct file_base *data)
+{
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_GOT_PACKAGE_DATA);
+    return OK;
+}
+
 status_t tasklinkrpc_on_package_send_ok(struct task_link_rpc *self)
 {
+    closure_set_param_pointer(&self->callback ,1 ,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK);
     return OK;
 }
