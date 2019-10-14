@@ -52,14 +52,13 @@ do{if((fsize_t)(size)> mem_get_max_size(&mem))\
 }}while(0)\
 
 struct mem{
-    
+    struct file_base base_file_base;
 	char *buffer;
     int_ptr_t offset;
     int_ptr_t size;
     int_ptr_t max_size;
     bool_t is_const;
-    bool_t is_self_alloc;    
-    struct file_base base_file_base;
+    bool_t is_self_alloc;
 };
 
 void* mem_get_this_pointer(struct mem *self);

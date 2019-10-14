@@ -83,15 +83,17 @@ FREE(p);\
 #define X_REALLOC REALLOC
 #define X_ZALLOC ZALLOC
 
-#define X_VIRTUAL_FREE(ptr) do{\
+#define X_VIRTUAL_DELETE(ptr,destroy) do{\
     if(ptr->get_this_pointer)\
     {\
         void * p = ptr->get_this_pointer(ptr);\
+        destroy(ptr);\
         X_FREE(p);\
         ptr = NULL;\
     }\
     else\
     {\
+        destroy(ptr);\
         X_FREE(ptr);\
     }\
 }while(0)

@@ -20,14 +20,12 @@ status_t sls_message_destroy(struct sls_message *self)
 {
     if(self->data)
     {
-        filebase_destroy(self->data);
-        X_VIRTUAL_FREE(self->data);
+        X_VIRTUAL_DELETE(self->data,filebase_destroy);
     }
 
     if(self->header_data)
     {
-        filebase_destroy(self->header_data);
-        X_VIRTUAL_FREE(self->data);
+        X_VIRTUAL_DELETE(self->data,filebase_destroy);
     }
     sls_message_init_basic(self);
     return OK;

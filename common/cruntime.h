@@ -51,7 +51,7 @@
 
 /////////////////////////////////////////////////////////////
 #if _ANDROID_
-#include "crt_linux.h"
+#include "crt_android.h"
 #endif
 /////////////////////////////////////////////////////////////
 
@@ -60,6 +60,11 @@
 #define WEAK_REF_ID_INIT()  __weak_ref_id = crt_get_unique_id()
 #define WEAK_REF_ID_CLEAR() __weak_ref_id = 0
 ////////////////////////////////////////////////////////////
+#define C_WEAK_REF_ID_DEFINE() int __weak_ref_id
+#define C_WEAK_REF_ID_CLEAR(self) self->__weak_ref_id = 0
+#define C_WEAK_REF_ID_INIT(self)  self->__weak_ref_id = crt_get_unique_id()
+////////////////////////////////////////////////////////////
+
 #define CLEAR_BITS(v,bits) v &= ~(bits)
 #define SET_BITS(v,bits) v |= (bits)
 #define TEST_BITS(v,bits) ((v&(bits)) == (bits))

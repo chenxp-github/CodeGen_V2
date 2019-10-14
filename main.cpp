@@ -42,8 +42,7 @@ int main(int argc, char **argv)
     
     PP(pf->get_this_pointer(pf));
 
-    filebase_destroy(pf);
-    X_VIRTUAL_FREE(pf);
+    X_VIRTUAL_DELETE(pf,filebase_destroy);
 
 
     return 0;
