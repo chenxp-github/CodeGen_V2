@@ -234,11 +234,43 @@ SOURCE=".\c-common\c_socket.h"
 # End Source File
 # Begin Source File
 
+SOURCE=".\c-common\c_socket_reader_writer.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_socket_reader_writer.h"
+# End Source File
+# Begin Source File
+
 SOURCE=".\c-common\c_task.c"
 # End Source File
 # Begin Source File
 
 SOURCE=".\c-common\c_task.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc_reader.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc_reader.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc_writer.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_link_rpc_writer.h"
 # End Source File
 # Begin Source File
 
@@ -255,6 +287,14 @@ SOURCE=".\c-common\c_task_tcp_acceptor.c"
 # Begin Source File
 
 SOURCE=".\c-common\c_task_tcp_acceptor.h"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_tcp_connector.c"
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\c_task_tcp_connector.h"
 # End Source File
 # Begin Source File
 
@@ -415,6 +455,10 @@ SOURCE=.\template\linkedlist.cpp
 # Begin Source File
 
 SOURCE=.\template\linkedlist.h
+# End Source File
+# Begin Source File
+
+SOURCE=".\c-common\linkrpccommon.h"
 # End Source File
 # Begin Source File
 

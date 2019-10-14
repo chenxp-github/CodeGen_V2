@@ -2,8 +2,7 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
-enum {
-	
+enum {	
     STEP_PREPARE_READ_HEADER = 1,		
 	STEP_READ_HEADER,
 	STEP_PREPARE_READ_HEADER_DATA,
