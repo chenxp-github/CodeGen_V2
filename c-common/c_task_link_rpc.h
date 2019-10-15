@@ -59,7 +59,6 @@ status_t tasklinkrpc_create_writer(struct task_link_rpc *self);
 status_t tasklinkrpc_start_sending(struct task_link_rpc *self);
 status_t tasklinkrpc_set_header_buf(struct task_link_rpc *self,struct mem *i_buf);
 status_t tasklinkrpc_set_data_buf(struct task_link_rpc *self,struct file_base *i_buf);
-status_t tasklinkrpc_set_socket(struct task_link_rpc *self,int32_t fd);
 status_t tasklinkrpc_transfer_socket(struct task_link_rpc *self,struct socket *from);
 status_t tasklinkrpc_start_reader_and_writer(struct task_link_rpc *self);
 status_t tasklinkrpc_set_timeout(struct task_link_rpc *self,int to);
@@ -76,7 +75,6 @@ status_t tasklinkrpc_retry(struct task_link_rpc *self,int err);
 status_t tasklinkrpc_write_immediately(struct task_link_rpc *self);
 struct socket* tasklinkrpc_get_socket(struct task_link_rpc *self);
 int tasklinkrpc_get_retries(struct task_link_rpc *self);
-status_t tasklinkrpc_set_retries(struct task_link_rpc *self,int retry);
 status_t tasklinkrpc_on_socket_error(struct task_link_rpc *self);
 status_t tasklinkrpc_send_raw(struct task_link_rpc *self,int linkrpc_cmd,struct file_base *header, struct file_base *data);
 

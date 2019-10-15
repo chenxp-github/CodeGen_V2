@@ -57,7 +57,7 @@ status_t tasktcpacceptor_report_error(struct task_tcp_acceptor *self,int err)
         break;
     }
     XLOG(LOG_MODULE_USER,LOG_LEVEL_ERROR,
-        "task_test(%d): exit with error \"%s\"",
+        "task_tcp_acceptor(%d): exit with error \"%s\"",
         task_get_id(&self->base_task),err_str);
     return OK;
 }

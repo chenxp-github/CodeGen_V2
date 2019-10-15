@@ -32,7 +32,6 @@ struct task_tcp_connector{
     struct closure callback;
 };
 
-
 void* tasktcpconnector_get_this_pointer(struct task_tcp_connector *self);
 status_t tasktcpconnector_init_basic(struct task_tcp_connector *self);
 status_t tasktcpconnector_init(struct task_tcp_connector *self,struct taskmgr *mgr);

@@ -22,7 +22,7 @@ status_t socketreaderwriter_init_basic(struct socket_reader_writer *self)
     self->write_size_this_time = 0;
     self->write_timer = 0;
     self->read_timer = 0;
-    self->timeout = 0;
+    self->timeout = SOCKETRW_TIMEOUT;
     closure_init_basic(&self->callback);
     return OK;
 }

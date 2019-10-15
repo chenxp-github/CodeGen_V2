@@ -22,7 +22,9 @@ struct simple_link_service{
     struct sls_message **sls_sending_queue;
     int sls_sending_queue_size,sls_sending_queue_len;
     bool_t as_tcp_server;
-    int task_tcp_connector; //when as client
+    int task_tcp_connector; //when as client    
+    char* server_name; //when as client
+    int port;
 };
 
 status_t simplelinkservice_init_basic(struct simple_link_service *self);
@@ -39,5 +41,8 @@ status_t simplelinkservice_set_sls_sending_queue_elem(struct simple_link_service
 status_t simplelinkservice_send_message(struct simple_link_service *self,struct sls_message *msg);
 status_t simplelinkservice_delete_message(struct simple_link_service *self, int index);
 struct task_link_rpc *simplelinkservice_get_task_link_rpc(struct simple_link_service *self);
+status_t simplelinkservice_start(struct simple_link_service *self);
+status_t simplelinkservice_set_server_name(struct simple_link_service *self,const char *_server_name);
+status_t simplelinkservice_set_port(struct simple_link_service *self,int _port);
 
 #endif

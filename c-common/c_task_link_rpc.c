@@ -231,7 +231,7 @@ status_t tasklinkrpc_create_writer(struct task_link_rpc *self)
 
     closure_set_func(writer->callback,on_writer_event);
     closure_set_param_pointer(writer->callback,10,self);
-    tasklinkrpcwriter_start(self->writer);
+    tasklinkrpcwriter_start(writer);
 
     self->task_writer = task_get_id(&writer->base_task);
     self->writer = writer;

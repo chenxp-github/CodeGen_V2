@@ -26,7 +26,7 @@ status_t tasktcpconnector_init_basic(struct task_tcp_connector *self)
     tcpclient_init_basic(&self->tcp_client);
     self->server_name = NULL;
     self->port = 0;
-    self->timeout = 0;
+    self->timeout = TCP_CONNECTOR_TIMEOUT;
     self->connect_time = 0;
     self->hostoip_context = NULL;
     closure_init_basic(&self->callback);
@@ -58,12 +58,33 @@ status_t tasktcpconnector_report_error(struct task_tcp_connector *self,int err)
     const char *err_str="unknown error";
     switch(err)
     {
-        case C_TASK_TCP_CONNECTOR_ERROR_NONE: 
-            err_str = "none"; 
+        case C_TASK_TCP_CONNECTOR_ERROR_NONE:
+            err_str = "none";
+        break;
+
+        case C_TASK_TCP_CONNECTOR_ERROR_RESOLVE_HOST_ERROR:
+            err_str = "resolve host error";
+        break;
+
+        case C_TASK_TCP_CONNECTOR_ERROR_CONNECT_TIMEOUT:
+            err_str = "connect timeout";
+        break;
+
+        case C_TASK_TCP_CONNECTOR_ERROR_EXCEED_MAX_RETRIES:
+            err_str = "exceed max retries";
+        break;
+
+        case C_TASK_TCP_CONNECTOR_ERROR_CONNECT_ERROR:
+            err_str = "connect error";
+        break;
+
+        case C_TASK_TCP_CONNECTOR_ERROR_CONNECTION_CLOSED:
+            err_str = "connection closed";
         break;
     }
+
     XLOG(LOG_MODULE_USER,LOG_LEVEL_ERROR,
-        "task_test(%d): exit with error \"%s\"",
+        "task_tcp_connector(%d): exit with error \"%s\"",
         task_get_id(&self->base_task),err_str);
     return OK;
 }
@@ -71,7 +92,7 @@ status_t tasktcpconnector_report_error(struct task_tcp_connector *self,int err)
 status_t tasktcpconnector_start(struct task_tcp_connector *self)
 {
     task_resume(&self->base_task);
-    self->step = 1;
+    self->step = STEP_RESOLVE_HOST;
     return OK;
 }
 
@@ -143,7 +164,6 @@ status_t tasktcpconnector_run(struct task_tcp_connector *self,uint32_t interval)
 {
     if(self->step == STEP_RESOLVE_HOST)
     {
-
         if(socket_is_ip_address(self->server_name))
         {
             tasktcpconnector_init_tcp_client(self,self->server_name,self->port);     

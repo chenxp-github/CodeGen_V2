@@ -50,6 +50,8 @@ status_t sls_message_check(struct sls_message *self)
     return OK;
 }
 /**************************************************************/
+status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self);
+/**************************************************************/
 status_t simplelinkservice_init_basic(struct simple_link_service *self)
 {
     self->task_mgr = NULL;
@@ -61,6 +63,8 @@ status_t simplelinkservice_init_basic(struct simple_link_service *self)
     self->sls_sending_queue_len = 0;
     self->sls_sending_queue_len = 0;
     self->as_tcp_server = FALSE;
+    self->server_name = NULL;
+    self->port = 0;
     return OK;
 }
 
@@ -95,6 +99,7 @@ status_t simplelinkservice_destroy(struct simple_link_service *self)
     mem_destroy(&self->header_recv_buf);
     mem_destroy(&self->data_recv_buf);
     closure_destroy(&self->callback);
+    X_FREE(self->server_name);
     simplelinkservice_init_basic(self);
     return OK;
 }
@@ -126,7 +131,10 @@ C_BEGIN_CLOSURE_FUNC(on_task_link_rpc_event)
 
     else if(event == C_TASK_LINKRPC_EVENT_GET_SOCKET)
     {
-        
+        if(!self->as_tcp_server)
+        {
+            simplelinkservice_start_tcp_connector(self);
+        }
     }
 
     else if(event == C_TASK_LINKRPC_EVENT_PREPARE_DATA_TO_SEND)
@@ -189,7 +197,8 @@ status_t simplelinkservice_start(struct simple_link_service *self)
     struct task_link_rpc *pt;
     ASSERT(self->task_mgr);
     ASSERT(!taskmgr_is_task(self->task_mgr,self->task_link_rpc));
-    
+    ASSERT(self->server_name && self->port != 0);
+
     mem_free(&self->header_recv_buf);
     mem_malloc(&self->header_recv_buf,4096);
     mem_free(&self->data_recv_buf);
@@ -198,7 +207,7 @@ status_t simplelinkservice_start(struct simple_link_service *self)
     tasklinkrpc_init(pt,self->task_mgr);    
     tasklinkrpc_set_header_buf(pt,&self->header_recv_buf);
     tasklinkrpc_set_data_buf(pt,&self->data_recv_buf.base_file_base);
-    tasklinkrpc_set_retries(pt,self->as_tcp_server?1:-1);
+    tasklinkrpc_set_max_retries(pt,self->as_tcp_server?1:-1);
     tasklinkrpc_start(pt);
     closure_set_func(&pt->callback,on_task_link_rpc_event);
     closure_set_param_pointer(&pt->callback,10,self);
@@ -306,8 +315,20 @@ C_BEGIN_CLOSURE_FUNC(on_tcp_connector_event)
 
     C89_CLOSURE_PARAM_INT(event,0);
     C89_CLOSURE_PARAM_PTR(struct simple_link_service*,self,10);
-
-    if(event == C_TASK_TCP_CONNECTOR_EVENT_CONNECTED)
+    
+    if(event == C_TASK_TCP_CONNECTOR_EVENT_STOP)
+    {
+        int err;
+        C89_CLOSURE_PARAM_INT(err,1);
+        if(err != C_TASK_TCP_CONNECTOR_ERROR_NONE)
+        {
+            struct task_link_rpc *task = 
+                simplelinkservice_get_task_link_rpc(self);
+            ASSERT(task);
+            tasklinkrpc_retry(task,C_TASK_LINKRPC_ERROR_CONNECT_ERROR);
+        }
+    }
+    else if(event == C_TASK_TCP_CONNECTOR_EVENT_CONNECTED)
     {
         struct tcp_client *client;
         struct task_link_rpc *task_link_rpc;
@@ -327,12 +348,36 @@ status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self)
 {
     struct taskmgr *mgr = self->task_mgr;
     struct task_tcp_connector *connector;
-    taskmgr_quit_task(mgr,&self->task_tcp_connector);        
+    ASSERT(!taskmgr_is_task(mgr,self->task_tcp_connector));
     X_MALLOC(connector,struct task_tcp_connector,1);
     tasktcpconnector_init(connector,mgr);
+    tasktcpconnector_set_server_name(connector,self->server_name);
+    tasktcpconnector_set_port(connector,self->port);
+    tasktcpconnector_start(connector);
     closure_set_func(&connector->callback,on_tcp_connector_event);
     closure_set_param_pointer(&connector->callback,10,self);
-
     self->task_tcp_connector = task_get_id(&connector->base_task);
     return OK;
 }
+
+status_t simplelinkservice_set_server_name(struct simple_link_service *self,const char *_server_name)
+{
+    int len = 0;
+    if(_server_name == NULL)
+    {
+        X_FREE(self->server_name);
+        return OK;
+    }
+    len = strlen(_server_name);
+    X_FREE(self->server_name);
+    X_MALLOC(self->server_name,char,len+1);
+    memcpy(self->server_name,_server_name,len+1);
+    return OK;
+}
+
+status_t simplelinkservice_set_port(struct simple_link_service *self,int _port)
+{
+    self->port = _port;
+    return OK;
+}
+
