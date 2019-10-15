@@ -75,6 +75,7 @@ status_t tasktcpacceptor_stop(struct task_tcp_acceptor *self,int err)
         return ERROR;
     task_quit(&self->base_task);
     tasktcpacceptor_report_error(self,err);
+    closure_set_param_int(&self->callback,1,err);
 	closure_run_event(&self->callback,C_TASK_TCP_ACCEPTOR_EVENT_STOP);
     return OK;
 }

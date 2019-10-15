@@ -383,6 +383,12 @@ status_t tasklinkrpc_report_error(struct task_link_rpc *self,int err)
 status_t tasklinkrpc_start(struct task_link_rpc *self)
 {
     struct taskmgr *taskmgr = task_get_taskmgr(&self->base_task);
+    
+    if(self->socket)
+    {
+        socket_close_connect(self->socket);
+    }
+
     self->step = STEP_RETRY;    
     taskmgr_quit_task(taskmgr,&self->task_reader);
     taskmgr_quit_task(taskmgr,&self->task_writer);
@@ -396,6 +402,12 @@ status_t tasklinkrpc_stop(struct task_link_rpc *self,int err)
 {
     if(task_is_dead(&self->base_task))
         return ERROR;
+    
+    if(self->socket)
+    {
+        socket_close_connect(self->socket);
+    }
+    
     task_quit(&self->base_task);
     tasklinkrpc_report_error(self,err);
     return OK;
@@ -412,7 +424,6 @@ status_t tasklinkrpc_retry(struct task_link_rpc *self,int err)
     XLOG(LOG_MODULE_MESSAGEPEER,LOG_LEVEL_ERROR,
         "struct task_link_rpc: retry with error \"%s\"",tasklinkrpc_error_to_string(self,err)
     );
-    socket_close_connect(self->socket);
     tasklinkrpc_start(self);
     task_sleep(&self->base_task,1000);
     return OK;

@@ -8,6 +8,7 @@ status_t sls_message_init_basic(struct sls_message *self)
     self->header_data = NULL;
     self->data = NULL;
     self->linkrpc_msg_type = 0;
+    self->is_on_heap = 0;
     return OK;
 }
 
@@ -26,7 +27,7 @@ status_t sls_message_destroy(struct sls_message *self)
 
     if(self->header_data)
     {
-        X_VIRTUAL_DELETE(self->data,filebase_destroy);
+        X_VIRTUAL_DELETE(self->header_data,filebase_destroy);
     }
     sls_message_init_basic(self);
     return OK;
@@ -34,6 +35,9 @@ status_t sls_message_destroy(struct sls_message *self)
 
 status_t sls_message_check(struct sls_message *self)
 {
+    if(!self->is_on_heap)
+        return ERROR;
+
     if(self->header_data)
     {
         if(!self->header_data->is_on_heap)
@@ -50,21 +54,23 @@ status_t sls_message_check(struct sls_message *self)
     return OK;
 }
 /**************************************************************/
-status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self);
+static status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self);
+static status_t simplelinkservice_on_got_message(struct simple_link_service *self,LINKRPC_HEADER *header, struct mem *header_data, struct file_base *data);
 /**************************************************************/
 status_t simplelinkservice_init_basic(struct simple_link_service *self)
 {
     self->task_mgr = NULL;
     self->task_link_rpc = 0;
+    self->task_tcp_connector = 0;
     closure_init_basic(&self->callback);
     mem_init_basic(&self->header_recv_buf);
     mem_init_basic(&self->data_recv_buf);
     self->sls_sending_queue = NULL;
     self->sls_sending_queue_len = 0;
-    self->sls_sending_queue_len = 0;
     self->as_tcp_server = FALSE;
     self->server_name = NULL;
     self->port = 0;
+    self->sls_sending_queue_size = 0;
     return OK;
 }
 
@@ -76,18 +82,22 @@ status_t simplelinkservice_init(struct simple_link_service *self, struct taskmgr
     closure_init(&self->callback);
     mem_init(&self->header_recv_buf);
     mem_init(&self->data_recv_buf);
+    simplelinkservice_alloc_sls_sending_queue(self,1024);
     return OK;
 }
 
 status_t simplelinkservice_destroy(struct simple_link_service *self)
 {
     if(self->sls_sending_queue)
-    {
+    {        
         int i;
         for(i = 0; i < self->sls_sending_queue_len; i++)
         {
-            sls_message_destroy(self->sls_sending_queue[i]);
-            X_FREE(self->sls_sending_queue[i]);
+            if(self->sls_sending_queue[i])
+            {
+                sls_message_destroy(self->sls_sending_queue[i]);
+                X_FREE(self->sls_sending_queue[i]);
+            }
         }       
         X_FREE(self->sls_sending_queue);
     }
@@ -95,6 +105,7 @@ status_t simplelinkservice_destroy(struct simple_link_service *self)
     if(self->task_mgr)
     {
         taskmgr_quit_task(self->task_mgr,&self->task_link_rpc);
+        taskmgr_quit_task(self->task_mgr,&self->task_tcp_connector);
     } 
     mem_destroy(&self->header_recv_buf);
     mem_destroy(&self->data_recv_buf);
@@ -182,6 +193,8 @@ C_BEGIN_CLOSURE_FUNC(on_task_link_rpc_event)
         C89_CLOSURE_PARAM_PTR(LINKRPC_HEADER*, header, 2);
         C89_CLOSURE_PARAM_PTR(struct mem*, header_data,3);
         C89_CLOSURE_PARAM_PTR(struct file_base*, data,4);
+
+        simplelinkservice_on_got_message(self,header,header_data,data);
     }
 
     else if(event == C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK)
@@ -197,7 +210,11 @@ status_t simplelinkservice_start(struct simple_link_service *self)
     struct task_link_rpc *pt;
     ASSERT(self->task_mgr);
     ASSERT(!taskmgr_is_task(self->task_mgr,self->task_link_rpc));
-    ASSERT(self->server_name && self->port != 0);
+    if(!self->as_tcp_server)
+    {
+        ASSERT(self->server_name);
+        ASSERT(self->port != 0);
+    }
 
     mem_free(&self->header_recv_buf);
     mem_malloc(&self->header_recv_buf,4096);
@@ -210,7 +227,7 @@ status_t simplelinkservice_start(struct simple_link_service *self)
     tasklinkrpc_set_max_retries(pt,self->as_tcp_server?1:-1);
     tasklinkrpc_start(pt);
     closure_set_func(&pt->callback,on_task_link_rpc_event);
-    closure_set_param_pointer(&pt->callback,10,self);
+    closure_set_param_pointer(&pt->callback,10,self);    
 
     self->task_link_rpc = task_get_id(&pt->base_task);
     return OK;
@@ -260,7 +277,7 @@ status_t simplelinkservice_set_sls_sending_queue(struct simple_link_service *sel
 status_t simplelinkservice_set_sls_sending_queue_elem(struct simple_link_service *self,int _index,struct sls_message *_sls_sending_queue)
 {
     ASSERT(self->sls_sending_queue);
-    ASSERT(_index >= 0 && _index < self->sls_sending_queue_len);
+    ASSERT(_index >= 0 && _index < self->sls_sending_queue_size);
     self->sls_sending_queue[_index] = _sls_sending_queue;
     return OK;
 }
@@ -344,7 +361,7 @@ C_BEGIN_CLOSURE_FUNC(on_tcp_connector_event)
 }
 C_END_CLOSURE_FUNC(on_tcp_connector_event)
 
-status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self)
+static status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self)
 {
     struct taskmgr *mgr = self->task_mgr;
     struct task_tcp_connector *connector;
@@ -381,3 +398,32 @@ status_t simplelinkservice_set_port(struct simple_link_service *self,int _port)
     return OK;
 }
 
+status_t simplelinkservice_transfer_socket_fd(struct simple_link_service *self,int fd)
+{
+    struct socket tmp;
+    struct task_link_rpc *pt;
+    status_t ret;
+    pt = simplelinkservice_get_task_link_rpc(self);
+    ASSERT(pt);
+    socket_init(&tmp);
+    socket_set_socket_num(&tmp,fd);    
+    ret = tasklinkrpc_transfer_socket(pt,&tmp);
+    socket_destroy(&tmp);
+    return ret;
+}
+
+status_t simplelinkservice_is_connected(struct simple_link_service *self)
+{
+    ASSERT(self->task_mgr);
+    return taskmgr_is_task(self->task_mgr,self->task_link_rpc);
+}
+
+static status_t simplelinkservice_on_got_message(struct simple_link_service *self,LINKRPC_HEADER *header, struct mem *header_data, struct file_base *data)
+{
+    ASSERT(header && header_data && data);
+    closure_set_param_pointer(&self->callback,1,header);
+    closure_set_param_pointer(&self->callback,2,header_data);
+    closure_set_param_pointer(&self->callback,3,&self->data_recv_buf);
+    closure_run_event(&self->callback,C_SIMPLE_LINK_SERVICE_EVENT_GOT_MESSAGE);
+    return OK;
+}
