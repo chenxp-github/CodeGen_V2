@@ -70,6 +70,7 @@ static void* prefix##_virtual_get_this_pointer(struct file_base *base)\
 }\
 /************************************/
 struct file_base{
+    bool_t is_on_heap;
     void *user_data;
     char *split_chars;    
     void* (*get_this_pointer)(struct file_base *self);

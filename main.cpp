@@ -28,23 +28,7 @@ int main(int argc, char **argv)
 {
     Mem_Tool_Init("z:\\tmp\\leak.txt");
 
-    struct mem *pmem;
-
-    X_MALLOC(pmem,struct mem, 1);
-    PP(pmem);
-    mem_init(pmem);
-    mem_malloc(pmem,1024);
-
-    struct file_base *pf = &pmem->base_file_base;
-
-    filebase_printf(pf,"Hello world");
-    
-    
-    PP(pf->get_this_pointer(pf));
-
-    X_VIRTUAL_DELETE(pf,filebase_destroy);
-
-
+  
     return 0;
 }
 

@@ -5,6 +5,7 @@
 
 status_t filebase_init_basic(struct file_base *self)
 {
+    self->is_on_heap = FALSE;
     self->user_data = NULL;
     self->split_chars = NULL;    
     self->destroy = NULL;
@@ -102,7 +103,6 @@ status_t filebase_is_split_char(struct file_base *self,char ch)
     }
     return FALSE;
 }
-
 
 int_ptr_t filebase_read(struct file_base *self,void *buf,int_ptr_t n)
 {

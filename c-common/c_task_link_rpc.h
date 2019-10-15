@@ -78,5 +78,6 @@ struct socket* tasklinkrpc_get_socket(struct task_link_rpc *self);
 int tasklinkrpc_get_retries(struct task_link_rpc *self);
 status_t tasklinkrpc_set_retries(struct task_link_rpc *self,int retry);
 status_t tasklinkrpc_on_socket_error(struct task_link_rpc *self);
+status_t tasklinkrpc_send_raw(struct task_link_rpc *self,int linkrpc_cmd,struct file_base *header, struct file_base *data);
 
 #endif

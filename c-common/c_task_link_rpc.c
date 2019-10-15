@@ -306,6 +306,12 @@ status_t tasklinkrpc_send_response(struct task_link_rpc *self,struct file_base *
     return tasklinkrpcwriter_send_response(self->writer,header,data);
 }
 
+status_t tasklinkrpc_send_raw(struct task_link_rpc *self,int linkrpc_cmd,struct file_base *header, struct file_base *data)
+{
+    ASSERT(self->writer);
+    return tasklinkrpcwriter_send_package(self->writer,linkrpc_cmd,header,data);
+}
+
 status_t tasklinkrpc_run(struct task_link_rpc *self,uint32_t interval)
 {
     if(self->step == STEP_RETRY)

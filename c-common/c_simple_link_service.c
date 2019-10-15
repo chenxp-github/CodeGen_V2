@@ -1,4 +1,5 @@
 #include "c_simple_link_service.h"
+#include "c_task_tcp_connector.h"
 #include "syslog.h"
 #include "mem_tool.h"
 
@@ -6,7 +7,7 @@ status_t sls_message_init_basic(struct sls_message *self)
 {
     self->header_data = NULL;
     self->data = NULL;
-    self->linkrpc_msg_type = 0;    
+    self->linkrpc_msg_type = 0;
     return OK;
 }
 
@@ -30,6 +31,24 @@ status_t sls_message_destroy(struct sls_message *self)
     sls_message_init_basic(self);
     return OK;
 }
+
+status_t sls_message_check(struct sls_message *self)
+{
+    if(self->header_data)
+    {
+        if(!self->header_data->is_on_heap)
+            return ERROR;
+    }
+
+    if(self->data)
+    {
+
+        if(!self->data->is_on_heap)
+            return ERROR;
+    }
+
+    return OK;
+}
 /**************************************************************/
 status_t simplelinkservice_init_basic(struct simple_link_service *self)
 {
@@ -41,13 +60,15 @@ status_t simplelinkservice_init_basic(struct simple_link_service *self)
     self->sls_sending_queue = NULL;
     self->sls_sending_queue_len = 0;
     self->sls_sending_queue_len = 0;
+    self->as_tcp_server = FALSE;
     return OK;
 }
 
-status_t simplelinkservice_init(struct simple_link_service *self, struct taskmgr *mgr)
+status_t simplelinkservice_init(struct simple_link_service *self, struct taskmgr *mgr,bool_t as_tcp_server)
 {
     simplelinkservice_init_basic(self);
     self->task_mgr = mgr;
+    self->as_tcp_server = as_tcp_server;
     closure_init(&self->callback);
     mem_init(&self->header_recv_buf);
     mem_init(&self->data_recv_buf);
@@ -103,8 +124,26 @@ C_BEGIN_CLOSURE_FUNC(on_task_link_rpc_event)
         return TRUE;
     }
 
+    else if(event == C_TASK_LINKRPC_EVENT_GET_SOCKET)
+    {
+        
+    }
+
     else if(event == C_TASK_LINKRPC_EVENT_PREPARE_DATA_TO_SEND)
     {
+        struct sls_message *first;
+        struct task_link_rpc *task;
+        if(simplelinkservice_get_sls_sending_queue_len(self) <= 0)
+            return FALSE;
+
+        first = simplelinkservice_get_sls_sending_queue_elem(self,0);
+        ASSERT(first);
+        
+        task = simplelinkservice_get_task_link_rpc(self);
+        ASSERT(task);
+
+        tasklinkrpc_send_raw(task,first->linkrpc_msg_type,first->header_data,first->data);        
+        return OK;
     }
     
     else if(event == C_TASK_LINKRPC_EVENT_GOT_PACKAGE_HEADER)
@@ -139,6 +178,7 @@ C_BEGIN_CLOSURE_FUNC(on_task_link_rpc_event)
 
     else if(event == C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK)
     {
+        simplelinkservice_delete_message(self,0); //delete first
     }
     return OK;
 }
@@ -158,8 +198,8 @@ status_t simplelinkservice_start(struct simple_link_service *self)
     tasklinkrpc_init(pt,self->task_mgr);    
     tasklinkrpc_set_header_buf(pt,&self->header_recv_buf);
     tasklinkrpc_set_data_buf(pt,&self->data_recv_buf.base_file_base);
+    tasklinkrpc_set_retries(pt,self->as_tcp_server?1:-1);
     tasklinkrpc_start(pt);
-
     closure_set_func(&pt->callback,on_task_link_rpc_event);
     closure_set_param_pointer(&pt->callback,10,self);
 
@@ -220,7 +260,7 @@ status_t simplelinkservice_send_message(struct simple_link_service *self,struct 
 {
     ASSERT(msg);
     ASSERT(self->sls_sending_queue_len < self->sls_sending_queue_size);
-
+    ASSERT(sls_message_check(msg));
     simplelinkservice_set_sls_sending_queue_elem(self,
         self->sls_sending_queue_len, msg
     );
@@ -244,6 +284,55 @@ status_t simplelinkservice_delete_message(struct simple_link_service *self, int 
 
     sls_message_destroy(p);
     X_FREE(p);
+    return OK;
+}
 
+struct task_link_rpc *simplelinkservice_get_task_link_rpc(struct simple_link_service *self)
+{
+    struct task *pt;
+    ASSERT(self->task_mgr);
+    pt = taskmgr_get_task(self->task_mgr,self->task_link_rpc);
+    do{
+        CONTAINER_OF(struct task_link_rpc,task,pt,base_task);
+        return task;
+    }while(0);
+    return NULL;
+}
+
+C_BEGIN_CLOSURE_FUNC(on_tcp_connector_event)
+{
+    int event;
+    struct simple_link_service *self;
+
+    C89_CLOSURE_PARAM_INT(event,0);
+    C89_CLOSURE_PARAM_PTR(struct simple_link_service*,self,10);
+
+    if(event == C_TASK_TCP_CONNECTOR_EVENT_CONNECTED)
+    {
+        struct tcp_client *client;
+        struct task_link_rpc *task_link_rpc;
+
+        C89_CLOSURE_PARAM_PTR(struct tcp_client*,client,2);
+        
+        task_link_rpc = simplelinkservice_get_task_link_rpc(self);
+        ASSERT(task_link_rpc);
+        ASSERT(task_link_rpc->socket);
+        socket_transfer_socket_fd(task_link_rpc->socket,&client->base_socket);
+    }
+    return OK;
+}
+C_END_CLOSURE_FUNC(on_tcp_connector_event)
+
+status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self)
+{
+    struct taskmgr *mgr = self->task_mgr;
+    struct task_tcp_connector *connector;
+    taskmgr_quit_task(mgr,&self->task_tcp_connector);        
+    X_MALLOC(connector,struct task_tcp_connector,1);
+    tasktcpconnector_init(connector,mgr);
+    closure_set_func(&connector->callback,on_tcp_connector_event);
+    closure_set_param_pointer(&connector->callback,10,self);
+
+    self->task_tcp_connector = task_get_id(&connector->base_task);
     return OK;
 }

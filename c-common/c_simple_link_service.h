@@ -21,11 +21,23 @@ struct simple_link_service{
     struct closure callback;
     struct sls_message **sls_sending_queue;
     int sls_sending_queue_size,sls_sending_queue_len;
-
+    bool_t as_tcp_server;
+    int task_tcp_connector; //when as client
 };
 
 status_t simplelinkservice_init_basic(struct simple_link_service *self);
-status_t simplelinkservice_init(struct simple_link_service *self, struct taskmgr *mgr);
+status_t simplelinkservice_init(struct simple_link_service *self, struct taskmgr *mgr,bool_t as_tcp_server);
 status_t simplelinkservice_destroy(struct simple_link_service *self);
+struct taskmgr* simplelinkservice_get_task_mgr(struct simple_link_service *self);
+status_t simplelinkservice_set_task_mgr(struct simple_link_service *self,struct taskmgr *_task_mgr);
+struct sls_message** simplelinkservice_get_sls_sending_queue(struct simple_link_service *self);
+int simplelinkservice_get_sls_sending_queue_len(struct simple_link_service *self);
+struct sls_message* simplelinkservice_get_sls_sending_queue_elem(struct simple_link_service *self,int _index);
+status_t simplelinkservice_alloc_sls_sending_queue(struct simple_link_service *self,int _len);
+status_t simplelinkservice_set_sls_sending_queue(struct simple_link_service *self,struct sls_message *_sls_sending_queue[], int _len);
+status_t simplelinkservice_set_sls_sending_queue_elem(struct simple_link_service *self,int _index,struct sls_message *_sls_sending_queue);
+status_t simplelinkservice_send_message(struct simple_link_service *self,struct sls_message *msg);
+status_t simplelinkservice_delete_message(struct simple_link_service *self, int index);
+struct task_link_rpc *simplelinkservice_get_task_link_rpc(struct simple_link_service *self);
 
 #endif
