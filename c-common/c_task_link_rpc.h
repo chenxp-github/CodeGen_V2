@@ -17,6 +17,7 @@ enum{
     C_TASK_LINKRPC_EVENT_GOT_PACKAGE_HEADER,
     C_TASK_LINKRPC_EVENT_GOT_PACKAGE_DATA,
     C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK,
+    C_TASK_LINKRPC_EVENT_STOPPED,
 };
 
 enum{
@@ -77,5 +78,6 @@ struct socket* tasklinkrpc_get_socket(struct task_link_rpc *self);
 int tasklinkrpc_get_retries(struct task_link_rpc *self);
 status_t tasklinkrpc_on_socket_error(struct task_link_rpc *self);
 status_t tasklinkrpc_send_raw(struct task_link_rpc *self,int linkrpc_cmd,struct file_base *header, struct file_base *data);
+bool_t tasklinkrpc_is_connected(struct task_link_rpc *self);
 
 #endif

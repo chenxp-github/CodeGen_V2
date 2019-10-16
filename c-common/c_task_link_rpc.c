@@ -273,7 +273,9 @@ status_t tasklinkrpc_set_socket(struct task_link_rpc *self,int32_t fd)
 
 status_t tasklinkrpc_transfer_socket(struct task_link_rpc *self,struct socket *from)
 {
-    return socket_transfer_socket_fd(self->socket,from);
+    socket_transfer_socket_fd(self->socket,from);
+    socket_set_blocking(self->socket,0);
+    return OK;
 }
 
 status_t tasklinkrpc_start_reader_and_writer(struct task_link_rpc *self)
@@ -407,9 +409,14 @@ status_t tasklinkrpc_stop(struct task_link_rpc *self,int err)
     {
         socket_close_connect(self->socket);
     }
-    
+
     task_quit(&self->base_task);
     tasklinkrpc_report_error(self,err);
+    self->reader = NULL;
+    self->writer = NULL;
+    closure_set_param_int(&self->callback,1,err);
+    closure_set_param_pointer(&self->callback,2,self);
+    closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_STOPPED);
     return OK;
 }
 
@@ -505,4 +512,13 @@ status_t tasklinkrpc_on_package_send_ok(struct task_link_rpc *self)
     closure_set_param_pointer(&self->callback ,1 ,self);
     closure_run_event(&self->callback,C_TASK_LINKRPC_EVENT_PACKAGE_SEND_OK);
     return OK;
+}
+
+bool_t tasklinkrpc_is_connected(struct task_link_rpc *self)
+{
+    if(self->socket)
+    {
+        return socket_is_connected(self->socket);
+    }
+    return FALSE;
 }

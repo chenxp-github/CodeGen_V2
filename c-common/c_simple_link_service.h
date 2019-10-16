@@ -8,27 +8,29 @@
 #include "c_task_link_rpc.h"
 #include "c_mem.h"
 
-#define NEW_DEFAULT_SLS_MESSAGE(msg,type,header,data)\
-struct mem *header,*data;\
+#define NEW_DEFAULT_SLS_MESSAGE(msg,type,header,body)\
+struct mem *header,*body;\
 struct sls_message *msg;\
-struct file_base *header##_file,*data##_file;\
+struct file_base *header##_file,*body##_file;\
 X_MALLOC(header,struct mem,1);\
-X_MALLOC(data,struct mem,1);\
+X_MALLOC(body,struct mem,1);\
 mem_init(header);\
-mem_init(data);\
+mem_init(body);\
 header##_file=&header->base_file_base;\
-data##_file=&data->base_file_base;\
-data->base_file_base.is_on_heap = 1;\
+body##_file=&body->base_file_base;\
+body->base_file_base.is_on_heap = 1;\
 header->base_file_base.is_on_heap = 1;\
 X_MALLOC(msg,struct sls_message,1);\
 sls_message_init(msg);\
 msg->is_on_heap = TRUE;\
 msg->linkrpc_msg_type = type;\
 msg->header_data = header##_file;\
-msg->data = data##_file\
+msg->data=body##_file\
+
 
 enum{
     C_SIMPLE_LINK_SERVICE_EVENT_GOT_MESSAGE=1,
+    C_SIMPLE_LINK_SERVICE_EVENT_STOPPED,
 };
 
 struct sls_message{
@@ -71,5 +73,6 @@ status_t simplelinkservice_set_server_name(struct simple_link_service *self,cons
 status_t simplelinkservice_set_port(struct simple_link_service *self,int _port);
 status_t simplelinkservice_transfer_socket_fd(struct simple_link_service *self,int fd);
 status_t simplelinkservice_is_connected(struct simple_link_service *self);
+bool_t simplelinkservice_is_alive(struct simple_link_service *self);
 
 #endif

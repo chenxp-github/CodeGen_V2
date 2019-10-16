@@ -56,6 +56,7 @@ status_t sls_message_check(struct sls_message *self)
 /**************************************************************/
 static status_t simplelinkservice_start_tcp_connector(struct simple_link_service *self);
 static status_t simplelinkservice_on_got_message(struct simple_link_service *self,LINKRPC_HEADER *header, struct mem *header_data, struct file_base *data);
+static status_t simplelinkservice_on_linrpc_stopped(struct simple_link_service *self, int linkrpc_err);
 /**************************************************************/
 status_t simplelinkservice_init_basic(struct simple_link_service *self)
 {
@@ -201,6 +202,14 @@ C_BEGIN_CLOSURE_FUNC(on_task_link_rpc_event)
     {
         simplelinkservice_delete_message(self,0); //delete first
     }
+
+    else if(event == C_TASK_LINKRPC_EVENT_STOPPED)
+    {
+        int err;
+        C89_CLOSURE_PARAM_INT(err,1);
+        simplelinkservice_on_linrpc_stopped(self,err);
+    }
+
     return OK;
 }
 C_END_CLOSURE_FUNC(on_task_link_rpc_event);
@@ -301,6 +310,7 @@ status_t simplelinkservice_delete_message(struct simple_link_service *self, int 
 
     ASSERT(index >= 0 && index < self->sls_sending_queue_len);
     p = simplelinkservice_get_sls_sending_queue_elem(self,index);   
+    ASSERT(p);
     for(k = index; k < self->sls_sending_queue_len-1; k++)
     {
         self->sls_sending_queue[k] = self->sls_sending_queue[k + 1];
@@ -414,8 +424,9 @@ status_t simplelinkservice_transfer_socket_fd(struct simple_link_service *self,i
 
 status_t simplelinkservice_is_connected(struct simple_link_service *self)
 {
-    ASSERT(self->task_mgr);
-    return taskmgr_is_task(self->task_mgr,self->task_link_rpc);
+    struct task_link_rpc *task = simplelinkservice_get_task_link_rpc(self);
+    if(!task)return FALSE;
+    return tasklinkrpc_is_connected(task);
 }
 
 static status_t simplelinkservice_on_got_message(struct simple_link_service *self,LINKRPC_HEADER *header, struct mem *header_data, struct file_base *data)
@@ -424,6 +435,21 @@ static status_t simplelinkservice_on_got_message(struct simple_link_service *sel
     closure_set_param_pointer(&self->callback,1,header);
     closure_set_param_pointer(&self->callback,2,header_data);
     closure_set_param_pointer(&self->callback,3,&self->data_recv_buf);
+    closure_set_param_pointer(&self->callback,4,self);
     closure_run_event(&self->callback,C_SIMPLE_LINK_SERVICE_EVENT_GOT_MESSAGE);
     return OK;
 }
+
+static status_t simplelinkservice_on_linrpc_stopped(struct simple_link_service *self, int linkrpc_err)
+{
+    closure_set_param_pointer(&self->callback,1,self);
+    closure_run_event(&self->callback,C_SIMPLE_LINK_SERVICE_EVENT_STOPPED);
+    return OK;
+}
+
+bool_t simplelinkservice_is_alive(struct simple_link_service *self)
+{
+    struct task_link_rpc *linkrpc = simplelinkservice_get_task_link_rpc(self);
+    return linkrpc != NULL;
+}
+
