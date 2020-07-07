@@ -32,7 +32,7 @@ status_t TestTree_Entry::set(CTestNode *node)
     return OK;
 }
 
-status_t TestTree_Entry::RemoveFromTheTree()
+status_t TestTree_Entry::DetachFromTheTree()
 {
     TestTree_Entry *node = this;
 
@@ -68,7 +68,7 @@ status_t TestTree_Entry::DelNode_Recursive(TestTree_Entry *node)
         DelNode_Recursive(p);        
     }
 
-    node->RemoveFromTheTree();    
+    node->DetachFromTheTree();    
     DEL(node);    
     return OK;
 }
@@ -84,15 +84,20 @@ status_t TestTree_Entry::Traverse(CClosure *closure)
 
     closure->SetParamPointer(0,this);
     closure->Run();
+	if(closure->GetParamPointer(0) == NULL)
+	{
+		return OK;
+	}
 
-    TestTree_Entry *child = this->child;
+    TestTree_Entry *next, *child = this->child;
     while(child)
     {
         int level = closure->GetParamInt(1);
-        closure->SetParamInt(1,level+1);
-        child->Traverse(closure);
+        closure->SetParamInt(1,level+1);		
+		next = child->next;
+        child->Traverse(closure); //child maybe deleted
         closure->SetParamInt(1,level);
-        child = child->next;             
+        child = next;
     }    
     return OK;
 }
@@ -184,6 +189,34 @@ status_t TestTree_Entry::AddChild(TestTree_Entry *node)
     this->child->InsertBefore(node);
     this->child = node;
     return OK;
+}
+
+status_t TestTree_Entry::AddChildToTail(TestTree_Entry *node)
+{
+    ASSERT(node);
+
+    TestTree_Entry *tail = this->GetLastChild();    
+    if(!tail)
+    {
+        this->AddChild(node);
+    }
+    else
+    {
+        tail->InsertAfter(node);
+    }
+    return OK;
+}
+
+TestTree_Entry* TestTree_Entry::GetLastChild()
+{
+    TestTree_Entry *last = NULL;
+    TestTree_Entry *child = this->child;
+    while(child)
+    {
+        last = child;
+        child = child->next;
+    }
+    return last;
 }
 
 status_t TestTree_Entry::SaveBson(CMiniBson *_bson)

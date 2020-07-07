@@ -25,7 +25,9 @@ public:
     status_t InsertBefore(TestTree_Entry *node);
     status_t InsertAfter(TestTree_Entry *node);
     status_t AddChild(TestTree_Entry *node);
-    status_t RemoveFromTheTree();
+    status_t DetachFromTheTree();
+	status_t AddChildToTail(TestTree_Entry *node);
+	TestTree_Entry* GetLastChild();
 
     status_t SaveBson(CMiniBson *_bson);
     status_t LoadBson(CMiniBson *_bson);
