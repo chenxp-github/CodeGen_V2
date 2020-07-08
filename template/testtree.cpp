@@ -83,7 +83,9 @@ status_t TestTree_Entry::Traverse(CClosure *closure)
     }
 
     closure->SetParamPointer(0,this);
-    closure->Run();
+    if(!closure->Run())
+		return ERROR;
+
 	if(closure->GetParamPointer(0) == NULL)
 	{
 		return OK;
@@ -95,7 +97,9 @@ status_t TestTree_Entry::Traverse(CClosure *closure)
         int level = closure->GetParamInt(1);
         closure->SetParamInt(1,level+1);		
 		next = child->next;
-        child->Traverse(closure); //child maybe deleted
+		//child maybe deleted
+        if(!child->Traverse(closure)) 
+			return ERROR;
         closure->SetParamInt(1,level);
         child = next;
     }    
