@@ -269,24 +269,31 @@ status_t TestTree_Entry::LoadBson(CMiniBson *_bson)
     
     CMiniBson children;
     int array_len = 0;
-    BSON_CHECK(_bson->GetArray("children",&children,&array_len));
-    
-    for(int i = 0; i < array_len; i++)
-    {
-        char name[100];
-        sprintf(name,"%d",i);
+    if(_bson->GetArray("children",&children,&array_len))
+	{
+		TestTree_Entry *pre = NULL;
+		for(int i = 0; i < array_len; i++)
+		{
+			char name[100];
+			sprintf(name,"%d",i);
         
-        CMiniBson elem;
-        BSON_CHECK(children.GetDocument(name,&elem));
+			CMiniBson elem;
+			BSON_CHECK(children.GetDocument(name,&elem));
         
-        TestTree_Entry *entry;
-        NEW(entry,TestTree_Entry);
-        
-        BSON_CHECK(entry->LoadBson(_bson));
-        
-        ASSERT(this->InsertBefore(entry));
-    }
-    
+			TestTree_Entry *entry;
+			NEW(entry,TestTree_Entry);        
+			BSON_CHECK(entry->LoadBson(&elem));
+            if(pre == NULL)
+            {
+                pre = entry;
+                ASSERT(this->AddChild(entry));
+            }
+            else
+            {
+                ASSERT(pre->InsertAfter(entry));
+            }
+		}
+	}
     return OK;
 }
 
@@ -399,7 +406,7 @@ status_t CTestTree::LoadBson(CMiniBson *_bson)
         NEW(m_Root,TestTree_Entry);
     }
     
-    m_Root->LoadBson(_bson);
+    m_Root->LoadBson(&doc);
     return OK;
 }
 
