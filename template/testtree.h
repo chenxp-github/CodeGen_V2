@@ -13,10 +13,15 @@ public:
 public:
     TestTree_Entry();
     ~TestTree_Entry();
-    CTestNode *get();
+	
+    status_t Copy(TestTree_Entry *p);
+	int Comp(TestTree_Entry *p);
+	status_t Print(CFileBase *_buf);
+	
+	CTestNode *get();
     status_t set(CTestNode *node);  
     status_t Traverse(CClosure *closure);
-    
+   
     static status_t DelNode_Recursive(TestTree_Entry *node);
     static status_t Print_Recursive(TestTree_Entry *node, CFileBase *buf);    
     static TestTree_Entry* NewFromPointer(CTestNode *node);

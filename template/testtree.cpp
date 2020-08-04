@@ -19,7 +19,27 @@ TestTree_Entry::~TestTree_Entry()
     prev = NULL;
     DEL(m_RawPtr);
 }
-    
+
+status_t TestTree_Entry::Copy(TestTree_Entry *p)
+{
+	return OK;
+}
+
+int TestTree_Entry::Comp(TestTree_Entry *p)
+{
+	ASSERT(p);
+	if(m_RawPtr == p->m_RawPtr)
+		return 0;
+	ASSERT(m_RawPtr);
+	ASSERT(p->m_RawPtr);
+	return m_RawPtr->Comp(p->m_RawPtr);
+}
+
+status_t Print(CFileBase *_buf)
+{
+	return OK;
+}
+
 CTestNode* TestTree_Entry::get()
 {
     return m_RawPtr;
