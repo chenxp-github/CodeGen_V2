@@ -35,7 +35,7 @@ int TestTree_Entry::Comp(TestTree_Entry *p)
 	return m_RawPtr->Comp(p->m_RawPtr);
 }
 
-status_t Print(CFileBase *_buf)
+status_t TestTree_Entry::Print(CFileBase *_buf)
 {
 	return OK;
 }
