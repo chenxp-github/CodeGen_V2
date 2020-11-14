@@ -91,3 +91,64 @@ status_t CTestNode::LoadBson(CFileBase *_file)
     _bson.ResetPointer();
     return this->LoadBson(&_bson);
 }
+status_t CTestNode::LoadXml(const char *fn, const char *path)
+{
+    ASSERT(fn && path);
+	
+    CXml xml;
+    xml.Init();
+    ASSERT(xml.LoadXml(fn));
+	
+    CXmlNode *px = xml.GetNodeByPath(path);
+    ASSERT(px);
+	
+    return this->LoadXml(px);
+}
+
+status_t CTestNode::SaveXml(const char *fn, const char *node_name)
+{
+    ASSERT(fn && node_name);
+	
+    CMemFile mf;
+    mf.Init();
+    mf.Log("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    this->SaveXml(&mf,node_name);
+	
+    return mf.WriteToFile(fn) > 0;
+}
+
+status_t CTestNode::LoadXml(CXmlNode *_root)
+{
+    ASSERT(_root);
+    CXmlNode *px = _root;
+	
+    LOCAL_MEM(name);
+    LOCAL_MEM(val);
+	
+    px->RestartAttrib();
+    while(px->GetNextAttrib(&name,&val))
+    {
+    }
+	
+    px = px->child;
+    while(px)
+    {
+        px = px->next;
+    }
+    return OK;
+}
+
+status_t CTestNode::SaveXml(CFileBase *_xml,const char *node_name)
+{
+    ASSERT(_xml && node_name);
+    _xml->Tab();
+    _xml->Printf("<%s",node_name);
+    _xml->Printf(">");
+    _xml->Eol();
+    _xml->IncLogLevel(1);
+	
+	
+    _xml->IncLogLevel(-1);
+    _xml->Log("</%s>",node_name);
+    return OK;
+}

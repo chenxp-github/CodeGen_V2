@@ -369,6 +369,41 @@ status_t CHashTable::ToArray(CTestNode *arr[], int *len)
     this->EnumAll(&on_enum);    
     return OK;
 }
+
+status_t CHashTable::SaveXml(const char *fn, const char *node_name)
+{
+    ASSERT(fn && node_name);
+	
+    CMemFile mf;
+    mf.Init();
+    mf.Log("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    this->SaveXml(&mf,node_name);
+	
+    return mf.WriteToFile(fn) > 0;
+}
+
+status_t CHashTable::SaveXml(CFileBase *_xml,const char *node_name)
+{
+    ASSERT(_xml && node_name);
+  
+
+	BEGIN_CLOSURE(save_xml)
+	{
+		CLOSURE_PARAM_PTR(CTestNode*,node,0);
+		CLOSURE_PARAM_PTR(const char*,node_name,10);
+		CLOSURE_PARAM_PTR(CFileBase*,_xml,11);
+		node->SaveXml(_xml,node_name);
+		return OK;
+	}
+	END_CLOSURE(save_xml);
+
+	save_xml.SetParamPointer(10,(void*)node_name);
+	save_xml.SetParamPointer(11,_xml);
+	this->EnumAll(&save_xml);
+    return OK;
+}
+
+
 /*********************************************/
 /*********************************************/
 int CHashTable::HashCode(CTestNode *hashentry,int capacity)

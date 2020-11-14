@@ -4,6 +4,7 @@
 #include "filebase.h"
 #include "closure.h"
 #include "testnode.h"
+#include "xml.h"
 
 namespace test_name_space{
 
@@ -50,6 +51,9 @@ public:
 	status_t Copy(CHashTable *p);
 	status_t Comp(CHashTable *p);
 	status_t Print(CFileBase *_buf);	
+
+    status_t SaveXml(CFileBase *_xml, const char *node_name);
+    status_t SaveXml(const char *fn, const char *node_name);
 };
 
 } //namespace test_name_space

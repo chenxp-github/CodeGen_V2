@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "memfile.h"
 #include "minibson.h"
+#include "xml.h"
 
 class CTestNode{
 public:
@@ -23,6 +24,11 @@ public:
     status_t SaveBson(CMem *_mem);
     status_t LoadBson(CMiniBson *_bson);
     status_t LoadBson(CFileBase *_file);
+	
+    status_t LoadXml(CXmlNode *_root);
+    status_t SaveXml(CFileBase *_xml, const char *node_name);
+    status_t LoadXml(const char *fn, const char *path);
+    status_t SaveXml(const char *fn, const char *node_name);
 };
 
 #endif

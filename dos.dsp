@@ -648,5 +648,21 @@ SOURCE=.\common\userfunc.h
 
 SOURCE=.\common\weakptr.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\common\xml.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\common\xml.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\common\xmlreader.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\common\xmlreader.h
+# End Source File
 # End Target
 # End Project
