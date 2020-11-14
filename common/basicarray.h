@@ -3,13 +3,15 @@
 
 #include "cruntime.h"
 #include "filebase.h"
+#include "syslog.h"
+#include "mem_tool.h"
 
 template <class T>
 class CBasicArray{
     typedef status_t (*HOW_TO_PRINT)(CFileBase *_buf,T t);
     typedef status_t (*HOW_TO_COMP)(T t1,T t2);
 public:
-    WEAK_REF_ID_DEFINE();
+    WEAK_REF_DEFINE();
 private:
     T *m_Data;
     int m_Top,m_Size;
@@ -28,7 +30,7 @@ CBasicArray()
 
 status_t InitBasic()
 {
-    WEAK_REF_ID_CLEAR();
+    WEAK_REF_CLEAR();
     this->m_Data = NULL;
     this->m_Top = 0;
     this->m_Size = 0;
@@ -36,16 +38,17 @@ status_t InitBasic()
     this->how_to_comp = NULL;
     return OK;
 }
-status_t Init(int init_size)
+status_t Init(int init_size=256)
 {
     this->InitBasic();
-    WEAK_REF_ID_INIT();
+    
     MALLOC(this->m_Data,T,init_size);
     this->m_Size = init_size;
     return OK;
 }
 status_t Destroy()
 {
+    WEAK_REF_DESTROY();
     FREE(this->m_Data);
     this->InitBasic();
     return OK;

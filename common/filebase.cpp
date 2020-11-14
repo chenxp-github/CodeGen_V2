@@ -11,14 +11,14 @@
 ///////////////////////////////////////////////////////////////////
 CFileBase::CFileBase()
 {
-    WEAK_REF_ID_CLEAR();
-    this->Init();
+    this->InitBasic();
 }
 
 CFileBase::~CFileBase()
 {
     this->Destroy();
 }
+
 char CFileBase::Getc()
 {
     char ch = 0;
@@ -90,6 +90,7 @@ fsize_t CFileBase::WriteToFile(CFileBase *file, fsize_t start, fsize_t wsize, vo
         ws = file->Write(buf,rs);
         if(ws <= 0) break;
         sum += ws;
+        if(ws != rs)break;
     }
     
     return sum;
@@ -110,7 +111,7 @@ fsize_t CFileBase::SeekEnd()
 
 status_t CFileBase::Destroy()
 {
-    WEAK_REF_ID_CLEAR();
+    WEAK_REF_DESTROY();
     FREE(this->file_name);
     this->SetSplitChars(NULL);
     return OK;
@@ -241,13 +242,14 @@ fsize_t CFileBase::WriteFile(CFileBase *file, fsize_t start, fsize_t ws, void *b
         b_size = left;
         if(b_size > block_size)
             b_size = block_size;
+        
         rs = file->Read(buf,(int_ptr_t)b_size);
         if(rs > 0)
         {
             write_size = this->Write(buf,rs);
             if(write_size > 0)
                 left -= write_size;
-            else
+            if(write_size!=rs)
                 break;
         }
         else
@@ -341,23 +343,33 @@ void CFileBase::SetUserData(void *ud)
     char szBuffer [FILEBASE_LBUF_SIZE]; \
     crt_va_list pArgList;\
     crt_va_start(pArgList, szFormat);\
-    crt_vsprintf(szBuffer, szFormat, pArgList);\
+    crt_vsnprintf(szBuffer, FILEBASE_LBUF_SIZE, szFormat, pArgList);\
     crt_va_end (pArgList)\
 
 fsize_t CFileBase::Log(const char *szFormat, ...)
 {   
-    for(int i = 0; i < log_tab_level_; i++)
-        this->Write("    ",4);
-
+    this->Tab();
     if(szFormat == NULL)
         return OK;
-
     MAKE_SZ_BUFFER();
-
     this->Puts(szBuffer);
     this->Puts("\r\n");
     return OK;
 }
+
+status_t CFileBase::Eol()
+{
+    this->Puts("\r\n");
+    return OK;
+}
+
+status_t CFileBase::Tab()
+{
+    for(int i = 0; i < log_tab_level_; i++)
+        this->Write("    ",4);
+    return OK;
+}
+
 status_t CFileBase::IncLogLevel(int inc)
 {
     return this->SetLogLevel(log_tab_level_+inc);
@@ -544,7 +556,7 @@ status_t CFileBase::Dump()
 
     while(this->ReadLine(&mem))
     {
-        syslog_printf("%s",mem.CStr());
+        syslog_printf("%s\n",mem.CStr());
     }
 
     this->Seek(save_off);
@@ -738,9 +750,9 @@ status_t CFileBase::ReadString_Reverse(CFileBase *file)
     return ERROR;
 }
 
-status_t CFileBase::Init()
-{   
-    WEAK_REF_ID_INIT();
+status_t CFileBase::InitBasic()
+{
+    WEAK_REF_CLEAR();
     this->SetDefaultSpChars();
 #if _UNICODE_
     this->SetDefaultSpCharsW();
@@ -749,6 +761,12 @@ status_t CFileBase::Init()
     this->file_name = NULL;
     this->log_tab_level_ = 0;
     this->is_sp_chars_malloc = false;
+    return OK;
+}
+
+status_t CFileBase::Init()
+{   
+    this->InitBasic();    
     return OK;
 }
 

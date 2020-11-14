@@ -5,6 +5,8 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
+CLOSURE_COMMON_OBJECT_OPS_DEFINE_CPP(CMiniBson,bson)
+
 #define CHECK_TYPE_AND_NAME(_t,_name) do{\
 fsize_t _old_off = mData->GetOffset();\
 int _type = this->ReadByte();\
@@ -30,14 +32,14 @@ CMiniBson::~CMiniBson()
 }
 status_t CMiniBson::InitBasic()
 {
-    WEAK_REF_ID_CLEAR();
+    WEAK_REF_CLEAR();
     this->mData = NULL;
     return OK;
 }
 status_t CMiniBson::Init()
 {
     this->InitBasic();
-    WEAK_REF_ID_INIT();
+    
 
     NEW(this->mData,CMem);
     this->mData->Init();
@@ -46,6 +48,7 @@ status_t CMiniBson::Init()
 }
 status_t CMiniBson::Destroy()
 {
+    WEAK_REF_DESTROY();
     DEL(this->mData);
     this->InitBasic();
     return OK;
@@ -242,11 +245,25 @@ status_t CMiniBson::PutInt16(const char *name, int16_t i)
     CMem mem(name);
     return this->PutInt32(&mem,i);
 }
+
+status_t CMiniBson::PutUInt16(const char *name, uint16_t i)
+{
+    CMem mem(name);
+    return this->PutInt32(&mem,i);
+}
+
 status_t CMiniBson::PutInt8(const char *name, int8_t i)
 {
     CMem mem(name);
     return this->PutInt32(&mem,i);
 }
+
+status_t CMiniBson::PutUInt8(const char *name, uint8_t i)
+{
+    CMem mem(name);
+    return this->PutInt32(&mem,i);
+}
+
 status_t CMiniBson::PutString(CMem *name, CMem *str)
 {
     ASSERT(name && str);
@@ -479,6 +496,15 @@ status_t CMiniBson::GetInt16(const char *name, int16_t *pInt)
     *pInt = (int16_t)tmp;
     return ret;
 }
+
+status_t CMiniBson::GetUInt16(const char *name, uint16_t *pInt)
+{
+    int32_t tmp;
+    status_t ret = GetInt32(name,&tmp);
+    *pInt = (uint16_t)tmp;
+    return ret;
+}
+
 status_t CMiniBson::GetInt8(const char *name, int8_t *pInt)
 {
     int32_t tmp;
@@ -486,6 +512,15 @@ status_t CMiniBson::GetInt8(const char *name, int8_t *pInt)
     *pInt = (int8_t)tmp;
     return ret;
 }
+
+status_t CMiniBson::GetUInt8(const char *name, uint8_t *pInt)
+{
+    int32_t tmp;
+    status_t ret = GetInt32(name,&tmp);
+    *pInt = (uint8_t)tmp;
+    return ret;
+}
+
 status_t CMiniBson::GetInt64(const char *name, int64_t *pInt)
 {
     ASSERT(pInt);    
@@ -573,16 +608,16 @@ status_t CMiniBson::ResetPointer()
 status_t CMiniBson::GetDocument(const char *name, CMiniBson *doc)
 {
     ASSERT(doc);
-    
-    CHECK_TYPE_AND_NAME(BSON_TYPE_DOCUMENT,name);
-    int32_t size;
-    fsize_t off = this->mData->GetOffset();
-    this->mData->Read(&size,sizeof(size));
 
 	SAVE_WEAK_REF_ID(*doc,w);
     doc->Destroy();
     doc->Init();
 	RESTORE_WEAK_REF_ID(*doc,w);
+
+    CHECK_TYPE_AND_NAME(BSON_TYPE_DOCUMENT,name);
+    int32_t size;
+    fsize_t off = this->mData->GetOffset();
+    this->mData->Read(&size,sizeof(size));
 
     CMem *data = doc->GetRawData();
     char *buf = this->mData->GetRawBuf();
@@ -598,6 +633,11 @@ status_t CMiniBson::GetArray(const char *name, CMiniBson *doc,int32_t *array_len
     ASSERT(doc && array_length);
     *array_length = 0;
 
+	SAVE_WEAK_REF_ID(*doc,w);
+    doc->Destroy();
+    doc->Init();
+	RESTORE_WEAK_REF_ID(*doc,w);
+
     CHECK_TYPE_AND_NAME(BSON_TYPE_ARRAY,name);
 
     int32_t size;
@@ -607,11 +647,6 @@ status_t CMiniBson::GetArray(const char *name, CMiniBson *doc,int32_t *array_len
     this->mData->Read(&size,sizeof(size));
     
     size -= sizeof(int32_t);
-
-	SAVE_WEAK_REF_ID(*doc,w);
-    doc->Destroy();
-    doc->Init();
-	RESTORE_WEAK_REF_ID(*doc,w);
 
     CMem *data = doc->GetRawData();
     char *buf = this->mData->GetRawBuf();
@@ -958,19 +993,21 @@ status_t CMiniBson::PeekNext(int *type, CMem *name)
 status_t CMiniBson::LoadRawBuf(CMem *buf)
 {
     ASSERT(buf);
-    this->mData->Destroy();
-    this->mData->Init();
-
-    if(buf->GetSize() > 0)
-    {
-        this->mData->SetRawBuf(buf->GetRawBuf(),(int_ptr_t)buf->GetSize(),true);
-        this->ResetPointer();
-    }
-
-    return OK;
+    return this->LoadRawBuf(buf->GetRawBuf(),(int_ptr_t)buf->GetSize());
 }
 
+status_t CMiniBson::LoadRawBuf(const void *buf, int_ptr_t size)
+{
+    ASSERT(buf);
+    this->mData->Free();
 
+    if(size > 0)
+    {
+        this->mData->SetRawBuf((void*)buf,size,true);
+        this->ResetPointer();
+    }
+    return OK;
+}
 
 
 

@@ -2,9 +2,11 @@
 #include "syslog.h"
 #include "mem_tool.h"
 
+#define MALLOC_SIZE(asize) ((int_ptr_t)(asize+sizeof(int32_t)))
+
 CMem::CMem()
 {
-    this->Init();
+    this->InitBasic();
 }
 
 CMem::~CMem()
@@ -20,6 +22,7 @@ CMem::CMem(const char *str)
 
 status_t CMem::InitBasic()
 {
+    CFileBase::InitBasic();
     this->mBuf = NULL;
     this->mSelfAlloc = false;
     this->mSize = 0;
@@ -30,8 +33,8 @@ status_t CMem::InitBasic()
 }
 status_t CMem::Init()
 {
-    CFileBase::Init();
     this->InitBasic();
+    CFileBase::Init();    
     return OK;
 }
 
@@ -45,7 +48,7 @@ status_t CMem::Destroy()
 
 status_t CMem::Malloc(int_ptr_t asize)
 {
-    asize += sizeof(int);
+    asize = MALLOC_SIZE(asize);
     ASSERT(asize > 0);
     ASSERT(this->mBuf == NULL);
     MALLOC(this->mBuf,char,asize);
@@ -66,25 +69,45 @@ status_t CMem::Free()
         FREE(this->mBuf);
         this->mSelfAlloc = false;
     }
+    else
+    {
+        this->mBuf = NULL;
+        this->mSelfAlloc = false;
+    }
+    this->mSize = 0;
+    this->mMaxSize = 0;
+    this->mOffset = 0;
+    this->mIsConst = true;
     return OK;
 }
 
+status_t CMem::AutoRealloc(int_ptr_t newSize)
+{
+    if(MALLOC_SIZE(newSize) <= mMaxSize)
+        return OK;
+    return this->Realloc(newSize);
+}
 
 status_t CMem::Realloc(int_ptr_t newSize)
 {
     CMem new_mem;
-	if(newSize == mSize)
+    
+	if(MALLOC_SIZE(newSize) == mMaxSize)
 		return OK;
+
     fsize_t old_off = this->GetOffset();
     new_mem.Malloc(newSize);
     new_mem.WriteFile(this); //may change this offset
     
+    fsize_t size = mSize; //save old size
     this->Free();
 
     this->mBuf = new_mem.mBuf;
     this->mMaxSize = (int_ptr_t)new_mem.GetMaxSize();
-    if(this->mSize > newSize)
+    if(size > newSize)
         this->mSize = newSize;
+    else
+        this->mSize = size;
     this->mIsConst = false;
     this->mSelfAlloc = true;
     new_mem.mBuf = NULL;
@@ -112,7 +135,7 @@ int_ptr_t CMem::Read(void *buf,int_ptr_t n)
 int_ptr_t CMem::Write(const void *buf,int_ptr_t n)
 {
     int_ptr_t  copy_length;
-    
+
     ASSERT(!this->mIsConst);
     ASSERT(this->mBuf && buf);
 
@@ -219,11 +242,7 @@ status_t CMem::Copy(CFileBase *file)
 {
     ASSERT(file);
     if(this == file) return OK;
-
-    SAVE_WEAK_REF_ID(*this,w);
-    this->Destroy();
-    this->Init();
-    RESTORE_WEAK_REF_ID(*this,w);
+    this->Free();
 
     if(file->file_name)
         this->SetFileName(file->file_name);
@@ -282,8 +301,7 @@ bool CMem::StrEqu(CMem *str, bool case_sensitive)
 status_t CMem::Transfer(CMem *from)
 {
     ASSERT(from);
-    this->Destroy();
-    this->Init();
+    this->Free();
 
     this->mBuf = from->mBuf;
     this->mSelfAlloc = from->mSelfAlloc;
@@ -370,6 +388,27 @@ status_t CMem::SetIsReadOnly(bool read_only)
 {
     mIsConst = read_only;
     return OK;
+}
+
+status_t CMem::Slice(int_ptr_t start, int_ptr_t size,CMem *out)
+{
+    ASSERT(out);
+    ASSERT(start >= 0);
+    out->Free();
+
+    if(size < 0)
+        size = mSize;
+
+    int_ptr_t real_size = size;
+    if(real_size > mSize - start)
+        real_size = mSize - start;
+    if(real_size < 0)
+        return ERROR;
+    if(real_size == 0)
+        return OK;
+
+    out->SetRawBuf(GetRawBuf()+start,real_size,true);
+    return OK;    
 }
 ////////////////////////////////////////////////////////////////////////////
 #if _UNICODE_

@@ -246,6 +246,16 @@ int32_t str2int_32(const char *str)
     return 0;
 }
 
+int64_t str2int_64(const char *str)
+{
+    ASSERT(str);
+    if(is_dec(str))
+        return crt_atoi64(str);
+    if(is_hex(str))
+        return hex2dec_64(str);
+    return 0;
+}
+
 uint32_t ac_x31_hash_string(const char *s)
 {
     uint32_t h = (uint32_t)*s;
@@ -263,4 +273,42 @@ uint32_t bob_32bit_integer_hash(uint32_t a)
     a = (a+0xfd7046c5) + (a<<3);
     a = (a^0xb55a4f09) ^ (a>>16); 
     return a;
+}
+
+int is_hex_char(char ch)
+{
+	return (ch >= 'a' && ch <= 'f')
+		|| (ch >= 'A' && ch <= 'F')
+		|| (ch >= '0' && ch <= '9');
+}
+
+int hex_str_to_bin(const char *shex, int len, uint8_t *out, int max)
+{
+	char buf[4];
+	int i,k = 0,s=0;
+	
+	ASSERT(shex && out);
+
+    for(i=0; i<len; i++ )   
+    {   
+		char ch = shex[i];
+		if(is_hex_char(ch))
+		{
+			buf[k++] = ch;
+			if(k == 2)
+			{
+                if(s < max)
+				{
+                    out[s++] = hex2dec_32(buf);
+                }
+                else
+                {
+                    break;
+                }                
+				k=0;
+			}
+		}
+    }   
+    
+	return s;
 }

@@ -29,11 +29,13 @@ public:
     int_ptr_t mMaxSize; 
     bool mIsConst;
 public: 
+    status_t Slice(int_ptr_t start, int_ptr_t size,CMem *out);
     status_t SetIsReadOnly(bool read_only);
 	bool IsReadOnly();
     bool IsMalloc();
     status_t Transfer(CMem *from);
     status_t Realloc(int_ptr_t newSize);
+    status_t AutoRealloc(int_ptr_t newSize);
     bool StrEqu(CMem *str, bool case_sensitive=true);
     char C(int index);
     char* GetRawBuf();

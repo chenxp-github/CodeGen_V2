@@ -144,6 +144,8 @@ public:
     fsize_t WriteToFile(const char *fn);
     fsize_t WriteToFile(const char *fn,fsize_t start,fsize_t wsize);
     fsize_t Log(const char *szFormat, ...);
+    status_t Eol();    
+    status_t Tab();
     int IncLogLevel(int inc);
     status_t SetLogLevel(int l);
     status_t GetLogLevel(); 
@@ -156,7 +158,7 @@ public:
 //common part
 /////////////////////////////////////////////////
 public:
-    WEAK_REF_ID_DEFINE();
+    WEAK_REF_DEFINE();
     void *user_data_;
     int log_tab_level_;
     bool is_sp_chars_malloc;
@@ -175,6 +177,7 @@ public:
     status_t FillBlock(fsize_t fill_size,char fill_ch);
     status_t Destroy();
     status_t Init();
+    status_t InitBasic();
     status_t ExpandFromOff(fsize_t exp_size);
     fsize_t SeekBack(fsize_t back_bytes);
     status_t Insert(CFileBase *file);

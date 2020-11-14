@@ -31,6 +31,7 @@ public:
     static bool IsAbsPath(const char *dir);
     static status_t StdPathSplitor(CMem *str);
     static fsize_t GetFileSize(CMem *filename);
+    static fsize_t GetFileSize(const char *filename);
     static status_t IsPathSplitor(char ch);
     static status_t GetFileName(const char *line,CFileBase *file, uint32_t filter);
     static status_t GetFileName(CMem *fullname,CFileBase *file, uint32_t filter);
@@ -43,9 +44,11 @@ public:
     static status_t ToAbsPath(const char *prefix,CFileBase *file);
     static status_t IsDirExist(CMem *dir);
     static status_t IsFileExist(CMem *file);
+    static status_t IsFileExist(const char *fn);
     static char GetPathSplitor();
     static status_t CreateDir(CMem *dir);
     static status_t DeleteFile(CMem *filename);
+    static status_t DeleteFile(const char *filename);
     static status_t DeleteDir(CMem *dir);
     static status_t DeleteDir(const char *dir);
     static status_t CreateDirSuper(CMem *dir);

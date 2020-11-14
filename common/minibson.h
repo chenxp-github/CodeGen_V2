@@ -4,14 +4,17 @@
 #include "mem.h"
 #include "closure.h"
 
+CLOSURE_COMMON_OBJECT_OPS_DEFINE_H(CMiniBson,bson)
+
 #define LOCAL_BSON(bson,size) char __##bson[size];\
 CMiniBson bson;\
 bson.Init();\
 bson.SetRawBuf(__##bson,size);\
 
-#define BSON_CHECK(f) do{if(!(f))\
+#define BSON_CHECK(f) do{if(!(f)){\
 	__LOG("check fail \"%s\" at file=%s line=%d"),#f,__FILE__,__LINE__);\
-}while(0)\
+    return 0;\
+}}while(0)\
 
 class CMiniBson{
 public:
@@ -45,10 +48,11 @@ public:
 		//keep last
 		INDEX_MAX,
     };
-    WEAK_REF_ID_DEFINE();
+    WEAK_REF_DEFINE();
 public:
     CMem *mData;
 public:
+    status_t LoadRawBuf(const void *buf, int_ptr_t size);
     status_t LoadRawBuf(CMem *buf);
     status_t PeekNext(int *type, CMem *name);
     CMiniBson();
@@ -84,7 +88,9 @@ public:
     status_t GetInt32(const char *name, int32_t *pInt);
     status_t GetUInt32(const char *name, uint32_t *pInt);
     status_t GetInt16(const char *name, int16_t *pInt);
+    status_t GetUInt16(const char *name, uint16_t *pInt);
     status_t GetInt8(const char *name, int8_t *pInt);
+    status_t GetUInt8(const char *name, uint8_t *pInt);
     status_t PutDouble(const char *name, double d);
     status_t PutDouble(CMem *name, double d);
     status_t ReadString(CMem *str);
@@ -107,7 +113,9 @@ public:
     status_t PutInt32(const char *name, int32_t i);
     status_t PutUInt32(const char *name, uint32_t i);
     status_t PutInt16(const char *name,int16_t i);
+    status_t PutUInt16(const char *name,uint16_t i);
     status_t PutInt8(const char *name,int8_t i);
+    status_t PutUInt8(const char *name,uint8_t i);
     status_t WriteByte(int8_t b);
     status_t PutInt32(CMem *name,int32_t i);
     status_t PutUInt32(CMem *name,uint32_t i);

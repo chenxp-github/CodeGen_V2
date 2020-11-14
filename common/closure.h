@@ -3,6 +3,7 @@
 
 #include "cruntime.h"
 #include "filebase.h"
+#include "raw_weak_pointer.h"
 
 #define MAX_PARAMS  16
 
@@ -75,12 +76,12 @@ double var = (closure)->GetParamDouble(n) \
 ASSERT((closure)->GetParamType(n) == PARAM_TYPE_STRING);\
 const char* var = (closure)->GetParamString(n) \
 
-#define __CLOSURE_PARAM_WEAKPTR(closure,type,var,n) \
-int __weak_ref_id_##var; \
-ASSERT((closure)->GetParamType(n) == PARAM_TYPE_WEAKPTR); \
-type var = (type)(closure)->GetParamWeakPointer(n,&__weak_ref_id_##var);\
-if(!(var && var->__weak_ref_id != 0 && var->__weak_ref_id == __weak_ref_id_##var))\
-var=NULL\
+#define __CLOSURE_PARAM_WEAKPTR(closure,type,var,n)\
+ASSERT((closure)->GetParamType(n) == PARAM_TYPE_WEAKPTR);\
+CRawWeakPointer *_weak_ptr_##var = (closure)->GetParamWeakPointer(n);\
+ASSERT(_weak_ptr_##var);\
+type var = (type)_weak_ptr_##var->GetRawPtr();\
+ASSERT(var)\
 
 #define __CLOSURE_PARAM_OBJECT_CAN_BE_NULL(closure,type,var,n) \
 ASSERT((closure)->GetParamType(n) == PARAM_TYPE_OBJECT);\
@@ -101,17 +102,52 @@ ASSERT(var)\
 #define CLOSURE_PARAM_STRING(var,n)                  __CLOSURE_PARAM_STRING(closure,var,n)
 #define CLOSURE_PARAM_WEAKPTR(type,var,n)            __CLOSURE_PARAM_WEAKPTR(closure,type,var,n)
 
+#define CLOSURE_COMMON_OBJECT_OPS_DEFINE_CPP(type,name)\
+static status_t closure_how_to_delete_##name(void *_p)\
+{\
+    type *obj = (type*)_p;\
+    DEL(obj);\
+    return OK;\
+}\
+static status_t closure_how_to_print_##name(void *_p,CFileBase *buf)\
+{\
+    type *obj = (type*)_p;\
+    ASSERT(obj);\
+    return obj->Print(buf);\
+}\
+static void* closure_how_to_clone_##name(void *_p)\
+{\
+    type *obj = (type*)_p;\
+    ASSERT(obj);\
+    type *tmp;\
+    NEW(tmp,type);\
+    tmp->Init();\
+    tmp->Copy(obj);\
+    return tmp;\
+}\
+void *closure_ops_##name[]={\
+    (void*)closure_how_to_delete_##name,\
+    (void*)closure_how_to_clone_##name,\
+    (void*)closure_how_to_print_##name\
+};\
+int closure_ops_##name##_size = 3;\
+
+#define CLOSURE_COMMON_OBJECT_OPS_DEFINE_H(type,name)\
+extern void *closure_ops_##name[];\
+extern int closure_ops_##name##_size;\
+
 #define CLOSURE_FLAG_FUNC(func,bit) FLAG_FUNC(m_Flags,func,bit)
 
 class CMiniBson;
 class CClosure{
 public:
-    WEAK_REF_ID_DEFINE();
+    WEAK_REF_DEFINE();
 public:
     int64_t m_Params[MAX_PARAMS];
     uint8_t m_Types[MAX_PARAMS];
     CLOSURE_FUNC m_Func;
     uint32_t m_Flags;
+    void *user_data;
 public:
     int GetParamsCount();
     CMiniBson* GetParamBson(int index);
@@ -139,7 +175,7 @@ public:
     double GetParamDouble(int index);
     int GetParamInt(int index);
     int64_t GetParamInt64(int index);
-    void* GetParamWeakPointer(int index,int *weak_ref_id);
+    CRawWeakPointer* GetParamWeakPointer(int index);
     status_t Run();
     status_t SetParamString(int index, const char *str);
     status_t SetParamString(int index, const char *str, int len);
@@ -149,7 +185,8 @@ public:
     status_t SetParamInt64(int index, int64_t i);
     status_t SetParamPointer(int index, void *p);
     status_t SetParamObject(int index, void *obj,void **obj_op,int obj_op_num);
-    status_t SetParamWeakPointer(int index,void *ptr, int weak_ref_id);
+    status_t SetParamObjectCopy(int index, void *obj, void** obj_op, int obj_op_num);
+    status_t SetParamWeakPointer(int index,CRawWeakPointer *weak_ptr);
     status_t FreeParam(int index);
     CLOSURE_FUNC GetFunc();
     status_t SetFunc(CLOSURE_FUNC func);

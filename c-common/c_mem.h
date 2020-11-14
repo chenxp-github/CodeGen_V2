@@ -10,7 +10,7 @@ struct mem name;\
 struct file_base *name##_file = NULL\
 
 #define _C_MEM_BODY(name)\
-UNUSED(name##_file);\
+X_UNUSED(name##_file);\
 mem_init(&name);\
 name##_file=&name.base_file_base\
 
@@ -24,7 +24,7 @@ struct file_base *name##_file = NULL;\
 struct mem name\
 
 #define _C_LOCAL_MEM_WITH_SIZE_BODY(name,size)\
-UNUSED(name##_file);\
+X_UNUSED(name##_file);\
 mem_init(&name);\
 mem_set_raw_buffer(&name,__##name,size,FALSE);\
 mem_set_size(&name,0);\

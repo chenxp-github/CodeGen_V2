@@ -558,6 +558,14 @@ SOURCE=.\template\normalstack.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\common\raw_weak_pointer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\common\raw_weak_pointer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\common\syslog.c
 # End Source File
 # Begin Source File
