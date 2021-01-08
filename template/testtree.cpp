@@ -305,13 +305,13 @@ status_t TestTree_Entry::LoadBson(CMiniBson *_bson)
 			BSON_CHECK(entry->LoadBson(&elem));
             if(pre == NULL)
             {
-                pre = entry;
                 ASSERT(this->AddChild(entry));
             }
             else
             {
                 ASSERT(pre->InsertAfter(entry));
             }
+            pre = entry;
 		}
 	}
     return OK;
