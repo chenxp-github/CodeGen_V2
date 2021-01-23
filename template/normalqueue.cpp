@@ -56,7 +56,7 @@ bool CNormalQueue::IsFull()
 	return this->m_IsFull;
 }
 
-CTestNode* CNormalQueue::EnQueue()
+CTestNode* CNormalQueue::Enqueue()
 {
 	CTestNode *ret;
 	if(this->IsFull())return NULL;
@@ -66,7 +66,7 @@ CTestNode* CNormalQueue::EnQueue()
 		this->m_IsFull = TRUE;
 	return ret;
 }
-CTestNode* CNormalQueue::DeQueue()
+CTestNode* CNormalQueue::Dequeue()
 {
 	CTestNode *ret;
 	if(this->IsEmpty())return NULL;
@@ -96,7 +96,7 @@ status_t CNormalQueue::Copy(CNormalQueue *queue)
 
     for(int i = 0; i < queue->GetLen(); i++)
     {
-        this->EnQueue(queue->GetElem(i));
+        this->Enqueue(queue->GetElem(i));
     }
 
     return OK;
@@ -135,9 +135,9 @@ status_t CNormalQueue::Print(CFileBase *_buf)
 	return TRUE;
 }
 
-status_t CNormalQueue::EnQueue(CTestNode *pos)
+status_t CNormalQueue::Enqueue(CTestNode *pos)
 {
-    CTestNode *n = this->EnQueue();    
+    CTestNode *n = this->Enqueue();    
     ASSERT(n);   
     n->Copy(pos);
     return OK;    

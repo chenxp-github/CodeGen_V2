@@ -14,12 +14,12 @@ private:
 public:
 	status_t Clear();
 	int GetLen();
-	CTestNode* EnQueue();
-	CTestNode* DeQueue();
+	CTestNode* Enqueue();
+	CTestNode* Dequeue();
     CTestNode* GetHead();    
     CTestNode* GetTail();
     CTestNode* GetElem(int index);
-    status_t EnQueue(CTestNode *pos);
+    status_t Enqueue(CTestNode *pos);
 	bool IsFull();
 	bool IsEmpty();
 
