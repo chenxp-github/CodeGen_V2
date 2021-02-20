@@ -181,7 +181,13 @@ status_t TestTree_Entry::InsertBefore(TestTree_Entry *node)
     node->next = this;
     this->prev = node;
     node->parent = this->parent;
-
+	
+    if(this->parent)		
+    {		
+        if(this->parent->child == this)
+            this->parent->child = node;
+    }
+    
     return OK;
 }
 

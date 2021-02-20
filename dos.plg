@@ -6,7 +6,7 @@
 --------------------Configuration: dos - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EA.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP7932.tmp" with contents
 [
 /nologo /MT /W3 /Gm /GX /ZI /Od /I "." /I "common" /I "platform" /I "template" /I "c-common" /I "c-template" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"debug/" /Fo"debug/" /Fd"debug/" /FD /GZ /c 
 "Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\basic_queue.c"
@@ -79,8 +79,8 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EA.tmp" with 
 "Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\xml.cpp"
 "Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\xmlreader.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EA.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EB.tmp" with contents
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP7932.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP7933.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"debug/dos.pdb" /debug /machine:I386 /out:"debug/dos.exe" /pdbtype:sept 
 .\debug\basic_queue.obj
@@ -154,7 +154,7 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 .\debug\xml.obj
 .\debug\xmlreader.obj
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EB.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP7933.tmp"
 <h3>Output Window</h3>
 Compiling...
 basic_queue.c
@@ -268,7 +268,7 @@ xml.cpp
 xmlreader.cpp
 Generating Code...
 Linking...
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP711E.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP289F.tmp" with contents
 [
 /nologo /o"debug/dos.bsc" 
 .\debug\basic_queue.sbr
@@ -341,7 +341,7 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP711E.tmp" with 
 .\debug\userfunc.sbr
 .\debug\xml.sbr
 .\debug\xmlreader.sbr]
-Creating command line "bscmake.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP711E.tmp"
+Creating command line "bscmake.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP289F.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 
