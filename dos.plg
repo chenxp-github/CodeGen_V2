@@ -6,20 +6,349 @@
 --------------------Configuration: dos - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5AC0.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EA.tmp" with contents
 [
 /nologo /MT /W3 /Gm /GX /ZI /Od /I "." /I "common" /I "platform" /I "template" /I "c-common" /I "c-template" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"debug/" /Fo"debug/" /Fd"debug/" /FD /GZ /c 
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\basic_queue.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\basic_stack.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\basicqueue.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\basicstack.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_closure.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_closure_list.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_comb_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_epoll.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file_base.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_file_manager.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_log_buffer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mem_stk.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_mutex.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_part_file.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_simple_link_service.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_socket.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_socket_reader_writer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_link_rpc.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_link_rpc_reader.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_link_rpc_writer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_runner.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_tcp_acceptor.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_tcp_connector.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_task_timer.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_taskmgr.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_tcp_client.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_tcp_server.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_thread.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-common\c_weak_ptr.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\closure.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\closurelist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\cruntime.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\dirmgr.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\encoder.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\file.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\filebase.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\fileinfo.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\fileinfolist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\hash_table.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\hashtable.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\linked_list.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\linkedlist.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\main.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\mem.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\mem_tool.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\memfile.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\memstk.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\minibson.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\misc.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\normal_queue.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\normal_stack.c"
 "Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\normalqueue.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\normalstack.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\raw_weak_pointer.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\syslog.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\task_test.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\taskmgr.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\tasktest.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\tcp.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\test_node.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\c-template\test_thread.c"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\template\testnode.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\userfunc.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\xml.cpp"
+"Z:\mydisk\Program\VC6\Projects\CodeGen_V2\common\xmlreader.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5AC0.tmp" 
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EA.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EB.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"debug/dos.pdb" /debug /machine:I386 /out:"debug/dos.exe" /pdbtype:sept 
+.\debug\basic_queue.obj
+.\debug\basic_stack.obj
+.\debug\basicqueue.obj
+.\debug\basicstack.obj
+.\debug\c_closure.obj
+.\debug\c_closure_list.obj
+.\debug\c_comb_file.obj
+.\debug\c_epoll.obj
+.\debug\c_file.obj
+.\debug\c_file_base.obj
+.\debug\c_file_manager.obj
+.\debug\c_log_buffer.obj
+.\debug\c_mem.obj
+.\debug\c_mem_file.obj
+.\debug\c_mem_stk.obj
+.\debug\c_mutex.obj
+.\debug\c_part_file.obj
+.\debug\c_simple_link_service.obj
+.\debug\c_socket.obj
+.\debug\c_socket_reader_writer.obj
+.\debug\c_task.obj
+.\debug\c_task_link_rpc.obj
+.\debug\c_task_link_rpc_reader.obj
+.\debug\c_task_link_rpc_writer.obj
+.\debug\c_task_runner.obj
+.\debug\c_task_tcp_acceptor.obj
+.\debug\c_task_tcp_connector.obj
+.\debug\c_task_timer.obj
+.\debug\c_taskmgr.obj
+.\debug\c_tcp_client.obj
+.\debug\c_tcp_server.obj
+.\debug\c_thread.obj
+.\debug\c_weak_ptr.obj
+.\debug\closure.obj
+.\debug\closurelist.obj
+.\debug\cruntime.obj
+.\debug\dirmgr.obj
+.\debug\encoder.obj
+.\debug\file.obj
+.\debug\filebase.obj
+.\debug\fileinfo.obj
+.\debug\fileinfolist.obj
+.\debug\hash_table.obj
+.\debug\hashtable.obj
+.\debug\linked_list.obj
+.\debug\linkedlist.obj
+.\debug\main.obj
+.\debug\mem.obj
+.\debug\mem_tool.obj
+.\debug\memfile.obj
+.\debug\memstk.obj
+.\debug\minibson.obj
+.\debug\misc.obj
+.\debug\normal_queue.obj
+.\debug\normal_stack.obj
+.\debug\normalqueue.obj
+.\debug\normalstack.obj
+.\debug\raw_weak_pointer.obj
+.\debug\syslog.obj
+.\debug\task_test.obj
+.\debug\taskmgr.obj
+.\debug\tasktest.obj
+.\debug\tcp.obj
+.\debug\test_node.obj
+.\debug\test_thread.obj
+.\debug\testnode.obj
+.\debug\testtree.obj
+.\debug\userfunc.obj
+.\debug\xml.obj
+.\debug\xmlreader.obj
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPC2EB.tmp"
 <h3>Output Window</h3>
 Compiling...
+basic_queue.c
+basic_stack.c
+Generating Code...
+Compiling...
+basicqueue.cpp
+basicstack.cpp
+Generating Code...
+Compiling...
+c_closure.c
+c_closure_list.c
+c_comb_file.c
+c_epoll.c
+z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(77) : warning C4018: '==' : signed/unsigned mismatch
+z:\mydisk\program\vc6\projects\codegen_v2\c-common\c_epoll.c(91) : warning C4018: '==' : signed/unsigned mismatch
+c_file.c
+c_file_base.c
+c_file_manager.c
+c_log_buffer.c
+c_mem.c
+c_mem_file.c
+c_mem_stk.c
+c_mutex.c
+c_part_file.c
+c_simple_link_service.c
+c_socket.c
+c_socket_reader_writer.c
+c_task.c
+c_task_link_rpc.c
+c_task_link_rpc_reader.c
+c_task_link_rpc_writer.c
+Generating Code...
+Compiling...
+c_task_runner.c
+c_task_tcp_acceptor.c
+c_task_tcp_connector.c
+c_task_timer.c
+c_taskmgr.c
+c_tcp_client.c
+c_tcp_server.c
+c_thread.c
+c_weak_ptr.c
+Generating Code...
+Compiling...
+closure.cpp
+closurelist.cpp
+Generating Code...
+Compiling...
+cruntime.c
+Generating Code...
+Compiling...
+dirmgr.cpp
+encoder.cpp
+file.cpp
+filebase.cpp
+fileinfo.cpp
+fileinfolist.cpp
+Generating Code...
+Compiling...
+hash_table.c
+Generating Code...
+Compiling...
+hashtable.cpp
+Generating Code...
+Compiling...
+linked_list.c
+Generating Code...
+Compiling...
+linkedlist.cpp
+main.cpp
+mem.cpp
+z:\mydisk\program\vc6\projects\codegen_v2\common\mem.cpp(110) : warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+Generating Code...
+Compiling...
+mem_tool.c
+Generating Code...
+Compiling...
+memfile.cpp
+memstk.cpp
+minibson.cpp
+Generating Code...
+Compiling...
+misc.c
+normal_queue.c
+normal_stack.c
+Generating Code...
+Compiling...
 normalqueue.cpp
+normalstack.cpp
+raw_weak_pointer.cpp
+Generating Code...
+Compiling...
+syslog.c
+task_test.c
+Generating Code...
+Compiling...
+taskmgr.cpp
+tasktest.cpp
+tcp.cpp
+z:\mydisk\program\vc6\projects\codegen_v2\common\tcp.cpp(158) : warning C4018: '==' : signed/unsigned mismatch
+Generating Code...
+Compiling...
+test_node.c
+test_thread.c
+Generating Code...
+Compiling...
+testnode.cpp
+userfunc.cpp
+xml.cpp
+xmlreader.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP711E.tmp" with contents
+[
+/nologo /o"debug/dos.bsc" 
+.\debug\basic_queue.sbr
+.\debug\basic_stack.sbr
+.\debug\basicqueue.sbr
+.\debug\basicstack.sbr
+.\debug\c_closure.sbr
+.\debug\c_closure_list.sbr
+.\debug\c_comb_file.sbr
+.\debug\c_epoll.sbr
+.\debug\c_file.sbr
+.\debug\c_file_base.sbr
+.\debug\c_file_manager.sbr
+.\debug\c_log_buffer.sbr
+.\debug\c_mem.sbr
+.\debug\c_mem_file.sbr
+.\debug\c_mem_stk.sbr
+.\debug\c_mutex.sbr
+.\debug\c_part_file.sbr
+.\debug\c_simple_link_service.sbr
+.\debug\c_socket.sbr
+.\debug\c_socket_reader_writer.sbr
+.\debug\c_task.sbr
+.\debug\c_task_link_rpc.sbr
+.\debug\c_task_link_rpc_reader.sbr
+.\debug\c_task_link_rpc_writer.sbr
+.\debug\c_task_runner.sbr
+.\debug\c_task_tcp_acceptor.sbr
+.\debug\c_task_tcp_connector.sbr
+.\debug\c_task_timer.sbr
+.\debug\c_taskmgr.sbr
+.\debug\c_tcp_client.sbr
+.\debug\c_tcp_server.sbr
+.\debug\c_thread.sbr
+.\debug\c_weak_ptr.sbr
+.\debug\closure.sbr
+.\debug\closurelist.sbr
+.\debug\cruntime.sbr
+.\debug\dirmgr.sbr
+.\debug\encoder.sbr
+.\debug\file.sbr
+.\debug\filebase.sbr
+.\debug\fileinfo.sbr
+.\debug\fileinfolist.sbr
+.\debug\hash_table.sbr
+.\debug\hashtable.sbr
+.\debug\linked_list.sbr
+.\debug\linkedlist.sbr
+.\debug\main.sbr
+.\debug\mem.sbr
+.\debug\mem_tool.sbr
+.\debug\memfile.sbr
+.\debug\memstk.sbr
+.\debug\minibson.sbr
+.\debug\misc.sbr
+.\debug\normal_queue.sbr
+.\debug\normal_stack.sbr
+.\debug\normalqueue.sbr
+.\debug\normalstack.sbr
+.\debug\raw_weak_pointer.sbr
+.\debug\syslog.sbr
+.\debug\task_test.sbr
+.\debug\taskmgr.sbr
+.\debug\tasktest.sbr
+.\debug\tcp.sbr
+.\debug\test_node.sbr
+.\debug\test_thread.sbr
+.\debug\testnode.sbr
+.\debug\testtree.sbr
+.\debug\userfunc.sbr
+.\debug\xml.sbr
+.\debug\xmlreader.sbr]
+Creating command line "bscmake.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP711E.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-normalqueue.obj - 0 error(s), 0 warning(s)
+dos.exe - 0 error(s), 4 warning(s)
 </pre>
 </body>
 </html>

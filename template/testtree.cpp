@@ -62,6 +62,7 @@ status_t TestTree_Entry::DetachFromTheTree()
         {            
             node->parent->child = node->next;
         }
+		node->parent = NULL;
     }
     
     if(node->prev)
@@ -171,10 +172,10 @@ status_t TestTree_Entry::InsertBefore(TestTree_Entry *node)
 {   
     ASSERT(node);
 
+	node->prev = this->prev;
     if(this->prev)
     {
-        this->prev->next = node;
-        node->prev = this->prev;
+        this->prev->next = node;        
     }
     
     node->next = this;
@@ -188,9 +189,9 @@ status_t TestTree_Entry::InsertAfter(TestTree_Entry *node)
 {
     ASSERT(node);
 
+	node->next = this->next;
     if(this->next)
-    {
-        node->next = this->next;
+    {        
         this->next->prev = node;
     }
     
